@@ -11,119 +11,221 @@ class character{
         this.routines={}
         this.setupGraphics(direction)
     }
-    standardModel(limbLength,legStartTop,armStartTop,levels,dimensions,mouthAnim,spins){
+    standardModel(type,...args){
         let colorBase=this.graphicManager.getData(this.name).color
-        return {
-            hair:{
-                display:{back:true,front:true,glow:true},
-                fade:{back:1,front:1,glow:1},
-                color:colorBase.hair,
-            },legs:[
-                {
-                    color:colorBase.skin.legs,
-                    display:true,fade:1,
-                    anim:{
-                        top:{rho:limbLength,phi:6,theta:-60},
-                        middle:{rho:limbLength,phi:12,theta:-150},
-                    },points:{
-                        top:legStartTop[0],
-                        middle:{x:0,y:0,z:0},
-                        bottom:{x:0,y:0,z:0},
-                    },appear:{
-                        top:{x:0,y:0},
-                        middle:{x:0,y:0},
-                        bottom:{x:0,y:0},
-                    },
-                },{
-                    color:colorBase.skin.legs,
-                    display:true,fade:1,
-                    anim:{
-                        top:{rho:limbLength,phi:6,theta:60},
-                        middle:{rho:limbLength,phi:12,theta:150},
-                    },points:{
-                        top:legStartTop[1],
-                        middle:{x:0,y:0,z:0},
-                        bottom:{x:0,y:0,z:0},
-                    },appear:{
-                        top:{x:0,y:0},
-                        middle:{x:0,y:0},
-                        bottom:{x:0,y:0},
-                    },
-                },
-            ],arms:[
-                {
-                    color:colorBase.skin.arms,
-                    display:true,fade:1,
-                    anim:{
-                        top:{rho:limbLength,phi:27,theta:-90},
-                        middle:{rho:limbLength,phi:9,theta:-84},
-                    },points:{
-                        top:armStartTop[0],
-                        middle:{x:0,y:0,z:0},
-                        bottom:{x:0,y:0,z:0},
-                    },appear:{
-                        top:{x:0,y:0},
-                        middle:{x:0,y:0},
-                        bottom:{x:0,y:0},
-                        stack:{
-                            top:{x:0,y:0},
-                            middle:{x:0,y:0},
-                            bottom:{x:0,y:0},
+        let limbLength
+        let legStartTop
+        let armStartTop
+        let levels
+        let dimensions
+        let spins
+        switch(type){
+            case 0:
+                limbLength=args[0]
+                legStartTop=args[1]
+                armStartTop=args[2]
+                levels=args[3]
+                dimensions=args[4]
+                let mouthAnim=args[5]
+                spins=args[6]
+                return {
+                    hair:{
+                        display:{back:true,front:true,glow:true},
+                        fade:{back:1,front:1,glow:1},
+                        color:colorBase.hair,
+                    },legs:[
+                        {
+                            color:colorBase.skin.legs,
+                            display:true,fade:1,
+                            anim:{
+                                top:{rho:limbLength,phi:6,theta:-60},
+                                middle:{rho:limbLength,phi:12,theta:-150},
+                            },points:{
+                                top:legStartTop[0],
+                                middle:{x:0,y:0,z:0},
+                                bottom:{x:0,y:0,z:0},
+                            },appear:{
+                                top:{x:0,y:0},
+                                middle:{x:0,y:0},
+                                bottom:{x:0,y:0},
+                            },
+                        },{
+                            color:colorBase.skin.legs,
+                            display:true,fade:1,
+                            anim:{
+                                top:{rho:limbLength,phi:6,theta:60},
+                                middle:{rho:limbLength,phi:12,theta:150},
+                            },points:{
+                                top:legStartTop[1],
+                                middle:{x:0,y:0,z:0},
+                                bottom:{x:0,y:0,z:0},
+                            },appear:{
+                                top:{x:0,y:0},
+                                middle:{x:0,y:0},
+                                bottom:{x:0,y:0},
+                            },
                         },
-                    },
-                },{
-                    color:colorBase.skin.arms,
-                    display:true,fade:1,
-                    anim:{
-                        top:{rho:limbLength,phi:27,theta:90},
-                        middle:{rho:limbLength,phi:9,theta:84},
-                    },points:{
-                        top:armStartTop[1],
-                        middle:{x:0,y:0,z:0},
-                        bottom:{x:0,y:0,z:0},
-                    },appear:{
-                        top:{x:0,y:0},
-                        middle:{x:0,y:0},
-                        bottom:{x:0,y:0},
-                        stack:{
-                            top:{x:0,y:0},
-                            middle:{x:0,y:0},
-                            bottom:{x:0,y:0},
+                    ],arms:[
+                        {
+                            color:colorBase.skin.arms,
+                            display:true,fade:1,
+                            anim:{
+                                top:{rho:limbLength,phi:27,theta:-90},
+                                middle:{rho:limbLength,phi:9,theta:-84},
+                            },points:{
+                                top:armStartTop[0],
+                                middle:{x:0,y:0,z:0},
+                                bottom:{x:0,y:0,z:0},
+                            },appear:{
+                                top:{x:0,y:0},
+                                middle:{x:0,y:0},
+                                bottom:{x:0,y:0},
+                                stack:{
+                                    top:{x:0,y:0},
+                                    middle:{x:0,y:0},
+                                    bottom:{x:0,y:0},
+                                },
+                            },
+                        },{
+                            color:colorBase.skin.arms,
+                            display:true,fade:1,
+                            anim:{
+                                top:{rho:limbLength,phi:27,theta:90},
+                                middle:{rho:limbLength,phi:9,theta:84},
+                            },points:{
+                                top:armStartTop[1],
+                                middle:{x:0,y:0,z:0},
+                                bottom:{x:0,y:0,z:0},
+                            },appear:{
+                                top:{x:0,y:0},
+                                middle:{x:0,y:0},
+                                bottom:{x:0,y:0},
+                                stack:{
+                                    top:{x:0,y:0},
+                                    middle:{x:0,y:0},
+                                    bottom:{x:0,y:0},
+                                },
+                            },
                         },
-                    },
-                },
-            ],body:{
-                color:colorBase.skin.body,
-                display:true,fade:1,
-                level:levels[0],dimensions:dimensions[0],
-                button:{spin:0},
-            },head:{
-                color:colorBase.skin.head,
-                display:true,fade:1,
-                level:levels[1],dimensions:dimensions[1],
-                mouth:{color:colorBase.mouth,display:true,fade:1,level:levels[2],anim:mouthAnim},
-                eye:[
-                    {
+                    ],body:{
+                        color:colorBase.skin.body,
                         display:true,fade:1,
-                        color:colorBase.eye,
-                        level:levels[3],anim:0,style:0,spin:-spins[0]
-                    },{
+                        level:levels[0],dimensions:dimensions[0],
+                    },head:{
+                        color:colorBase.skin.head,
                         display:true,fade:1,
-                        color:colorBase.eye,
-                        level:levels[4],anim:0,style:0,spin:spins[1]
-                    },
-                ],blush:[
-                    {
+                        level:levels[1],dimensions:dimensions[1],
+                        mouth:{color:colorBase.mouth,display:true,fade:1,level:levels[2],anim:mouthAnim},
+                        eye:[
+                            {
+                                display:true,fade:1,
+                                color:colorBase.eye,
+                                level:levels[3],anim:0,style:0,spin:-spins[0]
+                            },{
+                                display:true,fade:1,
+                                color:colorBase.eye,
+                                level:levels[4],anim:0,style:0,spin:spins[1]
+                            },
+                        ],blush:[
+                            {
+                                display:true,fade:1,
+                                color:colorBase.blush,
+                                level:levels[5],spin:-spins[2]
+                            },{
+                                display:true,fade:1,
+                                color:colorBase.blush,
+                                level:levels[6],spin:spins[3]
+                            },
+                        ],
+                    }
+                }
+            case 1:
+                limbLength=args[0]
+                legStartTop=args[1]
+                armStartTop=args[2]
+                levels=args[3]
+                dimensions=args[4]
+                spins=args[5]
+                return {
+                    legs:[
+                        {
+                            color:colorBase.skin.legs,
+                            display:true,fade:1,
+                            dimensions:dimensions[2],
+                            anim:{rho:limbLength,phi:24,theta:-90},
+                            points:{
+                                top:legStartTop[0],
+                                bottom:{x:0,y:0,z:0},
+                            },appear:{
+                                top:{x:0,y:0},
+                                bottom:{x:0,y:0},
+                            },
+                        },{
+                            color:colorBase.skin.legs,
+                            display:true,fade:1,
+                            dimensions:dimensions[3],
+                            anim:{rho:limbLength,phi:24,theta:90},
+                            points:{
+                                top:legStartTop[1],
+                                bottom:{x:0,y:0,z:0},
+                            },appear:{
+                                top:{x:0,y:0},
+                                bottom:{x:0,y:0},
+                            },
+                        },
+                    ],arms:[
+                        {
+                            color:colorBase.skin.arms,
+                            display:true,fade:1,
+                            dimensions:dimensions[4],
+                            anim:{rho:limbLength,phi:48,theta:-90},
+                            points:{
+                                top:armStartTop[0],
+                                bottom:{x:0,y:0,z:0},
+                            },appear:{
+                                top:{x:0,y:0},
+                                bottom:{x:0,y:0},
+                            },
+                        },{
+                            color:colorBase.skin.arms,
+                            display:true,fade:1,
+                            dimensions:dimensions[5],
+                            anim:{rho:limbLength,phi:48,theta:90},
+                            points:{
+                                top:armStartTop[1],
+                                bottom:{x:0,y:0,z:0},
+                            },appear:{
+                                top:{x:0,y:0},
+                                bottom:{x:0,y:0},
+                            },
+                        },
+                    ],body:{
+                        color:colorBase.skin.body,
                         display:true,fade:1,
-                        color:colorBase.blush,
-                        level:levels[5],spin:-spins[2]
-                    },{
+                        level:levels[0],dimensions:dimensions[0],
+                    },head:{
+                        color:colorBase.skin.head,
                         display:true,fade:1,
-                        color:colorBase.blush,
-                        level:levels[6],spin:spins[3]
-                    },
-                ],
-            }
+                        level:levels[1],dimensions:dimensions[1],
+                        beak:{
+                            spin:0,
+                            main:{color:colorBase.beak.main,display:true,fade:1,level:levels[2]},
+                            mouth:{color:colorBase.beak.mouth,display:true,fade:1,level:levels[3]},
+                            nostril:{color:colorBase.beak.nostril,display:true,fade:1,level:levels[4]}
+                        },
+                        eye:[
+                            {
+                                display:true,fade:1,
+                                color:colorBase.eye,
+                                level:levels[5],anim:0,style:0,spin:-spins[0]
+                            },{
+                                display:true,fade:1,
+                                color:colorBase.eye,
+                                level:levels[6],anim:0,style:0,spin:spins[1]
+                            },
+                        ],
+                    }
+                }
         }
     }
     setupGraphics(direction){
@@ -210,6 +312,40 @@ class character{
                         part.appear.stack.bottom.x=(lcos(this.direction.main)*part.points.bottom.x+deviation)+lsin(this.direction.main)*part.points.bottom.z
                         part.appear.stack.bottom.y=part.appear.bottom.y
                         part.appear.stack.bottom.z=(-lsin(this.direction.main)*part.points.bottom.x+deviation)+lcos(this.direction.main)*part.points.bottom.z
+                    }
+                break
+                case 4:
+                    for(let b=0,lb=this.components.legs.length;b<lb;b++){
+                        let part=this.components.legs[b]
+
+                        part.points.bottom.x=part.points.top.x+part.anim.rho*lsin(part.anim.phi)*lsin(part.anim.theta)
+                        part.points.bottom.y=part.points.top.y+part.anim.rho*lcos(part.anim.phi)
+                        part.points.bottom.z=part.points.top.z+part.anim.rho*lsin(part.anim.phi)*lcos(part.anim.theta)
+
+                        part.appear.top.x=lcos(this.direction.main)*part.points.top.x+lsin(this.direction.main)*part.points.top.z
+                        part.appear.top.y=part.points.top.y
+                        part.appear.top.z=-lsin(this.direction.main)*part.points.top.x+lcos(this.direction.main)*part.points.top.z
+
+                        part.appear.bottom.x=lcos(this.direction.main)*part.points.bottom.x+lsin(this.direction.main)*part.points.bottom.z
+                        part.appear.bottom.y=part.points.bottom.y
+                        part.appear.bottom.z=-lsin(this.direction.main)*part.points.bottom.x+lcos(this.direction.main)*part.points.bottom.z
+                    }
+                break
+                case 5:
+                    for(let b=0,lb=this.components.arms.length;b<lb;b++){
+                        let part=this.components.arms[b]
+
+                        part.points.bottom.x=part.points.top.x+part.anim.rho*lsin(part.anim.phi)*lsin(part.anim.theta)
+                        part.points.bottom.y=part.points.top.y+part.anim.rho*lcos(part.anim.phi)
+                        part.points.bottom.z=part.points.top.z+part.anim.rho*lsin(part.anim.phi)*lcos(part.anim.theta)
+
+                        part.appear.top.x=lcos(this.direction.main)*part.points.top.x+lsin(this.direction.main)*part.points.top.z
+                        part.appear.top.y=part.points.top.y
+                        part.appear.top.z=-lsin(this.direction.main)*part.points.top.x+lcos(this.direction.main)*part.points.top.z
+
+                        part.appear.bottom.x=lcos(this.direction.main)*part.points.bottom.x+lsin(this.direction.main)*part.points.bottom.z
+                        part.appear.bottom.y=part.points.bottom.y
+                        part.appear.bottom.z=-lsin(this.direction.main)*part.points.bottom.x+lcos(this.direction.main)*part.points.bottom.z
                     }
                 break
             }

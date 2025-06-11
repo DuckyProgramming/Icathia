@@ -26,5 +26,12 @@ function displayScene(type){
             char[0].size=5
             char[0].display()
             return layer
+        case 2:
+            layer=formImage(600,600)
+            manager.generateGraphics(`Duck`)
+            char.push(new character(layer,manager,0,125,`Duck`,30))
+            char[0].size=5
+            char[0].display()
+            return layer
     }
 }
