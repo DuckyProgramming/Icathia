@@ -612,7 +612,7 @@ class graphicsManager{
                         if(lcos(dir)<=0){
                             this.layer.translate(lsin(dir)*16,-80)
                             this.layer.scale(lcos(dir)*0.6+0.4,1)
-                            this.layer.fill(...this.flashColor(this.components.hair.color.bow),this.fade*this.components.hair.bow[a].fade)
+                            this.layer.fill(...this.flashColor(this.components.hair.color.bow),this.fade.main*this.components.hair.bow[a].fade)
                             this.layer.noStroke()
                             this.layer.ellipse(0,0,2)
                             this.layer.quad(0.5,-0.5,-5,2.75,-3.75,3.75,-2.75,5)
@@ -623,7 +623,7 @@ class graphicsManager{
                     }
                 }
                 if(this.components.hair.display.back){
-                    let size=this.fade*this.components.hair.fade.back
+                    let size=this.fade.main*this.components.hair.fade.back
                     this.layer.image(this.graphicManager.getData(this.name).sprites.hair.back[this.sprites.spinDetail],0,this.components.head.level+10*size,40*size,60*size)
                 }
                 for(let a=0,la=2;a<la;a++){
@@ -631,7 +631,7 @@ class graphicsManager{
                     if(this.components.hair.tail[a]&&lcos(dir)<=0){
                         this.layer.translate(lsin(dir)*16,-50)
                         this.layer.rotate(lsin(dir)*-12)
-                        this.layer.image(this.graphicManager.getData(this.name).sprites.hair.tail[a][this.sprites.spinDetail],0,5*this.fade*this.components.hair.tail[a].fade,20*this.fade*this.components.hair.tail[a].fade,60*this.fade*this.components.hair.tail[a].fade)
+                        this.layer.image(this.graphicManager.getData(this.name).sprites.hair.tail[a][this.sprites.spinDetail],0,5*this.fade.main*this.components.hair.tail[a].fade,20*this.fade.main*this.components.hair.tail[a].fade,60*this.fade.main*this.components.hair.tail[a].fade)
                         this.layer.rotate(lsin(dir)*12)
                         this.layer.translate(lsin(dir)*-16,50)
                     }
@@ -639,7 +639,7 @@ class graphicsManager{
                 for(let a=0,la=this.components.arms.length;a<la;a++){
                     let part=this.components.arms[a]
                     if(part.display&&lcos(part.anim.top.theta+this.direction.main)<=-0.6){
-                        this.layer.stroke(...this.flashColor(part.color),this.fade*part.fade)
+                        this.layer.stroke(...this.flashColor(part.color),this.fade.main*part.fade)
                         this.layer.strokeWeight(4)
                         this.layer.line(part.appear.top.x,part.appear.top.y,part.appear.middle.x,part.appear.middle.y)
                         this.layer.line(part.appear.middle.x,part.appear.middle.y,part.appear.bottom.x,part.appear.bottom.y)
@@ -650,13 +650,13 @@ class graphicsManager{
                 }
                 if(this.components.body.display){
                     this.layer.noStroke()
-                    this.layer.fill(...this.flashColor(this.components.body.color),this.fade*this.components.body.fade)
+                    this.layer.fill(...this.flashColor(this.components.body.color),this.fade.main*this.components.body.fade)
                     this.layer.ellipse(0,this.components.body.level,this.components.body.dimensions[0],this.components.body.dimensions[1])
                 }
                 for(let a=0,la=this.components.arms.length;a<la;a++){
                     let part=this.components.arms[a]
                     if(part.display&&lcos(part.anim.top.theta+this.direction.main)<0.4&&lcos(part.anim.top.theta+this.direction.main)>-0.6){
-                        this.layer.stroke(...this.flashColor(part.color),this.fade*part.fade)
+                        this.layer.stroke(...this.flashColor(part.color),this.fade.main*part.fade)
                         this.layer.strokeWeight(4)
                         this.layer.line(part.appear.top.x,part.appear.top.y,part.appear.middle.x,part.appear.middle.y)
                         this.layer.line(part.appear.middle.x,part.appear.middle.y,part.appear.bottom.x,part.appear.bottom.y)
@@ -668,7 +668,7 @@ class graphicsManager{
                 for(let a=0,la=2;a<la;a++){
                     let part=this.components.legs[this.components.legs[0].appear.bottom.z<=this.components.legs[1].appear.bottom.z?a:1-a]
                     if(part.display){
-                        this.layer.stroke(...this.flashColor(part.color),this.fade*part.fade)
+                        this.layer.stroke(...this.flashColor(part.color),this.fade.main*part.fade)
                         this.layer.strokeWeight(4)
                         this.layer.line(part.appear.top.x,part.appear.top.y,part.appear.middle.x,part.appear.middle.y)
                         this.layer.line(part.appear.middle.x,part.appear.middle.y,part.appear.bottom.x,part.appear.bottom.y)
@@ -677,7 +677,7 @@ class graphicsManager{
                 for(let a=0,la=this.components.arms.length;a<la;a++){
                     let part=this.components.arms[a]
                     if(part.display&&lcos(part.anim.top.theta+this.direction.main)>-0.4&&lcos(part.anim.top.theta+this.direction.main)<0.4){
-                        this.layer.stroke(...this.flashColor(part.color),this.fade*part.fade)
+                        this.layer.stroke(...this.flashColor(part.color),this.fade.main*part.fade)
                         this.layer.strokeWeight(min(4,lcos(part.anim.top.theta+this.direction.main)*5+2))
                         this.layer.line(part.appear.stack.top.x,part.appear.stack.top.y,part.appear.stack.middle.x,part.appear.stack.middle.y)
                         this.layer.line(part.appear.stack.middle.x,part.appear.stack.middle.y,part.appear.stack.bottom.x,part.appear.stack.bottom.y)
@@ -697,46 +697,46 @@ class graphicsManager{
 
                     let flashes=[this.flashColor(part.color[0]),this.flashColor(part.color[1])]
                     
-                    this.layer.fill(flashes[0][0]-30,flashes[0][1]-30,flashes[0][2]-30,this.fade*part.fade)
+                    this.layer.fill(flashes[0][0]-30,flashes[0][1]-30,flashes[0][2]-30,this.fade.main*part.fade)
                     this.layer.rotate(-24)
                     this.layer.quad(0,0,-1,6,0,5,1,6)
                     this.layer.rotate(48)
                     this.layer.quad(0,0,-1,6,0,5,1,6)
                     this.layer.rotate(-24)
-                    this.layer.fill(...this.flashColor(part.color[0]),this.fade*part.fade)
+                    this.layer.fill(...this.flashColor(part.color[0]),this.fade.main*part.fade)
                     this.layer.rotate(-81)
                     pentagon(this.layer,0.8,0,-0.8,0,-2.4,6,0,5.25,2.4,6)
                     this.layer.rotate(162)
                     pentagon(this.layer,0.8,0,-0.8,0,-2.4,6,0,5.25,2.4,6)
                     this.layer.rotate(-81)
 
-                    this.layer.fill(flashes[1][0]-30,flashes[1][1]-30,flashes[1][2]-30,this.fade*part.fade)
+                    this.layer.fill(flashes[1][0]-30,flashes[1][1]-30,flashes[1][2]-30,this.fade.main*part.fade)
                     this.layer.rotate(-24)
                     this.layer.quad(0,-0.1,-0.8,4.8,0,4,0.8,4.8)
                     this.layer.rotate(48)
                     this.layer.quad(0,-0.1,-0.8,4.8,0,4,0.8,4.8)
                     this.layer.rotate(-24)
-                    this.layer.fill(...this.flashColor(part.color[1]),this.fade*part.fade)
+                    this.layer.fill(...this.flashColor(part.color[1]),this.fade.main*part.fade)
                     this.layer.rotate(-81)
                     pentagon(this.layer,0.85,0,-0.85,0,-2.08,4.8,0,4.2,2.08,4.8)
                     this.layer.rotate(162)
                     pentagon(this.layer,0.85,0,-0.85,0,-2.08,4.8,0,4.2,2.08,4.8)
                     this.layer.rotate(-81)
 
-                    this.layer.fill(flashes[0][0]-30,flashes[0][1]-30,flashes[0][2]-30,this.fade*part.fade)
+                    this.layer.fill(flashes[0][0]-30,flashes[0][1]-30,flashes[0][2]-30,this.fade.main*part.fade)
                     this.layer.rotate(-24)
                     this.layer.quad(0,-0.2,-0.7,4.2,0,3.5,0.7,4.2)
                     this.layer.rotate(48)
                     this.layer.quad(0,-0.2,-0.7,4.2,0,3.5,0.7,4.2)
                     this.layer.rotate(-24)
-                    this.layer.fill(...this.flashColor(part.color[0]),this.fade*part.fade)
+                    this.layer.fill(...this.flashColor(part.color[0]),this.fade.main*part.fade)
                     this.layer.rotate(-81)
                     pentagon(this.layer,0.9,0,-0.9,0,-1.92,4.2,0,3.675,1.92,4.2)
                     this.layer.rotate(162)
                     pentagon(this.layer,0.9,0,-0.9,0,-1.92,4.2,0,3.675,1.92,4.2)
                     this.layer.rotate(-81)
 
-                    this.layer.fill(...this.flashColor(part.color[1]),this.fade*part.fade)
+                    this.layer.fill(...this.flashColor(part.color[1]),this.fade.main*part.fade)
                     this.layer.rotate(-81)
                     this.layer.quad(0.2,0,-0.2,0,-1.6,5.75,-1.1,5.5)
                     this.layer.quad(-0.2,0,0.2,0,1.6,5.75,1.1,5.5)
@@ -744,9 +744,9 @@ class graphicsManager{
                     this.layer.quad(0.2,0,-0.2,0,-1.6,5.75,-1.1,5.5)
                     this.layer.quad(-0.2,0,0.2,0,1.6,5.75,1.1,5.5)
                     this.layer.rotate(-81)
-                    this.layer.fill(flashes[0][0]-15,flashes[0][1]-15,flashes[0][2]-15,this.fade*part.fade)
+                    this.layer.fill(flashes[0][0]-15,flashes[0][1]-15,flashes[0][2]-15,this.fade.main*part.fade)
                     this.layer.rect(0,0,2.5,2.5,0.5)
-                    this.layer.fill(flashes[1][0]-15,flashes[1][1]-15,flashes[1][2]-15,this.fade*part.fade)
+                    this.layer.fill(flashes[1][0]-15,flashes[1][1]-15,flashes[1][2]-15,this.fade.main*part.fade)
                     this.layer.rect(0,0,2.5,0.5)
                     this.layer.rect(0,0,0.5,2.5)
 
@@ -754,13 +754,13 @@ class graphicsManager{
                 }
                 if(this.components.dress.display.main){
                     this.layer.noStroke()
-                    this.layer.fill(...this.flashColor(this.components.dress.color.inside),this.fade*this.components.dress.fade.main)
+                    this.layer.fill(...this.flashColor(this.components.dress.color.inside),this.fade.main*this.components.dress.fade.main)
                     for(let a=0,la=16;a<la;a++){
                         if(lcos((a+0.5)/la*360+this.direction.main)>0){
                             this.layer.arc(11.7*lsin((a+0.5)/la*360+this.direction.main),-27.25,4*lcos((a+0.5)/la*360+this.direction.main),3.5,0,180)
                         }
                     }
-                    this.layer.fill(...this.flashColor(this.components.dress.color.main),this.fade*this.components.dress.fade.main)
+                    this.layer.fill(...this.flashColor(this.components.dress.color.main),this.fade.main*this.components.dress.fade.main)
                     this.layer.arc(0,-35,11,42,-180,0)
                     this.layer.quad(-5.5,-36,5.5,-36,12,-27,-12,-27)
                     for(let a=0,la=16;a<la;a++){
@@ -768,14 +768,14 @@ class graphicsManager{
                             this.layer.arc(11.7*lsin(a/la*360+this.direction.main),-27.25,5*lcos(a/la*360+this.direction.main),4,0,180)
                         }
                     }
-                    this.layer.stroke(...this.flashColor(this.components.dress.color.highlight),this.fade*this.components.dress.fade.main)
+                    this.layer.stroke(...this.flashColor(this.components.dress.color.highlight),this.fade.main*this.components.dress.fade.main)
                     this.layer.strokeWeight(0.25)
                     for(let a=0,la=16;a<la;a++){
                         if(lcos(a/la*360+this.direction.main)>0){
                             this.layer.arc(10.8*lsin(a/la*360+this.direction.main),-28.5,4.5*lcos(a/la*360+this.direction.main),2,10,170)
                         }
                     }
-                    this.layer.stroke(...this.flashColor(this.components.dress.color.border),this.fade*this.components.dress.fade.main)
+                    this.layer.stroke(...this.flashColor(this.components.dress.color.border),this.fade.main*this.components.dress.fade.main)
                     this.layer.strokeWeight(0.5)
                     for(let a=0,la=2;a<la;a++){
                         if(lcos(this.direction.main-22.5+a*45)>0){
@@ -811,7 +811,7 @@ class graphicsManager{
                 for(let a=0,la=this.components.arms.length;a<la;a++){
                     let part=this.components.arms[a]
                     if(part.display&&lcos(part.anim.top.theta+this.direction.main)>=0.4){
-                        this.layer.stroke(...this.flashColor(part.color),this.fade*part.fade)
+                        this.layer.stroke(...this.flashColor(part.color),this.fade.main*part.fade)
                         this.layer.strokeWeight(min(4,lcos(part.anim.top.theta+this.direction.main)*5+2))
                         this.layer.line(part.appear.stack.top.x,part.appear.stack.top.y,part.appear.stack.middle.x,part.appear.stack.middle.y)
                         this.layer.line(part.appear.stack.middle.x,part.appear.stack.middle.y,part.appear.stack.bottom.x,part.appear.stack.bottom.y)
@@ -822,14 +822,14 @@ class graphicsManager{
                 }
                 if(this.components.dress.display.main){
                     this.layer.noStroke()
-                    this.layer.fill(...this.flashColor(this.components.dress.color.shawl),this.fade*this.components.dress.fade.main)
+                    this.layer.fill(...this.flashColor(this.components.dress.color.shawl),this.fade.main*this.components.dress.fade.main)
                     this.layer.arc(0,-46,18,21,-180,0)
                     for(let a=0,la=20;a<la;a++){
                         if(lcos(a/la*360+this.direction.main)>0){
                             this.layer.arc(8.9*lsin(a/la*360+this.direction.main),-46.25,3*lcos(a/la*360+this.direction.main),2,0,180)
                         }
                     }
-                    this.layer.stroke(...this.flashColor(this.components.dress.color.highlight),this.fade*this.components.dress.fade.main)
+                    this.layer.stroke(...this.flashColor(this.components.dress.color.highlight),this.fade.main*this.components.dress.fade.main)
                     this.layer.strokeWeight(0.25)
                     for(let a=0,la=20;a<la;a++){
                         if(lcos(a/la*360+this.direction.main)>0){
@@ -838,7 +838,7 @@ class graphicsManager{
                     }
                     this.layer.arc(0,-56,8,4,10,170)
                     this.layer.noStroke()
-                    this.layer.fill(...this.flashColor(this.components.body.color),this.fade*this.components.dress.fade.main)
+                    this.layer.fill(...this.flashColor(this.components.body.color),this.fade.main*this.components.dress.fade.main)
                     this.layer.ellipse(0,-56,5,2)
                 }
                 if(this.components.dress.bow.display&&lcos(this.direction.main+this.components.dress.bow.spin)>0){
@@ -852,46 +852,46 @@ class graphicsManager{
 
                     let flashes=[this.flashColor(part.color[0]),this.flashColor(part.color[1])]
                     
-                    this.layer.fill(flashes[0][0]-30,flashes[0][1]-30,flashes[0][2]-30,this.fade*part.fade)
+                    this.layer.fill(flashes[0][0]-30,flashes[0][1]-30,flashes[0][2]-30,this.fade.main*part.fade)
                     this.layer.rotate(-24)
                     this.layer.quad(0,0,-1,6,0,5,1,6)
                     this.layer.rotate(48)
                     this.layer.quad(0,0,-1,6,0,5,1,6)
                     this.layer.rotate(-24)
-                    this.layer.fill(...this.flashColor(part.color[0]),this.fade*part.fade)
+                    this.layer.fill(...this.flashColor(part.color[0]),this.fade.main*part.fade)
                     this.layer.rotate(-81)
                     pentagon(this.layer,0.8,0,-0.8,0,-2.4,6,0,5.25,2.4,6)
                     this.layer.rotate(162)
                     pentagon(this.layer,0.8,0,-0.8,0,-2.4,6,0,5.25,2.4,6)
                     this.layer.rotate(-81)
 
-                    this.layer.fill(flashes[1][0]-30,flashes[1][1]-30,flashes[1][2]-30,this.fade*part.fade)
+                    this.layer.fill(flashes[1][0]-30,flashes[1][1]-30,flashes[1][2]-30,this.fade.main*part.fade)
                     this.layer.rotate(-24)
                     this.layer.quad(0,-0.1,-0.8,4.8,0,4,0.8,4.8)
                     this.layer.rotate(48)
                     this.layer.quad(0,-0.1,-0.8,4.8,0,4,0.8,4.8)
                     this.layer.rotate(-24)
-                    this.layer.fill(...this.flashColor(part.color[1]),this.fade*part.fade)
+                    this.layer.fill(...this.flashColor(part.color[1]),this.fade.main*part.fade)
                     this.layer.rotate(-81)
                     pentagon(this.layer,0.85,0,-0.85,0,-2.08,4.8,0,4.2,2.08,4.8)
                     this.layer.rotate(162)
                     pentagon(this.layer,0.85,0,-0.85,0,-2.08,4.8,0,4.2,2.08,4.8)
                     this.layer.rotate(-81)
 
-                    this.layer.fill(flashes[0][0]-30,flashes[0][1]-30,flashes[0][2]-30,this.fade*part.fade)
+                    this.layer.fill(flashes[0][0]-30,flashes[0][1]-30,flashes[0][2]-30,this.fade.main*part.fade)
                     this.layer.rotate(-24)
                     this.layer.quad(0,-0.2,-0.7,4.2,0,3.5,0.7,4.2)
                     this.layer.rotate(48)
                     this.layer.quad(0,-0.2,-0.7,4.2,0,3.5,0.7,4.2)
                     this.layer.rotate(-24)
-                    this.layer.fill(...this.flashColor(part.color[0]),this.fade*part.fade)
+                    this.layer.fill(...this.flashColor(part.color[0]),this.fade.main*part.fade)
                     this.layer.rotate(-81)
                     pentagon(this.layer,0.9,0,-0.9,0,-1.92,4.2,0,3.675,1.92,4.2)
                     this.layer.rotate(162)
                     pentagon(this.layer,0.9,0,-0.9,0,-1.92,4.2,0,3.675,1.92,4.2)
                     this.layer.rotate(-81)
 
-                    this.layer.fill(...this.flashColor(part.color[1]),this.fade*part.fade)
+                    this.layer.fill(...this.flashColor(part.color[1]),this.fade.main*part.fade)
                     this.layer.rotate(-81)
                     this.layer.quad(0.2,0,-0.2,0,-1.6,5.75,-1.1,5.5)
                     this.layer.quad(-0.2,0,0.2,0,1.6,5.75,1.1,5.5)
@@ -899,9 +899,9 @@ class graphicsManager{
                     this.layer.quad(0.2,0,-0.2,0,-1.6,5.75,-1.1,5.5)
                     this.layer.quad(-0.2,0,0.2,0,1.6,5.75,1.1,5.5)
                     this.layer.rotate(-81)
-                    this.layer.fill(flashes[0][0]-15,flashes[0][1]-15,flashes[0][2]-15,this.fade*part.fade)
+                    this.layer.fill(flashes[0][0]-15,flashes[0][1]-15,flashes[0][2]-15,this.fade.main*part.fade)
                     this.layer.rect(0,0,2.5,2.5,0.5)
-                    this.layer.fill(flashes[1][0]-15,flashes[1][1]-15,flashes[1][2]-15,this.fade*part.fade)
+                    this.layer.fill(flashes[1][0]-15,flashes[1][1]-15,flashes[1][2]-15,this.fade.main*part.fade)
                     this.layer.rect(0,0,2.5,0.5)
                     this.layer.rect(0,0,0.5,2.5)
 
@@ -909,13 +909,13 @@ class graphicsManager{
                 }
                 if(this.components.head.display){
                     this.layer.noStroke()
-                    this.layer.fill(...this.flashColor(this.components.head.color),this.fade*this.components.head.fade)
+                    this.layer.fill(...this.flashColor(this.components.head.color),this.fade.main*this.components.head.fade)
                     this.layer.ellipse(0,this.components.head.level,this.components.head.dimensions[0],this.components.head.dimensions[1])
                 }
                 for(let a=0,la=2;a<la;a++){
                     let part=this.components.head.blush[a]
                     if(part.display){
-                        this.layer.fill(...this.flashColor(part.color),this.fade*part.fade*0.2)
+                        this.layer.fill(...this.flashColor(part.color),this.fade.main*part.fade*0.2)
                         if(lcos(part.spin+this.direction.main)>0){
                             this.layer.push()
                             this.layer.translate(12.5*lsin(part.spin+this.direction.main),part.level)
@@ -941,18 +941,18 @@ class graphicsManager{
                     if(this.components.hair.tail[a]&&lcos(dir)>0){
                         this.layer.translate(lsin(dir)*16,-50)
                         this.layer.rotate(lsin(dir)*-12)
-                        this.layer.image(this.graphicManager.getData(this.name).sprites.hair.tail[a][this.sprites.spinDetail],0,5*this.fade*this.components.hair.tail[a].fade,20*this.fade*this.components.hair.tail[a].fade,60*this.fade*this.components.hair.tail[a].fade)
+                        this.layer.image(this.graphicManager.getData(this.name).sprites.hair.tail[a][this.sprites.spinDetail],0,5*this.fade.main*this.components.hair.tail[a].fade,20*this.fade.main*this.components.hair.tail[a].fade,60*this.fade.main*this.components.hair.tail[a].fade)
                         this.layer.rotate(lsin(dir)*12)
                         this.layer.translate(lsin(dir)*-16,50)
                     }
                 }
                 if(this.components.hair.display.front){
-                    let size=this.fade*this.components.hair.fade.front
+                    let size=this.fade.main*this.components.hair.fade.front
                     this.layer.image(this.graphicManager.getData(this.name).sprites.hair.front[this.sprites.spinDetail],0,this.components.head.level+10*size,40*size,60*size)
                 }
                 if(this.components.hair.display.glow){
                     this.layer.noFill()
-                    this.layer.stroke(...this.components.hair.color.glow,this.fade/4*this.components.hair.fade.glow)
+                    this.layer.stroke(...this.components.hair.color.glow,this.fade.main/4*this.components.hair.fade.glow)
                     for(let a=0,la=6;a<la;a++){
                         this.layer.strokeWeight((3-a/2))
                         this.layer.arc(0,this.components.head.level,this.components.head.dimensions[0]+a,this.components.head.dimensions[1]+a,-72+a*6,-12-a*6)
@@ -964,7 +964,7 @@ class graphicsManager{
                         if(lcos(dir)>0){
                             this.layer.translate(lsin(dir)*16,-80)
                             this.layer.scale(lcos(dir)*0.6+0.4,1)
-                            this.layer.fill(...this.flashColor(this.components.hair.color.bow),this.fade*this.components.hair.bow[a].fade)
+                            this.layer.fill(...this.flashColor(this.components.hair.color.bow),this.fade.main*this.components.hair.bow[a].fade)
                             this.layer.noStroke()
                             this.layer.ellipse(0,0,2)
                             this.layer.quad(0.5,-0.5,-5,2.75,-3.75,3.75,-2.75,5)
@@ -987,7 +987,7 @@ class graphicsManager{
                         dir=atan2(loc[1].x-loc[2].x,loc[1].y-loc[2].y)
                         sc=[lsin(dir+90),lcos(dir+90)]
                         this.layer.noStroke()
-                        this.layer.fill(...this.flashColor(this.components.dress.color.sleeve),this.fade*this.components.dress.fade.sleeve[args[0]])
+                        this.layer.fill(...this.flashColor(this.components.dress.color.sleeve),this.fade.main*this.components.dress.fade.sleeve[args[0]])
                         this.layer.beginShape()
                         this.layer.vertex(
                             loc[1].x+2.1*sc[0],
@@ -1038,7 +1038,7 @@ class graphicsManager{
                         )
                         dir=atan2(loc[1].x-loc[2].x,loc[1].y-loc[2].y)
                         sc=[lsin(dir+90),lcos(dir+90)]
-                        this.layer.stroke(...this.flashColor(this.components.dress.color.tie),this.fade*this.components.dress.fade.sleeve[[args[0]]])
+                        this.layer.stroke(...this.flashColor(this.components.dress.color.tie),this.fade.main*this.components.dress.fade.sleeve[[args[0]]])
                         this.layer.strokeWeight(0.5)
                         this.layer.line(
                             loc[1].x*0.3+loc[2].x*0.7+2.4*sc[0],
@@ -1163,13 +1163,13 @@ class graphicsManager{
                 this.routines.calculatepart=[0,1,2,3]
             },function(){
                 if(this.components.hair.display.back){
-                    let size=this.fade*this.components.hair.fade.back
+                    let size=this.fade.main*this.components.hair.fade.back
                     this.layer.image(this.graphicManager.getData(this.name).sprites.hair.back[this.sprites.spinDetail],0,this.components.head.level+10*size,40*size,60*size)
                 }
                 for(let a=0,la=this.components.arms.length;a<la;a++){
                     let part=this.components.arms[a]
                     if(part.display&&lcos(part.anim.top.theta+this.direction.main)<=-0.6){
-                        this.layer.stroke(...this.flashColor(part.color),this.fade*part.fade)
+                        this.layer.stroke(...this.flashColor(part.color),this.fade.main*part.fade)
                         this.layer.strokeWeight(4)
                         this.layer.line(part.appear.top.x,part.appear.top.y,part.appear.middle.x,part.appear.middle.y)
                         this.layer.line(part.appear.middle.x,part.appear.middle.y,part.appear.bottom.x,part.appear.bottom.y)
@@ -1186,8 +1186,8 @@ class graphicsManager{
                 if(this.components.dress.tie.display&&lcos(this.components.dress.tie.spin+this.direction.main)<=0){
                     let part=this.components.dress.tie
                     this.layer.noStroke()
-                    this.layer.fill(...this.flashColor(part.color),this.fade*part.fade)
-                    this.layer.stroke(...this.flashColor(part.color),this.fade*part.fade)
+                    this.layer.fill(...this.flashColor(part.color),this.fade.main*part.fade)
+                    this.layer.stroke(...this.flashColor(part.color),this.fade.main*part.fade)
                     this.layer.strokeWeight(0.5)
                     this.layer.strokeJoin(ROUND)
                     this.layer.quad(
@@ -1207,8 +1207,8 @@ class graphicsManager{
                 if(this.components.dress.bow.display&&lcos(this.components.dress.bow.spin+this.direction.main)<=0){
                     let part=this.components.dress.bow
                     this.layer.noStroke()
-                    this.layer.fill(...this.flashColor(part.color),this.fade*part.fade)
-                    this.layer.stroke(...this.flashColor(part.color),this.fade*part.fade)
+                    this.layer.fill(...this.flashColor(part.color),this.fade.main*part.fade)
+                    this.layer.stroke(...this.flashColor(part.color),this.fade.main*part.fade)
                     this.layer.strokeWeight(1)
                     this.layer.strokeJoin(ROUND)
                     this.layer.triangle(
@@ -1243,13 +1243,13 @@ class graphicsManager{
                 }
                 if(this.components.body.display){
                     this.layer.noStroke()
-                    this.layer.fill(...this.flashColor(this.components.body.color),this.fade*this.components.body.fade)
+                    this.layer.fill(...this.flashColor(this.components.body.color),this.fade.main*this.components.body.fade)
                     this.layer.ellipse(0,this.components.body.level,this.components.body.dimensions[0],this.components.body.dimensions[1])
                 }
                 for(let a=0,la=this.components.arms.length;a<la;a++){
                     let part=this.components.arms[a]
                     if(part.display&&lcos(part.anim.top.theta+this.direction.main)<0.4&&lcos(part.anim.top.theta+this.direction.main)>-0.6){
-                        this.layer.stroke(...this.flashColor(part.color),this.fade*part.fade)
+                        this.layer.stroke(...this.flashColor(part.color),this.fade.main*part.fade)
                         this.layer.strokeWeight(4)
                         this.layer.line(part.appear.top.x,part.appear.top.y,part.appear.middle.x,part.appear.middle.y)
                         this.layer.line(part.appear.middle.x,part.appear.middle.y,part.appear.bottom.x,part.appear.bottom.y)
@@ -1263,19 +1263,19 @@ class graphicsManager{
                     let part=this.components.legs[key]
                     if(this.components.shoe[key].display){
                         let color=this.flashColor(upColor(this.components.shoe[key].color,lcos(this.direction.main+part.appear.middle.z)*10,[1,1,1]))
-                        this.layer.fill(...color,this.fade*this.components.shoe[key].fade)
+                        this.layer.fill(...color,this.fade.main*this.components.shoe[key].fade)
                         this.layer.noStroke()
                         this.layer.ellipse(part.appear.bottom.x,part.appear.bottom.y+1.25,5.5,3)
                     }
                     if(this.components.legs[key].display){
-                        this.layer.stroke(...this.flashColor(part.color),this.fade*part.fade)
+                        this.layer.stroke(...this.flashColor(part.color),this.fade.main*part.fade)
                         this.layer.strokeWeight(4)
                         this.layer.line(part.appear.top.x,part.appear.top.y,part.appear.middle.x,part.appear.middle.y)
                         this.layer.line(part.appear.middle.x,part.appear.middle.y,part.appear.bottom.x,part.appear.bottom.y)
                     }
                     if(this.components.shoe[key].display){
                         let color=this.flashColor(upColor(this.components.shoe[key].color,lcos(this.direction.main+part.appear.middle.z)*10,[1,1,1]))
-                        this.layer.stroke(...color,this.fade*this.components.shoe[key].fade)
+                        this.layer.stroke(...color,this.fade.main*this.components.shoe[key].fade)
                         this.layer.strokeWeight(1)
                         this.layer.noFill()
                         this.layer.arc(part.appear.bottom.x,part.appear.bottom.y+1.25,4.5,2,0,180)
@@ -1286,7 +1286,7 @@ class graphicsManager{
                 for(let a=0,la=this.components.arms.length;a<la;a++){
                     let part=this.components.arms[a]
                     if(part.display&&lcos(part.anim.top.theta+this.direction.main)>-0.4&&lcos(part.anim.top.theta+this.direction.main)<0.4){
-                        this.layer.stroke(...this.flashColor(part.color),this.fade*part.fade)
+                        this.layer.stroke(...this.flashColor(part.color),this.fade.main*part.fade)
                         this.layer.strokeWeight(min(4,lcos(part.anim.top.theta+this.direction.main)*5+2))
                         this.layer.line(part.appear.stack.top.x,part.appear.stack.top.y,part.appear.stack.middle.x,part.appear.stack.middle.y)
                         this.layer.line(part.appear.stack.middle.x,part.appear.stack.middle.y,part.appear.stack.bottom.x,part.appear.stack.bottom.y)
@@ -1298,7 +1298,7 @@ class graphicsManager{
                 if(this.components.dress.display.main){
                     let part=this.components.dress
                     this.layer.noStroke()
-                    this.layer.fill(...this.flashColor(part.color.highlight),this.fade*part.fade.main)
+                    this.layer.fill(...this.flashColor(part.color.highlight),this.fade.main*part.fade.main)
                     for(let a=0,la=18;a<la;a++){
                         if(lcos(a/la*360)>0){
                             this.layer.push()
@@ -1313,12 +1313,12 @@ class graphicsManager{
                             this.layer.pop()
                         }
                     }
-                    this.layer.fill(...this.flashColor(part.color.main),this.fade*part.fade.main)
+                    this.layer.fill(...this.flashColor(part.color.main),this.fade.main*part.fade.main)
                     this.layer.quad(-6,-44,6,-44,14,-24,-14,-24)
                     this.layer.ellipse(0,-24,28,8)
                     this.layer.arc(0,-44,12,40,-180,0)
                     this.layer.ellipse(0,-44,12,2)
-                    this.layer.fill(...this.flashColor(part.color.over),this.fade*part.fade.main)
+                    this.layer.fill(...this.flashColor(part.color.over),this.fade.main*part.fade.main)
                     for(let a=0,la=15;a<la;a++){
                         if(lcos((a-0.16)/la*360)>0){
                             this.layer.triangle(
@@ -1335,9 +1335,9 @@ class graphicsManager{
                             )
                         }
                     }
-                    this.layer.fill(...this.flashColor(this.components.body.color),this.fade*part.fade.main)
+                    this.layer.fill(...this.flashColor(this.components.body.color),this.fade.main*part.fade.main)
                     this.layer.ellipse(0,-62.75,4,2.5)
-                    this.layer.fill(...this.flashColor(part.color.stripe),this.fade*part.fade.main)
+                    this.layer.fill(...this.flashColor(part.color.stripe),this.fade.main*part.fade.main)
                     this.layer.beginShape()
                     this.layer.vertex(-13.5,-25.25)
                     this.layer.bezierVertex(-9.4,-21.25,9.4,-21.25,13.5,-25.25)
@@ -1348,8 +1348,8 @@ class graphicsManager{
                 if(this.components.dress.bow.display&&lcos(this.components.dress.bow.spin+this.direction.main)>0){
                     let part=this.components.dress.bow
                     this.layer.noStroke()
-                    this.layer.fill(...this.flashColor(part.color),this.fade*part.fade)
-                    this.layer.stroke(...this.flashColor(part.color),this.fade*part.fade)
+                    this.layer.fill(...this.flashColor(part.color),this.fade.main*part.fade)
+                    this.layer.stroke(...this.flashColor(part.color),this.fade.main*part.fade)
                     this.layer.strokeWeight(1)
                     this.layer.strokeJoin(ROUND)
                     this.layer.triangle(
@@ -1385,8 +1385,8 @@ class graphicsManager{
                 if(this.components.dress.tie.display&&lcos(this.components.dress.tie.spin+this.direction.main)>0){
                     let part=this.components.dress.tie
                     this.layer.noStroke()
-                    this.layer.fill(...this.flashColor(part.color),this.fade*part.fade)
-                    this.layer.stroke(...this.flashColor(part.color),this.fade*part.fade)
+                    this.layer.fill(...this.flashColor(part.color),this.fade.main*part.fade)
+                    this.layer.stroke(...this.flashColor(part.color),this.fade.main*part.fade)
                     this.layer.strokeWeight(0.5)
                     this.layer.strokeJoin(ROUND)
                     this.layer.quad(
@@ -1414,7 +1414,7 @@ class graphicsManager{
                 for(let a=0,la=this.components.arms.length;a<la;a++){
                     let part=this.components.arms[a]
                     if(part.display&&lcos(part.anim.top.theta+this.direction.main)>=0.4){
-                        this.layer.stroke(...this.flashColor(part.color),this.fade*part.fade)
+                        this.layer.stroke(...this.flashColor(part.color),this.fade.main*part.fade)
                         this.layer.strokeWeight(min(4,lcos(part.anim.top.theta+this.direction.main)*5+2))
                         this.layer.line(part.appear.stack.top.x,part.appear.stack.top.y,part.appear.stack.middle.x,part.appear.stack.middle.y)
                         this.layer.line(part.appear.stack.middle.x,part.appear.stack.middle.y,part.appear.stack.bottom.x,part.appear.stack.bottom.y)
@@ -1425,13 +1425,13 @@ class graphicsManager{
                 }
                 if(this.components.head.display){
                     this.layer.noStroke()
-                    this.layer.fill(...this.flashColor(this.components.head.color),this.fade*this.components.head.fade)
+                    this.layer.fill(...this.flashColor(this.components.head.color),this.fade.main*this.components.head.fade)
                     this.layer.ellipse(0,this.components.head.level,this.components.head.dimensions[0],this.components.head.dimensions[1])
                 }
                 for(let a=0,la=2;a<la;a++){
                     let part=this.components.head.blush[a]
                     if(part.display){
-                        this.layer.fill(...this.flashColor(part.color),this.fade*part.fade*0.2)
+                        this.layer.fill(...this.flashColor(part.color),this.fade.main*part.fade*0.2)
                         if(lcos(part.spin+this.direction.main)>0){
                             this.layer.push()
                             this.layer.translate(12.5*lsin(part.spin+this.direction.main),part.level)
@@ -1453,12 +1453,12 @@ class graphicsManager{
                     this.displayGeneralComponent(1,[])
                 }
                 if(this.components.hair.display.front){
-                    let size=this.fade*this.components.hair.fade.front
+                    let size=this.fade.main*this.components.hair.fade.front
                     this.layer.image(this.graphicManager.getData(this.name).sprites.hair.front[this.sprites.spinDetail],0,this.components.head.level+10*size,40*size,60*size)
                 }
                 if(this.components.hair.display.glow){
                     this.layer.noFill()
-                    this.layer.stroke(...this.components.hair.color.glow,this.fade*0.15*this.components.hair.fade.glow)
+                    this.layer.stroke(...this.components.hair.color.glow,this.fade.main*0.15*this.components.hair.fade.glow)
                     for(let a=0,la=6;a<la;a++){
                         this.layer.strokeWeight((3-a/2))
                         this.layer.arc(0,this.components.head.level,this.components.head.dimensions[0]+a,this.components.head.dimensions[1]+a,-72+a*6,-12-a*6)
@@ -1477,7 +1477,7 @@ class graphicsManager{
                         dir=atan2(loc[1].x-loc[2].x,loc[1].y-loc[2].y)
                         sc=[lsin(dir+90),lcos(dir+90)]
                         this.layer.noStroke()
-                        this.layer.fill(...this.flashColor(this.components.dress.color.highlight),this.fade*this.components.dress.fade.sleeve[args[0]])
+                        this.layer.fill(...this.flashColor(this.components.dress.color.highlight),this.fade.main*this.components.dress.fade.sleeve[args[0]])
                         this.layer.quad(
                             loc[1].x*0.2+loc[2].x*0.8+2.4*sc[0],
                             loc[1].y*0.2+loc[2].y*0.8+2.4*sc[1],
@@ -1488,7 +1488,7 @@ class graphicsManager{
                             loc[1].x*0.25+loc[2].x*0.75+2.5*sc[0],
                             loc[1].y*0.25+loc[2].y*0.75+2.5*sc[1]
                         )
-                        this.layer.fill(...this.flashColor(this.components.dress.color.sleeve),this.fade*this.components.dress.fade.sleeve[args[0]])
+                        this.layer.fill(...this.flashColor(this.components.dress.color.sleeve),this.fade.main*this.components.dress.fade.sleeve[args[0]])
                         this.layer.beginShape()
                         this.layer.vertex(
                             loc[1].x+2.1*sc[0],
@@ -1522,7 +1522,7 @@ class graphicsManager{
                             loc[0].x-2.1*sc[0],
                             loc[0].y-2.1*sc[1]
                         )
-                        this.layer.fill(...this.flashColor(this.components.dress.color.highlight),this.fade*this.components.dress.fade.sleeve[args[0]])
+                        this.layer.fill(...this.flashColor(this.components.dress.color.highlight),this.fade.main*this.components.dress.fade.sleeve[args[0]])
                         this.layer.beginShape()
                         let set=[
                             [0,1],
@@ -1547,7 +1547,7 @@ class graphicsManager{
                         }
                         this.layer.endShape()
                         this.layer.noStroke()
-                        this.layer.fill(...this.flashColor(this.components.dress.color.highlight),this.fade*this.components.dress.fade.sleeve[args[0]])
+                        this.layer.fill(...this.flashColor(this.components.dress.color.highlight),this.fade.main*this.components.dress.fade.sleeve[args[0]])
                         this.layer.quad(
                             loc[0].x*0.2+loc[1].x*0.8+2.1*sc[0],
                             loc[0].y*0.2+loc[1].y*0.8+2.1*sc[1],
@@ -1558,7 +1558,7 @@ class graphicsManager{
                             loc[0].x*0.25+loc[1].x*0.75+2.1*sc[0],
                             loc[0].y*0.25+loc[1].y*0.75+2.1*sc[1]
                         )
-                        this.layer.fill(...this.flashColor(this.components.dress.color.bow),this.fade*this.components.dress.fade.sleeve[args[0]])
+                        this.layer.fill(...this.flashColor(this.components.dress.color.bow),this.fade.main*this.components.dress.fade.sleeve[args[0]])
                         this.layer.quad(
                             loc[0].x*0.225+loc[1].x*0.775+1.4*sc[0]+0.8*sc[1],
                             loc[0].y*0.225+loc[1].y*0.775+1.4*sc[1]-0.8*sc[0],
@@ -1574,7 +1574,7 @@ class graphicsManager{
                             loc[0].y*0.225+loc[1].y*0.775,
                             0.8
                         )
-                        this.layer.fill(...this.flashColor(this.components.dress.color.main),this.fade*this.components.dress.fade.sleeve[args[0]])
+                        this.layer.fill(...this.flashColor(this.components.dress.color.main),this.fade.main*this.components.dress.fade.sleeve[args[0]])
                         this.layer.push()
                         this.layer.translate(loc[0].x,loc[0].y)
                         this.layer.rotate(-dir)
@@ -1630,7 +1630,7 @@ class graphicsManager{
                 for(let a=0,la=this.components.arms.length;a<la;a++){
                     let part=this.components.arms[a]
                     if(part.display&&part.appear.bottom.z<=0){
-                        this.layer.fill(...this.flashColor(upColor(part.color,5*part.appear.bottom.z,[1,1,1])),this.fade*part.fade)
+                        this.layer.fill(...this.flashColor(upColor(part.color,5*part.appear.bottom.z,[1,1,1])),this.fade.main*part.fade)
                         this.layer.noStroke()
                         this.layer.ellipse(part.appear.bottom.x,part.appear.bottom.y,part.dimensions[0],part.dimensions[1])
                     }
@@ -1638,38 +1638,38 @@ class graphicsManager{
                 for(let a=0,la=this.components.legs.length;a<la;a++){
                     let part=this.components.legs[a]
                     if(part.display&&part.appear.bottom.z<=0){
-                        this.layer.fill(...this.flashColor(upColor(part.color,5*part.appear.bottom.z,[1,1,1])),this.fade*part.fade)
+                        this.layer.fill(...this.flashColor(upColor(part.color,5*part.appear.bottom.z,[1,1,1])),this.fade.main*part.fade)
                         this.layer.noStroke()
                         this.layer.ellipse(part.appear.bottom.x,part.appear.bottom.y,part.dimensions[0],part.dimensions[1])
                     }
                 }
                 if(this.components.body.display){
                     this.layer.noStroke()
-                    this.layer.fill(...this.flashColor(this.components.body.color),this.fade*this.components.body.fade)
+                    this.layer.fill(...this.flashColor(this.components.body.color),this.fade.main*this.components.body.fade)
                     this.layer.ellipse(0,this.components.body.level,this.components.body.dimensions[0],this.components.body.dimensions[1])
                 }
                 for(let a=0,la=this.components.legs.length;a<la;a++){
                     let part=this.components.legs[a]
                     if(part.display&&part.appear.bottom.z>0){
-                        this.layer.fill(...this.flashColor(upColor(part.color,5*part.appear.bottom.z,[1,1,1])),this.fade*part.fade)
+                        this.layer.fill(...this.flashColor(upColor(part.color,5*part.appear.bottom.z,[1,1,1])),this.fade.main*part.fade)
                         this.layer.noStroke()
                         this.layer.ellipse(part.appear.bottom.x,part.appear.bottom.y,part.dimensions[0],part.dimensions[1])
                     }
                 }
                 if(this.components.head.beak.main.display&&lcos(this.components.head.beak.spin+this.direction.main)<=0){
-                    this.layer.fill(...this.flashColor(this.components.head.beak.main.color),this.fade*this.components.head.beak.main.fade)
+                    this.layer.fill(...this.flashColor(this.components.head.beak.main.color),this.fade.main*this.components.head.beak.main.fade)
                     this.layer.noStroke()
                     this.layer.ellipse(lsin(this.components.head.beak.spin+this.direction.main)*12,this.components.head.beak.main.level,12+lcos(this.components.head.beak.spin+this.direction.main)*2,8)
                 }
                 if(this.components.head.beak.mouth.display&&lcos(this.components.head.beak.spin+this.direction.main)<=0){
                     this.layer.noFill()
-                    this.layer.stroke(...this.flashColor(this.components.head.beak.mouth.color),this.fade*this.components.head.beak.mouth.fade)
+                    this.layer.stroke(...this.flashColor(this.components.head.beak.mouth.color),this.fade.main*this.components.head.beak.mouth.fade)
                     this.layer.strokeWeight(0.5)
                     this.layer.arc(lsin(this.components.head.beak.spin+this.direction.main)*12,this.components.head.beak.mouth.level,12+lcos(this.components.head.beak.spin+this.direction.main)*2,1,0,180)
                 }
                 if(this.components.head.beak.nostril.display&&lcos(this.components.head.beak.spin+this.direction.main)<=0){
                     this.layer.noFill()
-                    this.layer.stroke(...this.flashColor(this.components.head.beak.nostril.color),this.fade*this.components.head.beak.nostril.fade)
+                    this.layer.stroke(...this.flashColor(this.components.head.beak.nostril.color),this.fade.main*this.components.head.beak.nostril.fade)
                     this.layer.strokeWeight(0.5)
                     for(let a=0,la=2;a<la;a++){
                         this.layer.line(lsin(this.direction.main-6+a*12)*16,this.components.head.beak.nostril.level,lsin(this.direction.main-6+a*12)*16,this.components.head.beak.nostril.level+0.5)
@@ -1677,13 +1677,13 @@ class graphicsManager{
                 }
                 if(this.components.head.display){
                     this.layer.noStroke()
-                    this.layer.fill(...this.flashColor(this.components.head.color),this.fade*this.components.head.fade)
+                    this.layer.fill(...this.flashColor(this.components.head.color),this.fade.main*this.components.head.fade)
                     this.layer.ellipse(0,this.components.head.level,this.components.head.dimensions[0],this.components.head.dimensions[1])
                 }
                 for(let a=0,la=this.components.arms.length;a<la;a++){
                     let part=this.components.arms[a]
                     if(part.display&&part.appear.bottom.z>0){
-                        this.layer.fill(...this.flashColor(upColor(part.color,5*part.appear.bottom.z,[1,1,1])),this.fade*part.fade)
+                        this.layer.fill(...this.flashColor(upColor(part.color,5*part.appear.bottom.z,[1,1,1])),this.fade.main*part.fade)
                         this.layer.noStroke()
                         this.layer.ellipse(part.appear.bottom.x,part.appear.bottom.y,part.dimensions[0],part.dimensions[1])
                     }
@@ -1694,19 +1694,19 @@ class graphicsManager{
                     }
                 }
                 if(this.components.head.beak.main.display&&lcos(this.components.head.beak.spin+this.direction.main)>0){
-                    this.layer.fill(...this.flashColor(this.components.head.beak.main.color),this.fade*this.components.head.beak.main.fade)
+                    this.layer.fill(...this.flashColor(this.components.head.beak.main.color),this.fade.main*this.components.head.beak.main.fade)
                     this.layer.noStroke()
                     this.layer.ellipse(lsin(this.components.head.beak.spin+this.direction.main)*12,this.components.head.beak.main.level,12+lcos(this.components.head.beak.spin+this.direction.main)*2,8)
                 }
                 if(this.components.head.beak.mouth.display&&lcos(this.components.head.beak.spin+this.direction.main)>0){
                     this.layer.noFill()
-                    this.layer.stroke(...this.flashColor(this.components.head.beak.mouth.color),this.fade*this.components.head.beak.mouth.fade)
+                    this.layer.stroke(...this.flashColor(this.components.head.beak.mouth.color),this.fade.main*this.components.head.beak.mouth.fade)
                     this.layer.strokeWeight(0.5)
                     this.layer.arc(lsin(this.components.head.beak.spin+this.direction.main)*12,this.components.head.beak.mouth.level,12+lcos(this.components.head.beak.spin+this.direction.main)*2,1,0,180)
                 }
                 if(this.components.head.beak.nostril.display&&lcos(this.components.head.beak.spin+this.direction.main)>0){
                     this.layer.noFill()
-                    this.layer.stroke(...this.flashColor(this.components.head.beak.nostril.color),this.fade*this.components.head.beak.nostril.fade)
+                    this.layer.stroke(...this.flashColor(this.components.head.beak.nostril.color),this.fade.main*this.components.head.beak.nostril.fade)
                     this.layer.strokeWeight(0.5)
                     for(let a=0,la=2;a<la;a++){
                         this.layer.line(lsin(this.direction.main-6+a*12)*16,this.components.head.beak.nostril.level,lsin(this.direction.main-6+a*12)*16,this.components.head.beak.nostril.level+0.5)
