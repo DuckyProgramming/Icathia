@@ -13,9 +13,9 @@ this.packages.push(new graphicsPackage(
         this.components=this.standardModel(
             1,
             10,[{x:-3,y:-15,z:0},{x:3,y:-15,z:0}],[{x:-3,y:-25,z:0},{x:3,y:-25,z:0}],
-            [-19,-38,-32,-32,-33.5,-40,-40],[[14,24],[30,30],[12,12],[12,12],[12,12],[12,12]],[18,18]
+            [-19,-38,-32,-32,-33.5,-40,-40],[[14,24],[28,28],[12,12],[12,12],[12,12],[12,12]],[18,18]
         )
-        this.routines.calculatepart=[0,4,5]
+        this.routines.calculatePart=[0,4,5]
     },function(){
         for(let a=0,la=this.components.arms.length;a<la;a++){
             let part=this.components.arms[a]

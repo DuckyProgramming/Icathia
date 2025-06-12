@@ -108,7 +108,7 @@ this.packages.push(new graphicsPackage(
             color:colorBase.bell,
             spin:0,
         }
-        this.routines.calculatepart=[0,1,2,3]
+        this.routines.calculatePart=[0,1,2,3]
     },function(){
                         if(this.components.hair.display.back){
             let size=this.fade.main*this.components.hair.fade.back

@@ -439,7 +439,7 @@ class graphicsManager{
     generateGraphics(name){
         let data
         for(let a=0,la=this.packages.length;a<la;a++){
-            if(this.packages[a].name==name){
+            if(this.packages[a].name.includes(name)){
                 data=this.packages[a].generateGraphics(this)
             }
         }
@@ -455,7 +455,7 @@ class graphicsManager{
     }
     getPackage(name){
         for(let a=0,la=this.packages.length;a<la;a++){
-            if(this.packages[a].name==name){
+            if(this.packages[a].name.includes(name)){
                 return this.packages[a]
             }
         }

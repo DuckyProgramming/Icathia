@@ -139,7 +139,7 @@ this.packages.push(new graphicsPackage(
             color:colorBase.dress,
             bow:{display:true,fade:1,color:colorBase.dress.bow,spin:0},
         }
-        this.routines.calculatepart=[0,1,2,3]
+        this.routines.calculatePart=[0,1,2,3]
     },function(){
         for(let a=0,la=2;a<la;a++){
             if(this.components.hair.bow[a].display){

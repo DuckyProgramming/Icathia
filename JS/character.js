@@ -236,10 +236,10 @@ class character extends located{
         this.subDisplay=this.graphicManager.getPackage(this.name).display
         this.displayComponent=this.graphicManager.getPackage(this.name).displayComponent
     }
-    calculatepart(){
+    calculatePart(){
         this.direction.head=this.direction.main
-        for(let a=0,la=this.routines.calculatepart.length;a<la;a++){
-            switch(this.routines.calculatepart[a]){
+        for(let a=0,la=this.routines.calculatePart.length;a<la;a++){
+            switch(this.routines.calculatePart[a]){
                 case 0:
                     this.sprites.spin=round(((this.direction.main%360)+360)%360)
                     this.sprites.spinDetail=constrain(round((((this.direction.main%360)+360)%360)/this.sprites.detail),0,360/this.sprites.detail-1)
@@ -355,7 +355,7 @@ class character extends located{
     }
     display(){
         if(this.fade.main>0&&this.size>0){
-            this.calculatepart()
+            this.calculatePart()
             this.layer.push()
             this.layer.translate(this.position.x+this.offset.position.x,this.position.y+this.offset.position.y)
             this.layer.rotate(this.direction.external)

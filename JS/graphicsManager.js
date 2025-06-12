@@ -439,7 +439,7 @@ class graphicsManager{
     generateGraphics(name){
         let data
         for(let a=0,la=this.packages.length;a<la;a++){
-            if(this.packages[a].name==name){
+            if(this.packages[a].name.includes(name)){
                 data=this.packages[a].generateGraphics(this)
             }
         }
@@ -455,7 +455,7 @@ class graphicsManager{
     }
     getPackage(name){
         for(let a=0,la=this.packages.length;a<la;a++){
-            if(this.packages[a].name==name){
+            if(this.packages[a].name.includes(name)){
                 return this.packages[a]
             }
         }
@@ -463,7 +463,7 @@ class graphicsManager{
     initialPackages(){
         this.packages=[]
         this.packages.push(new graphicsPackage(
-            `Shiru`,
+            [`Shiru`],
             function(parent,type,direction,data){
                 let layer
                 let overlayer
@@ -594,7 +594,7 @@ class graphicsManager{
                 this.components=this.standardModel(
                     0,
                     15.5,[{x:-3,y:-31,z:0},{x:3,y:-31,z:0}],[{x:-3.5,y:-53,z:0},{x:3.5,y:-53,z:0}],
-                    [-44,-72,-64,-67.75,-67.75,-63.5,-63.5],[[9,28],[30,30]],{x:8,y:3.5,open:0,wide:36},[18,18,30,30]
+                    [-44,-72,-64,-67.75,-67.75,-63.5,-63.5],[[9,28],[28,28]],{x:8,y:3.5,open:0,wide:36},[18,18,30,30]
                 )
                 this.components.hair.tail=[{display:true,fade:1,spin:-114},{display:true,fade:1,spin:114}]
                 this.components.hair.bow=[{display:true,fade:1,spin:-96},{display:true,fade:1,spin:96}]
@@ -604,7 +604,7 @@ class graphicsManager{
                     color:colorBase.dress,
                     bow:{display:true,fade:1,color:colorBase.dress.bow,spin:0},
                 }
-                this.routines.calculatepart=[0,1,2,3]
+                this.routines.calculatePart=[0,1,2,3]
             },function(){
                 for(let a=0,la=2;a<la;a++){
                     if(this.components.hair.bow[a].display){
@@ -1050,7 +1050,7 @@ class graphicsManager{
             },
         ))
         this.packages.push(new graphicsPackage(
-            `Meri`,
+            [`Meri`],
             function(parent,type,direction,data){
                 let layer
                 let overlayer
@@ -1160,7 +1160,7 @@ class graphicsManager{
                     color:colorBase.bell,
                     spin:0,
                 }
-                this.routines.calculatepart=[0,1,2,3]
+                this.routines.calculatePart=[0,1,2,3]
             },function(){
                 if(this.components.hair.display.back){
                     let size=this.fade.main*this.components.hair.fade.back
@@ -1609,7 +1609,7 @@ class graphicsManager{
             },
         ))
         this.packages.push(new graphicsPackage(
-            `Duck`,
+            [`Duck`],
             0,
             function(parent){
                 return {
@@ -1625,7 +1625,7 @@ class graphicsManager{
                     10,[{x:-3,y:-15,z:0},{x:3,y:-15,z:0}],[{x:-3,y:-25,z:0},{x:3,y:-25,z:0}],
                     [-19,-38,-32,-32,-33.5,-40,-40],[[14,24],[30,30],[12,12],[12,12],[12,12],[12,12]],[18,18]
                 )
-                this.routines.calculatepart=[0,4,5]
+                this.routines.calculatePart=[0,4,5]
             },function(){
                 for(let a=0,la=this.components.arms.length;a<la;a++){
                     let part=this.components.arms[a]
