@@ -40,8 +40,7 @@ this.packages.push(new graphicsPackage(
             sprites:{
                 detail:constants.graphics.detail,genAmount:360/constants.graphics.detail,
                 hair:{back:[],front:[],tail:[[],[]]},
-            },
-            parts:{
+            },parts:{
                 hair:{main:[
                     {spin:[-9,-3,-6],height:1},
                     {spin:[-3,9,6],height:1},
@@ -128,8 +127,9 @@ this.packages.push(new graphicsPackage(
     },function(){
         let colorBase=this.graphicManager.getData(this.name).color
         this.components=this.standardModel(
+            0,
             15.5,[{x:-3,y:-31,z:0},{x:3,y:-31,z:0}],[{x:-3.5,y:-53,z:0},{x:3.5,y:-53,z:0}],
-            [-44,-72,-64,-67.75,-67.75,-63.5,-63.5],[[9,28],[30,30]],{x:8,y:3.5,open:0,wide:36},[18,18,30,30]
+            [-44,-72,-64,-67.75,-67.75,-63.5,-63.5],[[9,28],[28,28]],{x:8,y:3.5,open:0,wide:36},[18,18,30,30]
         )
         this.components.hair.tail=[{display:true,fade:1,spin:-114},{display:true,fade:1,spin:114}]
         this.components.hair.bow=[{display:true,fade:1,spin:-96},{display:true,fade:1,spin:96}]

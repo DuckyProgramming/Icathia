@@ -131,3 +131,5 @@ function lsin(direction){
 function lcos(direction){
 	return constants.trig[1][floor((direction%360+360)%360*2)]
 }
+function glitch(image,strength){
+}

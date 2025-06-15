@@ -32,8 +32,7 @@ this.packages.push(new graphicsPackage(
             sprites:{
                 detail:constants.graphics.detail,genAmount:360/constants.graphics.detail,
                 hair:{back:[],front:[]},
-            },
-            parts:{
+            },parts:{
                 hair:{main:[],inside:[],reverse:[],reverseInside:[]}
             },color:{
                 hair:{back:[50,50,70],front:[70,70,90],insideBack:[40,40,60],insideFront:[60,60,80],glow:[245,230,245]},
@@ -84,6 +83,7 @@ this.packages.push(new graphicsPackage(
     },function(){
         let colorBase=this.graphicManager.getData(this.name).color
         this.components=this.standardModel(
+            0,
             16.25,[{x:-3,y:-32.5,z:0},{x:3,y:-32.5,z:0}],[{x:-3.25,y:-57.5,z:0},{x:3.25,y:-57.5,z:0}],
             [-46,-78,-71.75,-75.75,-75.75,-71.5,-71.5],[[11,35],[30,30]],{x:8,y:5,open:0,wide:39},[18,18,30,30]
         )
@@ -110,7 +110,7 @@ this.packages.push(new graphicsPackage(
         }
         this.routines.calculatePart=[0,1,2,3]
     },function(){
-                        if(this.components.hair.display.back){
+        if(this.components.hair.display.back){
             let size=this.fade.main*this.components.hair.fade.back
             this.layer.image(this.graphicManager.getData(this.name).sprites.hair.back[this.sprites.spinDetail],0,this.components.head.level+10*size,40*size,60*size)
         }

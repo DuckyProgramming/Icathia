@@ -14,17 +14,6 @@ class graphicsManager{
         this.data=[
         ]
     }
-    displaySymbol(layer,x,y,type,direction,size,fade){
-        layer.push()
-        layer.translate(x,y)
-        layer.rotate(direction)
-        layer.scale(size)
-        layer.noFill()
-        layer.noStroke()
-        switch(type){
-        }
-        layer.pop()
-    }
     controlSpin(set,direction,spec){
         for(let g=0,lg=set.length;g<lg;g++){
             if(set[g].spin[0]>set[g].spin[1]&&spec==1){
