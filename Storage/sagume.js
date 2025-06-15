@@ -468,6 +468,13 @@ this.packages.push(new graphicsPackage(
                 if(this.components.dress.display.sleeve[a]){
                     this.displayComponent(0,[a])
                 }
+            }else if(part.display&&part.appear.bottom.z>2){
+                this.layer.stroke(...this.flashColor(part.color),this.fade.main*part.fade)
+                this.layer.strokeWeight(4)
+                this.layer.line(part.appear.middle.x,part.appear.middle.y,part.appear.bottom.x,part.appear.bottom.y)
+                if(this.components.dress.display.sleeve[a]){
+                    this.displayComponent(1,[a])
+                }
             }
         }
         if(this.components.head.display){
@@ -535,9 +542,10 @@ this.packages.push(new graphicsPackage(
     },function(type,args){
         let dir
         let sc
+        let loc=[]
         switch(type){
             case 0:
-                let loc=[
+                loc=[
                     this.components.arms[args[0]].appear.top,
                     this.components.arms[args[0]].appear.middle,
                     this.components.arms[args[0]].appear.bottom
@@ -634,6 +642,85 @@ this.packages.push(new graphicsPackage(
                     )
                 }
             break
+            case 1:
+                loc=[
+                    this.components.arms[args[0]].appear.top,
+                    this.components.arms[args[0]].appear.middle,
+                    this.components.arms[args[0]].appear.bottom
+                ]
+                dir=[
+                    atan2(loc[1].x-loc[2].x,loc[1].y-loc[2].y),
+                    atan2(loc[0].x-loc[1].x,loc[0].y-loc[1].y)
+                ]
+                sc=[
+                    [lsin(dir[0]+90),lcos(dir[0]+90)],
+                    [lsin(dir[1]+90),lcos(dir[1]+90)]
+                ]
+
+                this.layer.noStroke()
+                this.layer.fill(...this.flashColor(this.components.dress.color.sleeve),this.fade.main*this.components.dress.fade.sleeve[args[0]])
+                this.layer.ellipse(loc[1].x,loc[1].y,4.8)
+                this.layer.ellipse(loc[0].x,loc[0].y,4.3)
+                this.layer.quad(
+                    loc[2].x*0.9+loc[1].x*0.1-2.7*sc[0][0],
+                    loc[2].y*0.9+loc[1].y*0.1-2.7*sc[0][1],
+                    loc[2].x*0.9+loc[1].x*0.1+2.7*sc[0][0],
+                    loc[2].y*0.9+loc[1].y*0.1+2.7*sc[0][1],
+                    loc[1].x+2.4*sc[0][0],
+                    loc[1].y+2.4*sc[0][1],
+                    loc[1].x-2.4*sc[0][0],
+                    loc[1].y-2.4*sc[0][1]
+                )
+
+                this.layer.fill(...this.flashColor(this.components.jacket.color.sleeve),this.fade.main*this.components.jacket.fade.sleeve[args[0]])
+                this.layer.ellipse(loc[1].x,loc[1].y,5.1)
+                this.layer.ellipse(loc[0].x,loc[0].y,4.5)   
+                this.layer.quad(
+                    loc[2].x*0.75+loc[1].x*0.25-3*sc[0][0],
+                    loc[2].y*0.75+loc[1].y*0.25-3*sc[0][1],
+                    loc[2].x*0.75+loc[1].x*0.25+3*sc[0][0],
+                    loc[2].y*0.75+loc[1].y*0.25+3*sc[0][1],
+                    loc[1].x+2.55*sc[0][0],
+                    loc[1].y+2.55*sc[0][1],
+                    loc[1].x-2.55*sc[0][0],
+                    loc[1].y-2.55*sc[0][1]
+                )
+
+                this.layer.noFill()
+                this.layer.stroke(...this.flashColor(this.components.dress.color.detail),this.fade.main*this.components.dress.fade.sleeve[args[0]])
+                this.layer.strokeWeight(0.1)
+                for(let a=0,la=4;a<la;a++){
+                    let size=dist(
+                        loc[1].x*0.12+loc[2].x*0.88,
+                        loc[1].y*0.12+loc[2].y*0.88,
+                        loc[1].x*0.15+loc[2].x*0.85,
+                        loc[1].y*0.15+loc[2].y*0.85
+                    )
+                    this.layer.line(
+                        loc[1].x*0.12+loc[2].x*0.88+(-2.7+(a+0.5)/la*5.4)*sc[0][0],
+                        loc[1].y*0.12+loc[2].y*0.88+(-2.7+(a+0.5)/la*5.4)*sc[0][1],
+                        loc[1].x*0.15+loc[2].x*0.85+(-2.7+a/la*5.4)*sc[0][0],
+                        loc[1].y*0.15+loc[2].y*0.85+(-2.7+a/la*5.4)*sc[0][1]
+                    )
+                    this.layer.line(
+                        loc[1].x*0.18+loc[2].x*0.82+(-2.7+(a+0.5)/la*5.4)*sc[0][0],
+                        loc[1].y*0.18+loc[2].y*0.82+(-2.7+(a+0.5)/la*5.4)*sc[0][1],
+                        loc[1].x*0.15+loc[2].x*0.85+(-2.7+(a+1)/la*5.4)*sc[0][0],
+                        loc[1].y*0.15+loc[2].y*0.85+(-2.7+(a+1)/la*5.4)*sc[0][1]
+                    )
+                    this.layer.arc(
+                        loc[1].x*0.135+loc[2].x*0.865+(-2.7+(a+0.5)/la*5.4)*sc[0][0],
+                        loc[1].y*0.135+loc[2].y*0.865+(-2.7+(a+0.5)/la*5.4)*sc[0][1],
+                        size,size,-dir[0]-90,-dir[0]+90
+                    )
+                    this.layer.arc(
+                        loc[1].x*0.165+loc[2].x*0.835+(-2.7+(a+0.5)/la*5.4)*sc[0][0],
+                        loc[1].y*0.165+loc[2].y*0.835+(-2.7+(a+0.5)/la*5.4)*sc[0][1],
+                        size,size,-dir[0]+90,-dir[0]+270
+                    )
+                }
+            break
+            
         }
     },
 ))

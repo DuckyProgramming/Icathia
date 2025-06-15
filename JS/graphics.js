@@ -84,6 +84,11 @@ p5.prototype.backgroundPattern=function(pattern){
 	this.drawingContext.fillStyle=pattern
 	this.drawingContext.fillRect(0,0,width,height)
 }
+function quickGradient(angle,width,colors){
+	let gradient=new p5.LinearGradient(angle,width)
+	gradient.colors(...colors)
+	return gradient
+}
 function setupGraphics(){
     setupBase()
     setupTrig()
@@ -131,5 +136,41 @@ function lsin(direction){
 function lcos(direction){
 	return constants.trig[1][floor((direction%360+360)%360*2)]
 }
-function glitch(image,strength){
+function formImage(width,height){
+    let layer=createGraphics(width,height)
+    setupLayer(layer)
+    layer.translate(layer.width/2,layer.height/2)
+    return layer
+}
+function glitch(image,scale,strength,extent){
+	let copy=formImage(image.width,image.height)
+	copy.image(image,0,0)
+	image.loadPixels()
+	copy.loadPixels()
+	let active=true
+	let size=0
+	let push=0
+	for(let a=0,la=image.pixels.length/(scale**2)/4;a<la;a++){
+		if(!active&&floor(random(0,strength))==0){
+			active=true
+			size=0
+			push=floor(random(2,5))*(floor(random(0,2))*2-1)
+		}else if(active&&floor(random(0,extent/size))==0&&size>=4){
+			active=false
+		}
+		if(active){
+			size++
+		}
+		if(active){
+			for(let b=0,lb=scale;b<lb;b++){
+				for(let c=0,lc=scale;c<lc;c++){
+					for(let d=0,ld=4;d<ld;d++){
+						image.pixels[(a*scale+floor(a/(image.width/scale))*image.width*(scale-1)+b+c*image.width)*4+d]=
+							copy.pixels[((a*scale+floor(a/(image.width/scale))*image.width*(scale-1)+b+c*image.width+scale*push)*4+d)%(image.width*image.height*4)]
+					}
+				}
+			}
+		}
+	}
+	image.updatePixels()
 }

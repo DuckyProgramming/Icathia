@@ -353,6 +353,13 @@ this.packages.push(new graphicsPackage(
                 if(this.components.dress.display.sleeve[a]){
                     this.displayComponent(0,[a])
                 }
+            }else if(part.display&&part.appear.bottom.z>2){
+                this.layer.stroke(...this.flashColor(part.color),this.fade.main*part.fade)
+                this.layer.strokeWeight(4)
+                this.layer.line(part.appear.middle.x,part.appear.middle.y,part.appear.bottom.x,part.appear.bottom.y)
+                if(this.components.dress.display.sleeve[a]){
+                    this.displayComponent(1,[a])
+                }
             }
         }
         if(this.components.dress.display.main){
@@ -512,9 +519,10 @@ this.packages.push(new graphicsPackage(
     },function(type,args){
         let dir
         let sc
+        let loc=[]
         switch(type){
             case 0:
-                let loc=[
+                loc=[
                     this.components.arms[args[0]].appear.top,
                     this.components.arms[args[0]].appear.middle,
                     this.components.arms[args[0]].appear.bottom
@@ -581,6 +589,63 @@ this.packages.push(new graphicsPackage(
                     loc[1].x*0.3+loc[2].x*0.7-2.4*sc[0],
                     loc[1].y*0.3+loc[2].y*0.7-2.4*sc[1])
             break
+            case 1:
+                loc=[
+                    this.components.arms[args[0]].appear.top,
+                    this.components.arms[args[0]].appear.middle,
+                    this.components.arms[args[0]].appear.bottom
+                ]
+                dir=atan2(loc[1].x-loc[2].x,loc[1].y-loc[2].y)
+                sc=[lsin(dir+90),lcos(dir+90)]
+                this.layer.noStroke()
+                this.layer.fill(...this.flashColor(this.components.dress.color.sleeve),this.fade.main*this.components.dress.fade.sleeve[args[0]])
+                this.layer.beginShape()
+                this.layer.vertex(
+                    loc[1].x+2.1*sc[0],
+                    loc[1].y+2.1*sc[1])
+                this.layer.vertex(
+                    loc[1].x*0.45+loc[2].x*0.55+3.6*sc[0],
+                    loc[1].y*0.45+loc[2].y*0.55+3.6*sc[1])
+                this.layer.vertex(
+                    loc[1].x*0.3+loc[2].x*0.7+2.4*sc[0],
+                    loc[1].y*0.3+loc[2].y*0.7+2.4*sc[1])
+                this.layer.vertex(
+                    loc[1].x*0.15+loc[2].x*0.85+2.7*sc[0],
+                    loc[1].y*0.15+loc[2].y*0.85+2.7*sc[1])
+                this.layer.vertex(
+                    loc[1].x*0.25+loc[2].x*0.75+0.9*sc[0],
+                    loc[1].y*0.25+loc[2].y*0.75+0.9*sc[1])
+                this.layer.vertex(
+                    loc[1].x*0.15+loc[2].x*0.85,
+                    loc[1].y*0.15+loc[2].y*0.85)
+                this.layer.vertex(
+                    loc[1].x*0.25+loc[2].x*0.75-0.9*sc[0],
+                    loc[1].y*0.25+loc[2].y*0.75-0.9*sc[1])
+                this.layer.vertex(
+                    loc[1].x*0.15+loc[2].x*0.85-2.7*sc[0],
+                    loc[1].y*0.15+loc[2].y*0.85-2.7*sc[1])
+                this.layer.vertex(
+                    loc[1].x*0.3+loc[2].x*0.7-2.4*sc[0],
+                    loc[1].y*0.3+loc[2].y*0.7-2.4*sc[1])
+                this.layer.vertex(
+                    loc[1].x*0.45+loc[2].x*0.55-3.6*sc[0],
+                    loc[1].y*0.45+loc[2].y*0.55-3.6*sc[1])
+                this.layer.vertex(
+                    loc[1].x-2.1*sc[0],
+                    loc[1].y-2.1*sc[1])
+                this.layer.endShape()
+                this.layer.ellipse(loc[1].x,loc[1].y,4.5)
+                dir=atan2(loc[1].x-loc[2].x,loc[1].y-loc[2].y)
+                sc=[lsin(dir+90),lcos(dir+90)]
+                this.layer.stroke(...this.flashColor(this.components.dress.color.tie),this.fade.main*this.components.dress.fade.sleeve[[args[0]]])
+                this.layer.strokeWeight(0.5)
+                this.layer.line(
+                    loc[1].x*0.3+loc[2].x*0.7+2.4*sc[0],
+                    loc[1].y*0.3+loc[2].y*0.7+2.4*sc[1],
+                    loc[1].x*0.3+loc[2].x*0.7-2.4*sc[0],
+                    loc[1].y*0.3+loc[2].y*0.7-2.4*sc[1])
+            break
+            
         }
     },
 ))

@@ -1,6 +1,6 @@
 function setup(){
     setupGraphics()
-    graphics.main=displayScene(4)
+    graphics.main=displayScene(5)
     createCanvas(graphics.main.width,graphics.main.height)
     image(graphics.main,width/2,height/2,width,height)
 }

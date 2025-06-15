@@ -23,8 +23,15 @@ this.packages.push(new graphicsPackage(
                 return layer
             case 1:
                 layer=parent.subSprite(200,300,100,100)
+                overlayer=parent.subSprite(200,300,100,100)
                 parent.displayTrianglesBackMerge(layer,data.parts.hair.main,direction,0,35,1,-0.0225,data.color.hair.back,data.color.hair.back,1)
-                parent.displayTrianglesBackMerge(layer,data.parts.hair.inside,direction,0,33,1,-0.015,data.color.hair.insideBack,data.color.hair.insideBack,1)
+                layer.arc(0,0,35,34,-180,0)
+                layer.line(-17.5,0,17.5,0)
+                parent.displayTrianglesBackMerge(overlayer,data.parts.hair.inside,direction,0,33,1,-0.015,data.color.hair.insideBack,data.color.hair.insideBack,1)
+                overlayer.arc(0,0,35,34,-180,0)
+                overlayer.line(-17.5,0,17.5,0)
+                parent.displayTrianglesBackMerge(overlayer,data.parts.hair.reverseInside,direction,1,34.5,0.2,0.1,-1,-1,1)
+                layer.image(overlayer,0,10,40,60)
                 return layer
         }
     },function(parent){
@@ -40,7 +47,10 @@ this.packages.push(new graphicsPackage(
                 eye:{back:[203,183,210],front:[65,76,108],glow:[222,227,223]},
                 mouth:{in:[191,125,127],out:[0,0,0]},
                 blush:[247,204,229],
-                dress:{main:[137,106,172],over:[122,92,163],sleeve:[154,135,192],stripe:[170,182,208],highlight:[188,207,221],bow:[253,253,253],tie:[112,59,127]},
+                dress:{
+                    main:[137,106,172],highlight:[188,207,221],over:[122,92,163],sleeve:[154,135,192],stripe:[170,182,208],
+                    inside:[147,154,198],insideHighlight:[174,171,198],insideOver:[141,139,190],bow:[[253,253,253],[205,226,243]],tie:[112,59,127]
+                },
                 shoe:[165,89,116],
                 bell:[[200,180,100],[0,0,0]],
             },
@@ -85,13 +95,17 @@ this.packages.push(new graphicsPackage(
         this.components=this.standardModel(
             0,
             16.25,[{x:-3,y:-32.5,z:0},{x:3,y:-32.5,z:0}],[{x:-3.25,y:-57.5,z:0},{x:3.25,y:-57.5,z:0}],
-            [-46,-78,-71.75,-75.75,-75.75,-71.5,-71.5],[[11,35],[30,30]],{x:8,y:5,open:0,wide:39},[18,18,30,30]
+            [-46.5,-78,-71.75,-75.75,-75.75,-71.5,-71.5],[[11,34],[30,30]],{x:8,y:5,open:0,wide:39},[18,18,30,30]
         )
         this.components.dress={
             display:{main:true,sleeve:[true,true]},
             fade:{main:1,sleeve:[1,1]},
             color:colorBase.dress,
-            bow:{display:true,fade:1,color:colorBase.dress.bow,spin:180},
+            anim:{reverse:false,wide:1,lift:2},
+            bow:{
+                display:true,fade:1,color:colorBase.dress.bow,spin:180,
+                anim:{size:1,length:1,fall:1,swivel:1}
+            },
             tie:{display:true,fade:1,color:colorBase.dress.tie,spin:0},
         }
         this.components.shoe=[
@@ -154,39 +168,78 @@ this.packages.push(new graphicsPackage(
         }
         if(this.components.dress.bow.display&&lcos(this.components.dress.bow.spin+this.direction.main)<=0){
             let part=this.components.dress.bow
-            this.layer.noStroke()
-            this.layer.fill(...this.flashColor(part.color),this.fade.main*part.fade)
-            this.layer.stroke(...this.flashColor(part.color),this.fade.main*part.fade)
+            this.layer.stroke(...this.flashColor(part.color[1]),this.fade.main*part.fade)
+            for(let a=0,la=15*part.anim.length;a<la;a++){
+                this.layer.strokeWeight(1.5+a/la*1.2)
+                this.layer.line(
+                    6.75*lsin(part.spin+this.direction.main)-a*(1+0.25*lsin(a/la*480*part.anim.swivel[0]+this.time))*lcos(part.spin+this.direction.main),
+                    -45.5+a*1.5*part.anim.fall,
+                    6.75*lsin(part.spin+this.direction.main)-(a+1)*(1+0.25*lsin((a+1)/la*480*part.anim.swivel[0]+this.time))*lcos(part.spin+this.direction.main),
+                    -45.5+(a+1)*1.5*part.anim.fall
+                )
+            }
+            for(let a=0,la=15*part.anim.length;a<la;a++){
+                this.layer.strokeWeight(1.5+a/la*1.2)
+                this.layer.line(
+                    6.75*lsin(part.spin+this.direction.main)+a*(1+0.25*lsin((a+2.5)/la*480*part.anim.swivel[1]+this.time))*lcos(part.spin+this.direction.main),
+                    -45.5+a*1.5*part.anim.fall,
+                    6.75*lsin(part.spin+this.direction.main)+(a+1)*(1+0.25*lsin((a+3.5)/la*480*part.anim.swivel[1]+this.time))*lcos(part.spin+this.direction.main),
+                    -45.5+(a+1)*1.5*part.anim.fall
+                )
+            }
+            this.layer.fill(...this.flashColor(part.color[0]),this.fade.main*part.fade)
+            this.layer.stroke(...this.flashColor(part.color[0]),this.fade.main*part.fade)
             this.layer.strokeWeight(1)
             this.layer.strokeJoin(ROUND)
             this.layer.triangle(
                 6.75*lsin(part.spin+this.direction.main),-46,
-                6.75*lsin(part.spin+this.direction.main)-7*lcos(part.spin+this.direction.main),-48.5,
-                6.75*lsin(part.spin+this.direction.main)-6.5*lcos(part.spin+this.direction.main),-42.5
+                6.75*lsin(part.spin+this.direction.main)-7*lcos(part.spin+this.direction.main)*part.anim.size,-46-2.5*part.anim.size,
+                6.75*lsin(part.spin+this.direction.main)-6.5*lcos(part.spin+this.direction.main)*part.anim.size,-46+3.5*part.anim.size
             )
             this.layer.triangle(
                 6.75*lsin(part.spin+this.direction.main),-46,
-                6.75*lsin(part.spin+this.direction.main)+7*lcos(part.spin+this.direction.main),-48.5,
-                6.75*lsin(part.spin+this.direction.main)+6.5*lcos(part.spin+this.direction.main),-42.5
+                6.75*lsin(part.spin+this.direction.main)+7*lcos(part.spin+this.direction.main)*part.anim.size,-46-2.5*part.anim.size,
+                6.75*lsin(part.spin+this.direction.main)+6.5*lcos(part.spin+this.direction.main)*part.anim.size,-46+3.5*part.anim.size
             )
             this.layer.strokeJoin(MITER)
-            for(let a=0,la=15;a<la;a++){
-                this.layer.strokeWeight(1.5+a*0.08)
-                this.layer.line(
-                    6.75*lsin(part.spin+this.direction.main)-a*(1+0.25*lsin(a/la*480+this.time))*lcos(part.spin+this.direction.main),
-                    -45.5+a*1.5,
-                    6.75*lsin(part.spin+this.direction.main)-(a+1)*(1+0.25*lsin((a+1)/la*480+this.time))*lcos(part.spin+this.direction.main),
-                    -45.5+(a+1)*1.5
-                )
+        }
+        if(this.components.dress.display.main&&this.components.dress.anim.reverse){
+            let part=this.components.dress
+            this.layer.noStroke()
+            this.layer.fill(...this.flashColor(part.color.insideHighlight),this.fade.main*part.fade.main)
+            for(let a=0,la=18;a<la;a++){
+                if(lcos(a/la*360)>0){
+                    this.layer.push()
+                    this.layer.translate(13.5*lsin((a-0.2)/la*360)*part.anim.wide,-24.5+4*lcos((a-0.2)/la*360)-part.anim.lift)
+                    this.layer.rotate(-(18+3*part.anim.lift)*lsin(lsin((a-0.2)/la*360)*90)*part.anim.wide)
+                    this.layer.ellipse(0,0,3.25*lcos((a-0.2)/la*360)*part.anim.wide,4.5)
+                    this.layer.pop()
+                    this.layer.push()
+                    this.layer.translate(13.5*lsin((a+0.2)/la*360)*part.anim.wide,-24.5+4*lcos((a+0.2)/la*360)-part.anim.lift)
+                    this.layer.rotate(-(18+3*part.anim.lift)*lsin(lsin((a+0.2)/la*360)*90)*part.anim.wide)
+                    this.layer.ellipse(0,0,3.25*lcos((a+0.2)/la*360)*part.anim.wide,4.5)
+                    this.layer.pop()
+                }
             }
+            this.layer.fill(...this.flashColor(part.color.inside),this.fade.main*part.fade.main)
+            this.layer.ellipse(0,-24-part.anim.lift,28*part.anim.wide,8)
+            this.layer.quad(-6,-44,6,-44,14*part.anim.wide,-24-part.anim.lift,-14*part.anim.wide,-24-part.anim.lift)
+            this.layer.fill(...this.flashColor(part.color.insideOver),this.fade.main*part.fade.main)
             for(let a=0,la=15;a<la;a++){
-                this.layer.strokeWeight(1.5+a*0.08)
-                this.layer.line(
-                    6.75*lsin(part.spin+this.direction.main)+a*(1+0.25*lsin((a+2.5)/la*480+this.time))*lcos(part.spin+this.direction.main),
-                    -45.5+a*1.5,
-                    6.75*lsin(part.spin+this.direction.main)+(a+1)*(1+0.25*lsin((a+3.5)/la*480+this.time))*lcos(part.spin+this.direction.main),
-                    -45.5+(a+1)*1.5
-                )
+                if(lcos((a-0.16)/la*360)>0){
+                    this.layer.triangle(
+                        6*lsin((a-0.16)/la*360),-45.5+lcos((a-0.16)/la*360)*2,
+                        14*lsin((a-0.24)/la*360)*part.anim.wide,-24+4*sqrt(1-lsin((a-0.24)/la*360)**2)-part.anim.lift,
+                        14*lsin((a-0.08)/la*360)*part.anim.wide,-24+4*sqrt(1-lsin((a-0.08)/la*360)**2)-part.anim.lift
+                    )
+                }
+                if(lcos((a+0.16)/la*360)>0){
+                    this.layer.triangle(
+                        6*lsin((a+0.16)/la*360),-45.5+lcos((a+0.16)/la*360)*2,
+                        14*lsin((a+0.24)/la*360)*part.anim.wide,-24+4*sqrt(1-lsin((a+0.24)/la*360)**2)-part.anim.lift,
+                        14*lsin((a+0.08)/la*360)*part.anim.wide,-24+4*sqrt(1-lsin((a+0.08)/la*360)**2)-part.anim.lift
+                    )
+                }
             }
         }
         if(this.components.body.display){
@@ -250,83 +303,128 @@ this.packages.push(new graphicsPackage(
             for(let a=0,la=18;a<la;a++){
                 if(lcos(a/la*360)>0){
                     this.layer.push()
-                    this.layer.translate(13.75*lsin((a-0.2)/la*360),-24.5+4*lcos((a-0.2)/la*360))
-                    this.layer.rotate(-18*lsin(lsin((a-0.2)/la*360)*90))
-                    this.layer.ellipse(0,0,3.25*lcos((a-0.2)/la*360),4.5)
+                    if(part.anim.reverse){
+                        this.layer.translate(13.25*lsin((a-0.2)/la*360)*part.anim.wide,-24.5-4*lcos((a-0.2)/la*360)-part.anim.lift)
+                    }else{
+                        this.layer.translate(13.75*lsin((a-0.2)/la*360)*part.anim.wide,-24.5+4*lcos((a-0.2)/la*360)-part.anim.lift)
+                    }
+                    this.layer.rotate(-(18+3*part.anim.lift)*lsin(lsin((a-0.2)/la*360)*90)*part.anim.wide)
+                    this.layer.ellipse(0,0,3.25*lcos((a-0.2)/la*360)*part.anim.wide,4.5)
                     this.layer.pop()
                     this.layer.push()
-                    this.layer.translate(13.75*lsin((a+0.2)/la*360),-24.5+4*lcos((a+0.2)/la*360))
-                    this.layer.rotate(-18*lsin(lsin((a+0.2)/la*360)*90))
-                    this.layer.ellipse(0,0,3.25*lcos((a+0.2)/la*360),4.5)
+                    if(part.anim.reverse){
+                        this.layer.translate(13.25*lsin((a+0.2)/la*360)*part.anim.wide,-24.5-4*lcos((a+0.2)/la*360)-part.anim.lift)
+                    }else{
+                        this.layer.translate(13.75*lsin((a+0.2)/la*360)*part.anim.wide,-24.5+4*lcos((a+0.2)/la*360)-part.anim.lift)
+                    }
+                    this.layer.rotate(-(18+3*part.anim.lift)*lsin(lsin((a+0.2)/la*360)*90)*part.anim.wide)
+                    this.layer.ellipse(0,0,3.25*lcos((a+0.2)/la*360)*part.anim.wide,4.5)
                     this.layer.pop()
                 }
             }
             this.layer.fill(...this.flashColor(part.color.main),this.fade.main*part.fade.main)
-            this.layer.quad(-6,-44,6,-44,14,-24,-14,-24)
-            this.layer.ellipse(0,-24,28,8)
+            if(part.anim.reverse){
+                this.layer.beginShape()
+                this.layer.vertex(-6,-44)
+                this.layer.vertex(6,-44)
+                this.layer.vertex(14*part.anim.wide,-24-part.anim.lift)
+                this.layer.bezierVertex(11*part.anim.wide,-29.25-part.anim.lift,-11*part.anim.wide,-29.25-part.anim.lift,-14*part.anim.wide,-24-part.anim.lift)
+                this.layer.endShape()
+            }else{
+                this.layer.ellipse(0,-24,28,8)
+                this.layer.quad(-6,-44,6,-44,14,-24,-14,-24)
+            }
             this.layer.arc(0,-44,12,40,-180,0)
             this.layer.ellipse(0,-44,12,2)
-            this.layer.fill(...this.flashColor(part.color.over),this.fade.main*part.fade.main)
-            for(let a=0,la=15;a<la;a++){
-                if(lcos((a-0.16)/la*360)>0){
-                    this.layer.triangle(
-                        6*lsin((a-0.16)/la*360),-45.5+lcos((a-0.16)/la*360)*2,
-                        14*lsin((a-0.24)/la*360),-24+4*sqrt(1-lsin((a-0.24)/la*360)**2),
-                        14*lsin((a-0.08)/la*360),-24+4*sqrt(1-lsin((a-0.08)/la*360)**2)
-                    )
+            if(part.anim.reverse){
+                this.layer.fill(...this.flashColor(part.color.over),this.fade.main*part.fade.main)
+                for(let a=0,la=15;a<la;a++){
+                    if(lcos((a-0.16)/la*360)>0){
+                        this.layer.triangle(
+                            5.5*lsin((a-0.16)/la*360),-44.5-lcos((a-0.16)/la*360)*2,
+                            14*lsin((a-0.24)/la*360)*part.anim.wide,-24-4*sqrt(1-lsin((a-0.24)/la*360)**2)-part.anim.lift,
+                            14*lsin((a-0.08)/la*360)*part.anim.wide,-24-4*sqrt(1-lsin((a-0.08)/la*360)**2)-part.anim.lift
+                        )
+                    }
+                    if(lcos((a+0.16)/la*360)>0){
+                        this.layer.triangle(
+                            5.5*lsin((a+0.16)/la*360),-44.5-lcos((a+0.16)/la*360)*2,
+                            14*lsin((a+0.24)/la*360)*part.anim.wide,-24-4*sqrt(1-lsin((a+0.24)/la*360)**2)-part.anim.lift,
+                            14*lsin((a+0.08)/la*360)*part.anim.wide,-24-4*sqrt(1-lsin((a+0.08)/la*360)**2)-part.anim.lift
+                        )
+                    }
                 }
-                if(lcos((a+0.16)/la*360)>0){
-                    this.layer.triangle(
-                        6*lsin((a+0.16)/la*360),-45.5+lcos((a+0.16)/la*360)*2,
-                        14*lsin((a+0.24)/la*360),-24+4*sqrt(1-lsin((a+0.24)/la*360)**2),
-                        14*lsin((a+0.08)/la*360),-24+4*sqrt(1-lsin((a+0.08)/la*360)**2)
-                    )
+            }else{
+                this.layer.fill(...this.flashColor(part.color.over),this.fade.main*part.fade.main)
+                for(let a=0,la=15;a<la;a++){
+                    if(lcos((a-0.16)/la*360)>0){
+                        this.layer.triangle(
+                            6*lsin((a-0.16)/la*360),-45.5+lcos((a-0.16)/la*360)*2,
+                            14*lsin((a-0.24)/la*360)*part.anim.wide,-24+4*sqrt(1-lsin((a-0.24)/la*360)**2)-part.anim.lift,
+                            14*lsin((a-0.08)/la*360)*part.anim.wide,-24+4*sqrt(1-lsin((a-0.08)/la*360)**2)-part.anim.lift
+                        )
+                    }
+                    if(lcos((a+0.16)/la*360)>0){
+                        this.layer.triangle(
+                            6*lsin((a+0.16)/la*360),-45.5+lcos((a+0.16)/la*360)*2,
+                            14*lsin((a+0.24)/la*360)*part.anim.wide,-24+4*sqrt(1-lsin((a+0.24)/la*360)**2)-part.anim.lift,
+                            14*lsin((a+0.08)/la*360)*part.anim.wide,-24+4*sqrt(1-lsin((a+0.08)/la*360)**2)-part.anim.lift
+                        )
+                    }
                 }
             }
             this.layer.fill(...this.flashColor(this.components.body.color),this.fade.main*part.fade.main)
             this.layer.ellipse(0,-62.75,4,2.5)
             this.layer.fill(...this.flashColor(part.color.stripe),this.fade.main*part.fade.main)
             this.layer.beginShape()
-            this.layer.vertex(-13.5,-25.25)
-            this.layer.bezierVertex(-9.4,-21.25,9.4,-21.25,13.5,-25.25)
-            this.layer.vertex(13.7,-24.75)
-            this.layer.bezierVertex(9.5,-20.5,-9.5,-20.5,-13.7,-24.75)
+            if(part.anim.reverse){
+                this.layer.vertex(-13.2*part.anim.wide,-26-part.anim.lift)
+                this.layer.bezierVertex(-9.4*part.anim.wide,-30-part.anim.lift,9.4*part.anim.wide,-30-part.anim.lift,13.2*part.anim.wide,-26-part.anim.lift)
+                this.layer.vertex(13.5*part.anim.wide,-25.25-part.anim.lift)
+                this.layer.bezierVertex(9.5,-29.5-part.anim.lift,-9.5*part.anim.wide,-29.5-part.anim.lift,-13.5*part.anim.wide,-25.25-part.anim.lift)
+            }else{
+                this.layer.vertex(-13.5*part.anim.wide,-25.25-part.anim.lift)
+                this.layer.bezierVertex(-9.4*part.anim.wide,-21.25-part.anim.lift,9.4*part.anim.wide,-21.25-part.anim.lift,13.5*part.anim.wide,-25.25-part.anim.lift)
+                this.layer.vertex(13.7*part.anim.wide,-24.75-part.anim.lift)
+                this.layer.bezierVertex(9.5*part.anim.wide,-20.5-part.anim.lift,-9.5*part.anim.wide,-20.5-part.anim.lift,-13.7*part.anim.wide,-24.75-part.anim.lift)
+            }
             this.layer.endShape()
         }
         if(this.components.dress.bow.display&&lcos(this.components.dress.bow.spin+this.direction.main)>0){
             let part=this.components.dress.bow
             this.layer.noStroke()
-            this.layer.fill(...this.flashColor(part.color),this.fade.main*part.fade)
-            this.layer.stroke(...this.flashColor(part.color),this.fade.main*part.fade)
+            this.layer.fill(...this.flashColor(part.color[0]),this.fade.main*part.fade)
+            this.layer.stroke(...this.flashColor(part.color[0]),this.fade.main*part.fade)
             this.layer.strokeWeight(1)
             this.layer.strokeJoin(ROUND)
             this.layer.triangle(
                 6.75*lsin(part.spin+this.direction.main),-46,
-                6.75*lsin(part.spin+this.direction.main)-7*lcos(part.spin+this.direction.main),-48.5,
-                6.75*lsin(part.spin+this.direction.main)-6.5*lcos(part.spin+this.direction.main),-42.5
+                6.75*lsin(part.spin+this.direction.main)-7*lcos(part.spin+this.direction.main)*part.anim.size,-46-2.5*part.anim.size,
+                6.75*lsin(part.spin+this.direction.main)-6.5*lcos(part.spin+this.direction.main)*part.anim.size,-46+3.5*part.anim.size
             )
             this.layer.triangle(
                 6.75*lsin(part.spin+this.direction.main),-46,
-                6.75*lsin(part.spin+this.direction.main)+7*lcos(part.spin+this.direction.main),-48.5,
-                6.75*lsin(part.spin+this.direction.main)+6.5*lcos(part.spin+this.direction.main),-42.5
+                6.75*lsin(part.spin+this.direction.main)+7*lcos(part.spin+this.direction.main)*part.anim.size,-46-2.5*part.anim.size,
+                6.75*lsin(part.spin+this.direction.main)+6.5*lcos(part.spin+this.direction.main)*part.anim.size,-46+3.5*part.anim.size
             )
             this.layer.strokeJoin(MITER)
-            for(let a=0,la=15;a<la;a++){
-                this.layer.strokeWeight(1.5+a*0.08)
+            this.layer.fill(...this.flashColor(part.color[1]),this.fade.main*part.fade)
+            for(let a=0,la=15*part.anim.length;a<la;a++){
+                this.layer.strokeWeight(1.5+a/la*1.2)
                 this.layer.line(
-                    6.75*lsin(part.spin+this.direction.main)-a*(1+0.25*lsin(a/la*480+this.time))*lcos(part.spin+this.direction.main),
-                    -45.5+a*1.5,
-                    6.75*lsin(part.spin+this.direction.main)-(a+1)*(1+0.25*lsin((a+1)/la*480+this.time))*lcos(part.spin+this.direction.main),
-                    -45.5+(a+1)*1.5
+                    6.75*lsin(part.spin+this.direction.main)-a*(1+0.25*lsin(a/la*480*part.anim.swivel[0]+this.time))*lcos(part.spin+this.direction.main),
+                    -45.5+a*1.5*part.anim.fall,
+                    6.75*lsin(part.spin+this.direction.main)-(a+1)*(1+0.25*lsin((a+1)/la*480*part.anim.swivel[0]+this.time))*lcos(part.spin+this.direction.main),
+                    -45.5+(a+1)*1.5*part.anim.fall
                 )
             }
-            for(let a=0,la=15;a<la;a++){
-                this.layer.strokeWeight(1.5+a*0.08)
+            for(let a=0,la=15*part.anim.length;a<la;a++){
+                this.layer.strokeWeight(1.5+a/la*1.2)
                 this.layer.line(
-                    6.75*lsin(part.spin+this.direction.main)+a*(1+0.25*lsin((a+2.5)/la*480+this.time))*lcos(part.spin+this.direction.main),
-                    -45.5+a*1.5,
-                    6.75*lsin(part.spin+this.direction.main)+(a+1)*(1+0.25*lsin((a+3.5)/la*480+this.time))*lcos(part.spin+this.direction.main),
-                    -45.5+(a+1)*1.5
+                    6.75*lsin(part.spin+this.direction.main)+a*(1+0.25*lsin((a+2.5)/la*480*part.anim.swivel[1]+this.time))*lcos(part.spin+this.direction.main),
+                    -45.5+a*1.5*part.anim.fall,
+                    6.75*lsin(part.spin+this.direction.main)+(a+1)*(1+0.25*lsin((a+3.5)/la*480*part.anim.swivel[1]+this.time))*lcos(part.spin+this.direction.main),
+                    -45.5+(a+1)*1.5*part.anim.fall
                 )
             }
         }
@@ -368,6 +466,13 @@ this.packages.push(new graphicsPackage(
                 this.layer.line(part.appear.stack.middle.x,part.appear.stack.middle.y,part.appear.stack.bottom.x,part.appear.stack.bottom.y)
                 if(this.components.dress.display.sleeve[a]){
                     this.displayComponent(0,[a])
+                }
+            }else if(part.display&&part.appear.bottom.z>2){
+                this.layer.stroke(...this.flashColor(part.color),this.fade.main*part.fade)
+                this.layer.strokeWeight(4)
+                this.layer.line(part.appear.middle.x,part.appear.middle.y,part.appear.bottom.x,part.appear.bottom.y)
+                if(this.components.dress.display.sleeve[a]){
+                    this.displayComponent(1,[a])
                 }
             }
         }
@@ -415,9 +520,10 @@ this.packages.push(new graphicsPackage(
     },function(type,args){
         let dir
         let sc
+        let loc=[]
         switch(type){
             case 0:
-                let loc=[
+                loc=[
                     this.components.arms[args[0]].appear.top,
                     this.components.arms[args[0]].appear.middle,
                     this.components.arms[args[0]].appear.bottom
@@ -553,6 +659,50 @@ this.packages.push(new graphicsPackage(
                 }
                 this.layer.endShape()
             break
+            case 1:
+                loc=[
+                    this.components.arms[args[0]].appear.top,
+                    this.components.arms[args[0]].appear.middle,
+                    this.components.arms[args[0]].appear.bottom
+                ]
+                dir=atan2(loc[1].x-loc[2].x,loc[1].y-loc[2].y)
+                sc=[lsin(dir+90),lcos(dir+90)]
+                this.layer.noStroke()
+                this.layer.fill(...this.flashColor(this.components.dress.color.highlight),this.fade.main*this.components.dress.fade.sleeve[args[0]])
+                this.layer.quad(
+                    loc[1].x*0.2+loc[2].x*0.8+2.4*sc[0],
+                    loc[1].y*0.2+loc[2].y*0.8+2.4*sc[1],
+                    loc[1].x*0.2+loc[2].x*0.8-2.4*sc[0],
+                    loc[1].y*0.2+loc[2].y*0.8-2.4*sc[1],
+                    loc[1].x*0.25+loc[2].x*0.75-2.5*sc[0],
+                    loc[1].y*0.25+loc[2].y*0.75-2.5*sc[1],
+                    loc[1].x*0.25+loc[2].x*0.75+2.5*sc[0],
+                    loc[1].y*0.25+loc[2].y*0.75+2.5*sc[1]
+                )
+                this.layer.fill(...this.flashColor(this.components.dress.color.sleeve),this.fade.main*this.components.dress.fade.sleeve[args[0]])
+                this.layer.beginShape()
+                this.layer.vertex(
+                    loc[1].x+2.1*sc[0],
+                    loc[1].y+2.1*sc[1])
+                this.layer.vertex(
+                    loc[1].x*0.4+loc[2].x*0.6+3.25*sc[0],
+                    loc[1].y*0.4+loc[2].y*0.6+3.25*sc[1])
+                this.layer.vertex(
+                    loc[1].x*0.25+loc[2].x*0.75+2.5*sc[0],
+                    loc[1].y*0.25+loc[2].y*0.75+2.5*sc[1])
+                this.layer.vertex(
+                    loc[1].x*0.25+loc[2].x*0.75-2.5*sc[0],
+                    loc[1].y*0.25+loc[2].y*0.75-2.5*sc[1])
+                this.layer.vertex(
+                    loc[1].x*0.4+loc[2].x*0.6-3.25*sc[0],
+                    loc[1].y*0.4+loc[2].y*0.6-3.25*sc[1])
+                this.layer.vertex(
+                    loc[1].x-2.1*sc[0],
+                    loc[1].y-2.1*sc[1])
+                this.layer.endShape()
+                this.layer.ellipse(loc[1].x,loc[1].y,4.3)
+            break
+            
         }
     },
 ))
