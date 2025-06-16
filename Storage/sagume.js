@@ -344,7 +344,7 @@ this.packages.push(new graphicsPackage(
             }
             this.layer.pop()
         }
-        if(this.components.dress.display.mains){
+        if(this.components.dress.display.main){
             let part=this.components.dress
             controlSpin(part.parts,this.direction.main,0)
             this.layer.fill(...this.flashColor(part.color.back),this.fade.main*part.fade.main)

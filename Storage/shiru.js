@@ -129,7 +129,7 @@ this.packages.push(new graphicsPackage(
         this.components=this.standardModel(
             0,
             15.5,[{x:-3,y:-31,z:0},{x:3,y:-31,z:0}],[{x:-3.5,y:-53,z:0},{x:3.5,y:-53,z:0}],
-            [-44,-72,-64,-67.75,-67.75,-63.5,-63.5],[[9,28],[28,28]],{x:8,y:3.5,open:0,wide:36},[18,18,30,30]
+            [-44.5,-72,-64,-67.75,-67.75,-63.5,-63.5],[[9,28],[28,28]],{x:8,y:3.5,open:0,wide:36},[18,18,30,30]
         )
         this.components.hair.tail=[{display:true,fade:1,spin:-114},{display:true,fade:1,spin:114}]
         this.components.hair.bow=[{display:true,fade:1,spin:-96},{display:true,fade:1,spin:96}]
@@ -225,7 +225,7 @@ this.packages.push(new graphicsPackage(
             let part=this.components.dress.bow
 
             this.layer.push()
-            this.layer.translate(lsin(this.direction.main+part.spin)*5.5,-54)
+            this.layer.translate(lsin(this.direction.main+part.spin)*5.5,-55)
             this.layer.rotate(lsin(this.direction.main+part.spin)*-15)
             this.layer.scale(lcos(this.direction.main+part.spin),1)
             this.layer.noStroke()
@@ -365,29 +365,29 @@ this.packages.push(new graphicsPackage(
         if(this.components.dress.display.main){
             this.layer.noStroke()
             this.layer.fill(...this.flashColor(this.components.dress.color.shawl),this.fade.main*this.components.dress.fade.main)
-            this.layer.arc(0,-46,18,21,-180,0)
+            this.layer.arc(0,-47,18,21,-180,0)
             for(let a=0,la=20;a<la;a++){
                 if(lcos(a/la*360+this.direction.main)>0){
-                    this.layer.arc(8.9*lsin(a/la*360+this.direction.main),-46.25,3*lcos(a/la*360+this.direction.main),2,0,180)
+                    this.layer.arc(8.9*lsin(a/la*360+this.direction.main),-47.25,3*lcos(a/la*360+this.direction.main),2,0,180)
                 }
             }
             this.layer.stroke(...this.flashColor(this.components.dress.color.highlight),this.fade.main*this.components.dress.fade.main)
             this.layer.strokeWeight(0.25)
             for(let a=0,la=20;a<la;a++){
                 if(lcos(a/la*360+this.direction.main)>0){
-                    this.layer.arc(8.75*lsin(a/la*360+this.direction.main),-48,3*lcos(a/la*360+this.direction.main),2,10,170)
+                    this.layer.arc(8.75*lsin(a/la*360+this.direction.main),-49,3*lcos(a/la*360+this.direction.main),2,10,170)
                 }
             }
-            this.layer.arc(0,-56,8,4,10,170)
+            this.layer.arc(0,-57,8,4,8,172)
             this.layer.noStroke()
             this.layer.fill(...this.flashColor(this.components.body.color),this.fade.main*this.components.dress.fade.main)
-            this.layer.ellipse(0,-56,5,2)
+            this.layer.ellipse(0,-57,4,1)
         }
         if(this.components.dress.bow.display&&lcos(this.direction.main+this.components.dress.bow.spin)>0){
             let part=this.components.dress.bow
 
             this.layer.push()
-            this.layer.translate(lsin(this.direction.main+part.spin)*5.5,-54)
+            this.layer.translate(lsin(this.direction.main+part.spin)*5.5,-55)
             this.layer.rotate(lsin(this.direction.main+part.spin)*-15)
             this.layer.scale(lcos(this.direction.main+part.spin),1)
             this.layer.noStroke()

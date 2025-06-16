@@ -1,12 +1,13 @@
 function displayScene(type){
     let manager=new graphicsManager();
     let layer
+    let tick
     let char=[]
     switch(type){
         case 0:
             layer=formImage(600,600)
             manager.generateGraphics(`Shiru`)
-            char.push(new character(layer,manager,0,125,`Shiru`,30))
+            char.push(new character(layer,manager,0,225,`Shiru`,30))
             char[0].size=5
             char[0].components.arms[0].anim.top.theta=-75
             char[0].components.arms[0].anim.middle.theta=60
@@ -15,22 +16,22 @@ function displayScene(type){
             return layer
         case 1:
             layer=formImage(600,600)
-            manager.generateGraphics(`Sagume`)
-            char.push(new character(layer,manager,0,125,`Sagume`,30))
+            manager.generateGraphics(`Daiyousei`)
+            char.push(new character(layer,manager,0,225,`Daiyousei`,-30))
             char[0].size=5
             char[0].display()
             return layer
         case 2:
             layer=formImage(600,600)
             manager.generateGraphics(`Meri`)
-            char.push(new character(layer,manager,0,125,`Meri`,30))
+            char.push(new character(layer,manager,0,225,`Meri`,30))
             char[0].size=5
             char[0].display()
             return layer
         case 3:
             layer=formImage(600,600)
             manager.generateGraphics(`Duck`)
-            char.push(new character(layer,manager,0,125,`Duck`,30))
+            char.push(new character(layer,manager,0,225,`Duck`,30))
             char[0].size=5
             char[0].display()
             return layer
@@ -86,18 +87,18 @@ function displayScene(type){
                     layer.ellipse(((b+0.5)/lb-0.5)*layer.width*1.05+random(-15,15),sin(b/lb*720+key*100)*150-layer.height*0.3+random(-30,30),random(40,80))
                 }
             }
-            for(let a=0,la=60;a<la;a++){
+            for(let a=0,la=80;a<la;a++){
                 layer.push()
                 layer.translate(((a+0.5)/la-0.5)*layer.width,layer.height*random(-0.5,-0.1))
                 layer.rotate(random(-1,1))
                 layer.scale(random(0.4,1.2))
                 layer.noStroke()
-                layer.fill(200,255,255,0.25)
+                layer.fill(240,255,255,0.5)
                 layer.quad(-1.5,0,0,-15,1.5,0,0,15)
                 layer.quad(-15,0,0,-1.5,15,0,0,1.5)
                 if(floor(random(0,3))==0){
                     layer.noFill()
-                    layer.stroke(200,255,255,0.5)
+                    layer.stroke(240,255,255,0.5)
                     layer.strokeWeight(1.5)
                     layer.ellipse(0,0,12)
                 }
@@ -229,10 +230,117 @@ function displayScene(type){
 
             return layer
         case 5:
-            layer=formImage(3840,2160)
+            layer=formImage(3072,1492)
+            layer.fillGradient(quickGradient(86,layer.height,[0.0,color(50,50,50),1.0,color(70,70,70)]))
+            layer.push()
+            layer.translate(-layer.width/2,-layer.height/2)
+            layer.rect(layer.width/2,layer.height/2,layer.width,layer.height)
+            layer.pop()
+            tick=0
+            for(let a=0,la=6;a<la;a++){
+                let h=((a+0.95)/la*0.925-0.5)*layer.height
+                layer.fill(80)
+                layer.rect(0,h,layer.width,20)
+                layer.fill(100)
+                for(let b=0,lb=36;b<lb;b++){
+                    layer.ellipse(((b+0.1+a%2*0.5)/lb-0.5)*layer.width,h,8)
+                    layer.ellipse(((b+0.9+a%2*0.5)/lb-0.5)*layer.width,h,8)
+                    layer.rect(((b+0.5+a%2*0.5)/lb-0.5)*layer.width,h,30,2)
+                }
+                for(let b=-a%2,lb=80;b<lb;b++){
+                    if(!(a==4&&b==54)){
+                        layer.fill(160,200-random(0,100),40)
+                        layer.rect(((b+0.5+a%2*0.5)/lb-0.5)*layer.width,h-95,24,170)
+                        layer.fill(180)
+                        layer.rect(((b+0.5+a%2*0.5)/lb-0.5)*layer.width,h-95,14,110)
+                        layer.push()
+                        layer.translate(((b+0.5+a%2*0.5)/lb-0.5)*layer.width,h-95)
+                        layer.rotate(-90)
+                        layer.fill(0)
+                        layer.textSize(10)
+                        layer.text('MMIB-1052ME-'+('0000'+(1649+tick)).slice(-4),0,0)
+                        layer.pop()
+                    }
+                    tick++
+                }
+            }
+
+            for(let a=0,la=320;a<la;a++){
+                layer.fill(60-a/la*60)
+                layer.rect(0,layer.height*0.5-160+a*0.5,layer.width,320-a)
+            }
+
+            layer.fill(160,200-random(0,100),40)
+            layer.rect(layer.width*0.36-500,layer.height*0.5-310,170,24)
+            layer.fill(180)
+            layer.rect(layer.width*0.36-500,layer.height*0.5-310,110,14)
+            layer.fill(0)
+            layer.textSize(10)
+            layer.text('MMIB-1052ME-2025',layer.width*0.36-500,layer.height*0.5-310)
+
+            for(let a=0,la=18;a<la;a++){
+                let d=(a+random(0.3,0.7))/la*360
+                let r=random(240,320)+a%2*100
+                layer.push()
+                layer.translate(layer.width*0.36-680+lsin(d)*r,layer.height*0.35-170+lcos(d)*r)
+                layer.rotate(random(-1,1))
+                layer.scale(random(0.8,1.2))
+                layer.noStroke()
+                layer.fill(200,255,225,0.5)
+                layer.quad(-1.5,0,0,-15,1.5,0,0,15)
+                layer.quad(-15,0,0,-1.5,15,0,0,1.5)
+                if(floor(random(0,3))!=0){
+                    layer.noFill()
+                    layer.stroke(200,255,225,0.5)
+                    layer.strokeWeight(1.5)
+                    layer.ellipse(0,0,12)
+                }
+                layer.pop()
+            }
+
+            manager.generateGraphics(`Daiyousei`)
+            char.push(new character(layer,manager,layer.width*0.36-680,layer.height*0.5-135,`Daiyousei`,-33))
+            char[0].size=5
+            char[0].components.dress.anim.wide=1.2
+            char[0].components.dress.anim.lift=3
+            char[0].components.hair.bow.spin-=9
+            char[0].components.wing.anim.size=1.5
+            char[0].components.wing.anim.lift=8
+
+            char[0].components.arms[0].anim.top.theta=-90
+            char[0].components.arms[0].anim.top.phi=36
+            char[0].components.arms[0].anim.middle.theta=-90
+            char[0].components.arms[0].anim.middle.phi=72
+
+            char[0].components.arms[1].anim.top.theta=90
+            char[0].components.arms[1].anim.top.phi=48
+            char[0].components.arms[1].anim.middle.theta=90
+            char[0].components.arms[1].anim.middle.phi=81
+
+            char[0].components.legs[0].anim.top.phi=42
+            char[0].components.legs[0].anim.middle.theta=-60
+            char[0].components.legs[0].anim.middle.phi=114
+
+            char[0].components.legs[1].anim.top.phi=36
+            char[0].components.legs[1].anim.middle.theta=123
+            char[0].components.legs[1].anim.middle.phi=99
+
+            char[0].display()
+
+            overlayer=formImage(3840,2160)
+            overlayer.fill(0,0.8)
+            overlayer.rect(0,0,layer.width,layer.height)
+            overlayer.erase()
+            for(let a=0,la=500;a<la;a++){
+                overlayer.fill(0,(a+1)/la*0.05)
+                overlayer.ellipse(layer.width*0.36-680,layer.height*0.35-200,1350*(1-a/la),900*(1-a/la))
+            }
+
+            layer.image(overlayer,0,0)
+            
             return layer
         case 6:
-            layer=formImage(3670,1780)
+            layer=formImage(3840,2160)
             layer.fillGradient(quickGradient(86,layer.height,[0.0,color(0,30,120),1.0,color(120,180,255)]))
             layer.push()
             layer.translate(-layer.width/2,-layer.height/2)
@@ -282,7 +390,7 @@ function displayScene(type){
             char[0].display()
             glitch(layer,5,200,200)
 
-            overlayer=formImage(3670,1780)
+            overlayer=formImage(3840,2160)
             
             for(let a=0,la=15;a<la;a++){
                 let x=((a+random(0.15,0.75))/la-0.5)*layer.width
@@ -307,7 +415,7 @@ function displayScene(type){
 
             layer.image(overlayer,0,0)
 
-            overlayer=formImage(3670,1780)
+            overlayer=formImage(3840,2160)
             
             let p=layer.height*0.05
             let v=12
@@ -326,15 +434,16 @@ function displayScene(type){
             }
             for(let a=0,la=20;a<la;a++){
                 overlayer.push()
-                let d=(a+random(0.3,0.7))/la*360
-                let r=random(overlayer.width*0.3,overlayer.width*0.45)+a%2*overlayer.width*0.15
+                let d=(a+random(0.4,0.6))/la*360
+                let r=random(overlayer.width*0.3,overlayer.width*0.5)+a%2*overlayer.width*0.15
+                let size=random(1,1.2)
                 overlayer.push()
                 overlayer.translate(lsin(d)*r,overlayer.height*0.05+lcos(d)*r*0.6)
-                for(let b=0,lb=2000;b<lb;b++){
+                for(let b=0,lb=random(1000,4000);b<lb;b++){
                     let c=[random(0,1),random(0,1)]
-                    overlayer.fill(200+c[0]*20,200+c[0]*20+c[1]*20,220+c[0]*20+c[1]*20,0.02)
+                    overlayer.fill(200+c[0]*20,200+c[0]*20+c[1]*20,220+c[0]*20+c[1]*20,0.025)
                     let d=b*19
-                    let r=(sqrt(random(0,60000*(1-b/lb*0.8))))*random(1,1.2)
+                    let r=(sqrt(random(0,60000*(1-b/lb*0.8))))*random(1,1.2)*size
                     overlayer.ellipse(lsin(d)*r,lcos(d)*r*0.5,random(24,30))
                 }
                 overlayer.pop()
@@ -350,9 +459,9 @@ function displayScene(type){
 
             layer.image(overlayer,0,0)
 
-            for(let a=0,la=16;a<la;a++){
+            for(let a=0,la=18;a<la;a++){
                 let d=(a+random(0.3,0.7))/la*360
-                let r=random(320,440)+a%2*120
+                let r=random(320,480)+a%2*120
                 layer.push()
                 layer.translate(lsin(d)*r,layer.height*0.05+lcos(d)*r)
                 layer.rotate(random(-1,1))
@@ -370,6 +479,123 @@ function displayScene(type){
                 layer.pop()
             }
 
+            return layer
+        case 7:
+            layer=formImage(1505,1492)
+            layer.fillGradient(quickGradient(86,layer.height,[0.0,color(50,50,50),1.0,color(70,70,70)]))
+            layer.push()
+            layer.translate(-layer.width/2,-layer.height/2)
+            layer.rect(layer.width/2,layer.height/2,layer.width,layer.height)
+            layer.pop()
+            tick=0
+            for(let a=0,la=6;a<la;a++){
+                let h=((a+0.95)/la*0.925-0.5)*layer.height
+                layer.fill(80)
+                layer.rect(0,h,layer.width,20)
+                layer.fill(100)
+                for(let b=0,lb=36;b<lb;b++){
+                    layer.ellipse(((b+0.1+a%2*0.5)/lb-0.5)*layer.width,h,8)
+                    layer.ellipse(((b+0.9+a%2*0.5)/lb-0.5)*layer.width,h,8)
+                    layer.rect(((b+0.5+a%2*0.5)/lb-0.5)*layer.width,h,30,2)
+                }
+                for(let b=-a%2,lb=38;b<lb;b++){
+                    if(!(a==4&&b==22)){
+                        layer.fill(160,200-random(0,100),40)
+                        layer.rect(((b+0.5+a%2*0.5)/lb-0.5)*layer.width,h-95,24,170)
+                        layer.fill(180)
+                        layer.rect(((b+0.5+a%2*0.5)/lb-0.5)*layer.width,h-95,14,110)
+                        layer.push()
+                        layer.translate(((b+0.5+a%2*0.5)/lb-0.5)*layer.width,h-95)
+                        layer.rotate(-90)
+                        layer.fill(0)
+                        layer.textSize(10)
+                        layer.text('MMIB-1052ME-'+('0000'+(1849+tick)).slice(-4),0,0)
+                        layer.pop()
+                    }
+                    tick++
+                }
+            }
+
+            for(let a=0,la=320;a<la;a++){
+                layer.fill(60-a/la*60)
+                layer.rect(0,layer.height*0.5-160+a*0.5,layer.width,320-a)
+            }
+
+            layer.fill(160,200-random(0,100),40)
+            layer.rect(180,layer.height*0.5-310,170,24)
+            layer.fill(180)
+            layer.rect(180,layer.height*0.5-310,110,14)
+            layer.fill(0)
+            layer.textSize(10)
+            layer.text('MMIB-1052ME-2025',180,layer.height*0.5-310)
+
+            for(let a=0,la=18;a<la;a++){
+                let d=(a+random(0.3,0.7))/la*360
+                let r=random(240,320)+a%2*100
+                layer.push()
+                layer.translate(lsin(d)*r,layer.height*0.35-170+lcos(d)*r)
+                layer.rotate(random(-1,1))
+                layer.scale(random(0.8,1.2))
+                layer.noStroke()
+                layer.fill(200,255,225,0.5)
+                layer.quad(-1.5,0,0,-15,1.5,0,0,15)
+                layer.quad(-15,0,0,-1.5,15,0,0,1.5)
+                if(floor(random(0,3))!=0){
+                    layer.noFill()
+                    layer.stroke(200,255,225,0.5)
+                    layer.strokeWeight(1.5)
+                    layer.ellipse(0,0,12)
+                }
+                layer.pop()
+            }
+
+            manager.generateGraphics(`Daiyousei`)
+            char.push(new character(layer,manager,0,layer.height*0.5-135,`Daiyousei`,-33))
+            char[0].size=5
+            char[0].components.dress.anim.wide=1.2
+            char[0].components.dress.anim.lift=3
+            char[0].components.hair.bow.spin-=9
+            char[0].components.wing.anim.size=1.5
+            char[0].components.wing.anim.lift=8
+
+            char[0].components.arms[0].anim.top.theta=-90
+            char[0].components.arms[0].anim.top.phi=36
+            char[0].components.arms[0].anim.middle.theta=-90
+            char[0].components.arms[0].anim.middle.phi=72
+
+            char[0].components.arms[1].anim.top.theta=90
+            char[0].components.arms[1].anim.top.phi=48
+            char[0].components.arms[1].anim.middle.theta=90
+            char[0].components.arms[1].anim.middle.phi=81
+
+            char[0].components.legs[0].anim.top.phi=42
+            char[0].components.legs[0].anim.middle.theta=-60
+            char[0].components.legs[0].anim.middle.phi=114
+
+            char[0].components.legs[1].anim.top.phi=36
+            char[0].components.legs[1].anim.middle.theta=123
+            char[0].components.legs[1].anim.middle.phi=99
+
+            char[0].display()
+
+            overlayer=formImage(3840,2160)
+            overlayer.fill(0,0.8)
+            overlayer.rect(0,0,layer.width,layer.height)
+            overlayer.erase()
+            for(let a=0,la=500;a<la;a++){
+                overlayer.fill(0,(a+1)/la*0.05)
+                overlayer.ellipse(0,layer.height*0.35-200,1350*(1-a/la),900*(1-a/la))
+            }
+
+            layer.image(overlayer,0,0)
+            
+            return layer
+        case 8:
+            layer=formImage(600,600)
+            manager.generateGraphics(`Daiyousei`)
+            char.push(new character(layer,manager,0,125,`Daiyousei`,30))
+            char[0].size=5
+            char[0].display()
             return layer
     }
 }
