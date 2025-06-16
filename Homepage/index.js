@@ -107,6 +107,14 @@ function setup(){
     graphics.main.textAlign(CENTER,CENTER)
     graphics.main.textFont('monospace')
 }
+function windowResized(){
+    resizeCanvas(windowWidth-20,windowHeight-25)
+    graphics.main=createGraphics(width<1000?1478:3016,1426)
+    graphics.main.rectMode(CENTER)
+    graphics.main.colorMode(RGB,255,255,255,1)
+    graphics.main.textAlign(CENTER,CENTER)
+    graphics.main.textFont('monospace')
+}
 function draw(){
     date=new Date()
     graphics.main.clear()

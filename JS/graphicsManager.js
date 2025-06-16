@@ -1209,7 +1209,7 @@ class graphicsManager{
                 this.components.wing={
                     display:true,fade:1,
                     color:colorBase.wing,
-                    anim:{size:0,lift:2}
+                    anim:{size:1,lift:0}
                 }
                 this.routines.calculatePart=[0,1,2,3]
             },function(){
@@ -1865,7 +1865,7 @@ class graphicsManager{
                 }
                 if(this.components.dress.display.main){
                     let part=this.components.dress
-                    controlSpin(part.parts,this.direction.main,0)
+                    this.graphicManager.controlSpin(part.parts,this.direction.main,0)
                     this.layer.fill(...this.flashColor(part.color.back),this.fade.main*part.fade.main)
                     this.graphicManager.displayTrianglesBackMerge(this.layer,part.parts,this.direction.main,-41,12,1,0.2,part.color.back,part.color.back,this.fade.main*part.fade.main)
                 }

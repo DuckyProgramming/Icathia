@@ -592,8 +592,8 @@ function displayScene(type){
             return layer
         case 8:
             layer=formImage(600,600)
-            manager.generateGraphics(`Daiyousei`)
-            char.push(new character(layer,manager,0,125,`Daiyousei`,30))
+            manager.generateGraphics(`Sagume`)
+            char.push(new character(layer,manager,0,225,`Sagume`,30))
             char[0].size=5
             char[0].display()
             return layer
