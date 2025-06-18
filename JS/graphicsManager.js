@@ -1122,12 +1122,29 @@ class graphicsManager{
                         parent.displayTrianglesBack(layer,data.parts.hair.main,direction,0,34,1,-0.125,data.color.hair.back,1)
                         parent.displayTrianglesBack(layer,data.parts.hair.inside,direction,0,32,1,-0.25,data.color.hair.insideBack,1)
                         return layer
+                    case 2:
+                        layer=parent.subSprite(100,200,50,50)
+                        for(let a=0,la=data.parts.hair.tail.length;a<la;a++){
+                            parent.controlSpin(data.parts.hair.tail[a][0],direction,0)
+                            parent.controlSpin(data.parts.hair.tail[a][1],direction,0)
+                            layer.push()
+                            layer.translate(lsin(data.spin.tail+direction)*data.parts.hair.tailKey[a][0]+lsin(data.spin.tail+direction+a*150)*0.5,-5+data.parts.hair.tailKey[a][1])
+                            layer.rotate(lsin(data.spin.tail+direction)*data.parts.hair.tailKey[a][2])
+                            parent.displayTrianglesFrontMerge(layer,data.parts.hair.tail[a][0],direction,5,3,1,0.4,
+                                upColor(mergeColor(data.color.hair.tail.start,data.color.hair.tail.end,a/la),lcos(direction+data.spin.tail)*20,[1,1,1]),
+                                upColor(mergeColor(data.color.hair.tail.start,data.color.hair.tail.end,(a+1)/la),lcos(direction+data.spin.tail)*20,[1,1,1]),1)
+                            parent.displayTrianglesFrontMerge(layer,data.parts.hair.tail[a][1],direction,5,3,1,-0.4,
+                                upColor(mergeColor(data.color.hair.tail.start,data.color.hair.tail.end,a/la),lcos(direction+data.spin.tail)*20,[1,1,1]),
+                                upColor(mergeColor(data.color.hair.tail.start,data.color.hair.tail.end,(a+1)/la),lcos(direction+data.spin.tail)*20,[1,1,1]),1)
+                            layer.pop()
+                        }
+                        return layer
                 }
             },function(parent){
                 let data={
                     sprites:{
                         detail:constants.graphics.detail,genAmount:360/constants.graphics.detail,
-                        hair:{back:[],front:[]},
+                        hair:{back:[],front:[],tail:[]},
                     },parts:{
                         hair:{
                             main:[
@@ -1151,10 +1168,10 @@ class graphicsManager{
                                 {spin:[174,-138,-162],height:13},
                                 {spin:[138,-174,162],height:13},
                                 {spin:[153,-153,180],height:13.5},
-                                {spin:[-93,-69,-84],height:19},
-                                {spin:[69,93,84],height:19},
-                                {spin:[-123,-99,-114],height:22},
-                                {spin:[99,123,114],height:22},
+                                {spin:[-93,-69,-84],height:15},
+                                {spin:[69,93,84],height:15},
+                                {spin:[-123,-99,-114],height:17.5},
+                                {spin:[99,123,114],height:17.5},
                             ],inside:[
                                 {spin:[-27,-15,-15],height:0.5},
                                 {spin:[15,27,15],height:0.5},
@@ -1172,12 +1189,21 @@ class graphicsManager{
                                 {spin:[138,162,150],height:12.625},
                                 {spin:[174,-162,-174],height:13.125},
                                 {spin:[162,-174,174],height:13.125},
-                                {spin:[-108,-84,-99],height:17},
-                                {spin:[84,108,99],height:17},
-                            ]
+                                {spin:[-108,-84,-99],height:15.5},
+                                {spin:[84,108,99],height:15.5},
+                            ],tailKey:[
+                                [-3,-3,-18],
+                                [-0.5,2,-9],
+                                [0,7,0],
+                                [-0.25,12,6],
+                                [-0.75,17,9],
+                            ],tail:[],
                         }
                     },color:{
-                        hair:{back:[185,191,104],front:[211,216,127],insideBack:[117,123,90],insideFront:[154,155,98],glow:[228,239,181],bow:[[234,200,116],[203,130,68]]},
+                        hair:{
+                            back:[185,191,104],front:[211,216,127],insideBack:[117,123,90],insideFront:[154,155,98],glow:[228,239,181],
+                            bow:[[234,200,116],[203,130,68]],tail:{start:[203,210,116],end:[221,233,138]}
+                        },
                         skin:{head:[250,235,193],body:[250,228,186],legs:[247,241,189],arms:[249,236,192]},
                         eye:{back:[45,74,118],front:[47,53,77],glow:[176,188,183]},
                         mouth:{in:[235,168,126],out:[0,0,0]},
@@ -1185,10 +1211,19 @@ class graphicsManager{
                         dress:{under:[254,249,226],over:[88,127,166],stripe:[243,238,230],tie:[238,233,143]},
                         wing:{back:[250,237,214],front:[86,53,57]},
                     },
+                    spin:{tail:93}
                 }
+                for(let a=0,la=5;a<la;a++){
+					data.parts.hair.tail.push([[],[]])
+					for(let b=0,lb=6;b<lb;b++){
+						data.parts.hair.tail[a][0].push({spin:[a*30+b*60-30,a*30+b*60+30,a*30+b*60],y:[0,0,-3.6]})
+						data.parts.hair.tail[a][1].push({spin:[a*30+b*60-30,a*30+b*60+30,a*30+b*60],y:[0,0,3.6]})
+					}
+				}
                 for(let a=0,la=data.sprites.genAmount;a<la;a++){
                     data.sprites.hair.front.push(this.generateSprite(parent,0,360*a/la,data))
                     data.sprites.hair.back.push(this.generateSprite(parent,1,360*a/la,data))
+                    data.sprites.hair.tail.push(this.generateSprite(parent,2,360*a/la,data))
                 }
                 return data
             },function(){
@@ -1205,6 +1240,7 @@ class graphicsManager{
                     anim:{wide:1,lift:0},
                     tie:{display:true,fade:1,color:colorBase.dress.tie,spin:0}
                 }
+                this.components.hair.tail={display:true,fade:1,spin:93}
                 this.components.hair.bow={display:true,fade:1,color:colorBase.hair.bow,spin:93,level:-76}
                 this.components.wing={
                     display:true,fade:1,
@@ -1249,8 +1285,33 @@ class graphicsManager{
                     }
                     this.layer.pop()
                 }
+                if(this.components.hair.tail&&lcos(this.components.hair.tail.spin+this.direction.main)<=0){
+                    let dir=this.components.hair.tail.spin+this.direction.main
+                    this.layer.push()
+                    this.layer.translate(lsin(dir)*18,-64)
+                    this.layer.rotate(lsin(dir)*-1.5)
+                    this.layer.image(this.graphicManager.getData(this.name).sprites.hair.tail[this.sprites.spinDetail],0,5*this.fade.main*this.components.hair.tail.fade,20*this.fade.main*this.components.hair.tail.fade,40*this.fade.main*this.components.hair.tail.fade)
+                    this.layer.pop()
+                }
                 if(this.components.hair.bow.display&&lcos(this.direction.main+this.components.hair.bow.spin)<=0){
                     let part=this.components.hair.bow
+                    this.layer.push()
+                    this.layer.translate(lsin(this.direction.main+part.spin)*17,part.level)
+                    this.layer.scale(constrain(lcos(this.direction.main+part.spin)*-1.5,0,1)*0.1875,0.1875)
+                    this.layer.rotate(-155)
+                    for(let a=0,la=16;a<la;a++){
+                        this.layer.fill(...mergeColor(...part.color,abs(8-a)/8))
+                        this.layer.rotate(-10)
+                        this.layer.quad(0,0,-48+a/la*24,-24+a/la*24,-39+a/la*12,0,-48+a/la*24,24-a/la*24)
+                        this.layer.rotate(20)
+                        this.layer.quad(0,0,48-a/la*24,-24+a/la*24,39-a/la*12,0,48-a/la*24,24-a/la*24)
+                        this.layer.rotate(50)
+                        this.layer.quad(0,0,-48+a/la*24,-9+a/la*9,-42+a/la*12,0,-48+a/la*24,9-a/la*9)
+                        this.layer.rotate(-120)
+                        this.layer.quad(0,0,48-a/la*24,-9+a/la*9,42-a/la*12,0,48-a/la*24,9-a/la*9)
+                        this.layer.rotate(60)
+                    }
+                    this.layer.pop()
                 }
                 if(this.components.hair.display.back){
                     let size=this.fade.main*this.components.hair.fade.back
@@ -1315,13 +1376,13 @@ class graphicsManager{
                     this.layer.fill(...this.flashColor(part.color.stripe),this.fade.main*part.fade.main)
                     for(let a=0,la=11;a<la;a++){
                         if(lcos(a/la*360+this.direction.main)>0){
-                            this.layer.arc(10.6*lsin((a+0.5)/la*360+this.direction.main)*part.anim.wide,-24.25+lcos((a+0.5)/la*360+this.direction.main)-part.anim.lift,6*lcos((a+0.5)/la*360+this.direction.main)*part.anim.wide,2.4,-15,195)
+                            this.layer.arc(10.6*lsin((a+0.5)/la*360+this.direction.main)*part.anim.wide,-24.25+lcos((a+0.5)/la*360+this.direction.main)*1.5-part.anim.lift,6*lcos((a+0.5)/la*360+this.direction.main)*part.anim.wide,2.4,-15,195)
                         }
                     }
                     this.layer.fill(...this.flashColor(part.color.over),this.fade.main*part.fade.main)
                     this.layer.quad(-5,-49,5,-49,6,-35,-6,-35)
                     this.layer.quad(-6,-36,6,-36,11*part.anim.wide,-24-part.anim.lift,-11*part.anim.wide,-24-part.anim.lift)
-                    this.layer.arc(0,-24-part.anim.lift,22*part.anim.wide,2,0,180)
+                    this.layer.arc(0,-24-part.anim.lift,22*part.anim.wide,3,0,180)
                     for(let a=0,la=4;a<la;a++){
                         let dir=[-153,-27,27,153][a]
                         if(lcos(this.direction.main+dir)>0){
@@ -1334,16 +1395,16 @@ class graphicsManager{
                     }
                     for(let a=0,la=11;a<la;a++){
                         if(lcos(a/la*360+this.direction.main)>0){
-                            this.layer.arc(10.6*lsin(a/la*360+this.direction.main)*part.anim.wide,-24.25+lcos(a/la*360+this.direction.main)-part.anim.lift,6*lcos(a/la*360+this.direction.main)*part.anim.wide,2,-15,195)
+                            this.layer.arc(10.6*lsin(a/la*360+this.direction.main)*part.anim.wide,-24.25+lcos(a/la*360+this.direction.main)*1.5-part.anim.lift,6*lcos(a/la*360+this.direction.main)*part.anim.wide,2,-15,195)
                         }
                     }
                     this.layer.fill(...this.flashColor(part.color.stripe),this.fade.main*part.fade.main)
                     this.layer.beginShape()
                     this.layer.vertex(-1-9.5*part.anim.wide,-25.2-part.anim.lift)
                     this.layer.vertex(-1-9.7*part.anim.wide,-24.72-part.anim.lift)
-                    this.layer.bezierVertex(-7*part.anim.wide,-23.97-part.anim.lift,7*part.anim.wide,-23.97-part.anim.lift,1+9.7*part.anim.wide,-24.72-part.anim.lift)
+                    this.layer.bezierVertex(-7*part.anim.wide,-23.62-part.anim.lift,7*part.anim.wide,-23.62-part.anim.lift,1+9.7*part.anim.wide,-24.72-part.anim.lift)
                     this.layer.vertex(1+9.5*part.anim.wide,-25.2-part.anim.lift)
-                    this.layer.bezierVertex(7*part.anim.wide,-24.45-part.anim.lift,-7*part.anim.wide,-24.45-part.anim.lift,-1-9.5*part.anim.wide,-25.2-part.anim.lift)
+                    this.layer.bezierVertex(7*part.anim.wide,-24.1-part.anim.lift,-7*part.anim.wide,-24.1-part.anim.lift,-1-9.5*part.anim.wide,-25.2-part.anim.lift)
                     this.layer.endShape()
 
                     if(lcos(this.direction.main)>0.1){
@@ -1418,7 +1479,7 @@ class graphicsManager{
                 if(this.components.hair.bow.display&&lcos(this.direction.main+this.components.hair.bow.spin)>0){
                     let part=this.components.hair.bow
                     this.layer.push()
-                    this.layer.translate(lsin(this.direction.main+part.spin)*18,part.level)
+                    this.layer.translate(lsin(this.direction.main+part.spin)*17,part.level)
                     this.layer.scale(constrain(lcos(this.direction.main+part.spin)*1.5,0,1)*0.1875,0.1875)
                     this.layer.rotate(-155)
                     for(let a=0,la=16;a<la;a++){
@@ -1433,6 +1494,14 @@ class graphicsManager{
                         this.layer.quad(0,0,48-a/la*24,-9+a/la*9,42-a/la*12,0,48-a/la*24,9-a/la*9)
                         this.layer.rotate(60)
                     }
+                    this.layer.pop()
+                }
+                if(this.components.hair.tail&&lcos(this.components.hair.tail.spin+this.direction.main)>0){
+                    let dir=this.components.hair.tail.spin+this.direction.main
+                    this.layer.push()
+                    this.layer.translate(lsin(dir)*18,-64)
+                    this.layer.rotate(lsin(dir)*-1.5)
+                    this.layer.image(this.graphicManager.getData(this.name).sprites.hair.tail[this.sprites.spinDetail],0,5*this.fade.main*this.components.hair.tail.fade,20*this.fade.main*this.components.hair.tail.fade,40*this.fade.main*this.components.hair.tail.fade)
                     this.layer.pop()
                 }
                 if(this.components.wing.display&&lcos(this.direction.main)<0.1){

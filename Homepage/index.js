@@ -27,23 +27,45 @@ function quickMouse(x,y,widthC,heightC){
     return mouseX/width*graphics.main.width>x-widthC/2&&mouseX/width*graphics.main.width<x+widthC/2&&mouseY/height*graphics.main.height>y-heightC/2&&mouseY/height*graphics.main.height<y+heightC/2
 }
 function mouseClicked(){
-    for(let a=0;a<tabName.length;a++){
-        if(tabTrigger[a]){
-            for(let b=0,lb=tabList[a].length;b<lb;b++){
-                if(quickMouse(600,100+b*160,720,120)){
-                    window.open(tabURL[a][b])
+    if(width<1000){
+        for(let a=0;a<tabName.length;a++){
+            if(tabTrigger[a]){
+                for(let b=0,lb=tabList[a].length;b<lb;b++){
+                    if(quickMouse(graphics.main.width/2,100+b*160,720,120)){
+                        window.open(tabURL[a][b])
+                    }
                 }
             }
         }
-    }
-    for(let a=0;a<tabName.length;a++){
-        tabTrigger[a]=false
-    }
-    noTabTrigger=true
-    for(let a=0;a<tabName.length;a++){
-        if(quickMouse(600,100+a*160,720,120)){
-            tabTrigger[a]=true
-            noTabTrigger=false
+        for(let a=0;a<tabName.length;a++){
+            tabTrigger[a]=false
+        }
+        noTabTrigger=true
+        for(let a=0;a<tabName.length;a++){
+            if(quickMouse(graphics.main.width/2,100+a*160,720,120)){
+                tabTrigger[a]=true
+                noTabTrigger=false
+            }
+        }
+    }else{
+        for(let a=0;a<tabName.length;a++){
+            if(tabTrigger[a]){
+                for(let b=0,lb=tabList[a].length;b<lb;b++){
+                    if(quickMouse(600,100+b*160,720,120)){
+                        window.open(tabURL[a][b])
+                    }
+                }
+            }
+        }
+        for(let a=0;a<tabName.length;a++){
+            tabTrigger[a]=false
+        }
+        noTabTrigger=true
+        for(let a=0;a<tabName.length;a++){
+            if(quickMouse(600,100+a*160,720,120)){
+                tabTrigger[a]=true
+                noTabTrigger=false
+            }
         }
     }
 }
@@ -70,11 +92,11 @@ function keyPressed(){
 }
 function setup(){
     date=new Date()
-    tabName=['PROGRAMMING','RANDOM','SCHOOL']
+    tabName=['Programming','Random','School']
     tabList=[
-        ['P5.JS REFERENCE','GITHUB','OPENPROCESSING','KHAN ACADEMY'],
-        ['GMAIL','WIKIPEDIA','RANDOM PAGE'],
-        ['CLASSLINK','INFINITE CAMPUS','AP CLASSROOM','CANVAS'],
+        ['p5.js Reference','GitHub','OpenProcessing','Khan Academy'],
+        ['Gmail','Wikipedia','Random Page'],
+        ['Classlink','Infinite Campus','AP Classroom','Canvas'],
     ]
     tabURL=[
         ['https://p5js.org/reference/','https://github.com/DuckyProgramming','https://openprocessing.org/user/136141/?o=6&view=sketches','https://www.khanacademy.org/profile/kaid_253672516860707312241676/projects'],
@@ -105,7 +127,6 @@ function setup(){
     graphics.main.rectMode(CENTER)
     graphics.main.colorMode(RGB,255,255,255,1)
     graphics.main.textAlign(CENTER,CENTER)
-    graphics.main.textFont('monospace')
 }
 function windowResized(){
     resizeCanvas(windowWidth-20,windowHeight-25)
@@ -113,7 +134,6 @@ function windowResized(){
     graphics.main.rectMode(CENTER)
     graphics.main.colorMode(RGB,255,255,255,1)
     graphics.main.textAlign(CENTER,CENTER)
-    graphics.main.textFont('monospace')
 }
 function draw(){
     date=new Date()
@@ -222,5 +242,5 @@ function draw(){
         }
     }
     clear()
-    image(graphics.main,0,0,width,height)
+    image(graphics.main,0,0,height*graphics.main.width/graphics.main.height,height)
 }

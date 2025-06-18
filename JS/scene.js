@@ -15,7 +15,8 @@ function displayScene(type){
             char[0].display()
             return layer
         case 1:
-            layer=formImage(600,600)
+            layer=formImage(600,1000)
+            layer.background(0)
             manager.generateGraphics(`Daiyousei`)
             char.push(new character(layer,manager,0,225,`Daiyousei`,-30))
             char[0].size=5
@@ -306,6 +307,14 @@ function displayScene(type){
             char[0].components.hair.bow.spin-=9
             char[0].components.wing.anim.size=1.5
             char[0].components.wing.anim.lift=8
+            for(let a=0,la=2;a<la;a++){
+                //char[0].components.head.eye[a].style=[2,0.6]
+                //char[0].components.head.eye[a].anim=1
+                char[0].components.head.eye[a].level+=0.25
+                char[0].components.head.blush[a].level+=0.5
+            }
+            char[0].components.head.mouth.anim.y*=1.1
+            char[0].components.head.mouth.level+=0.25
 
             char[0].components.arms[0].anim.top.theta=-90
             char[0].components.arms[0].anim.top.phi=36
@@ -557,11 +566,20 @@ function displayScene(type){
             char[0].components.hair.bow.spin-=9
             char[0].components.wing.anim.size=1.5
             char[0].components.wing.anim.lift=8
-
-            char[0].components.arms[0].anim.top.theta=-90
-            char[0].components.arms[0].anim.top.phi=36
-            char[0].components.arms[0].anim.middle.theta=-90
-            char[0].components.arms[0].anim.middle.phi=72
+            for(let a=0,la=2;a<la;a++){
+                char[0].components.head.eye[a].style=[2,0.8]
+                char[0].components.head.eye[a].anim=1
+                char[0].components.head.eye[a].level+=0.25
+                char[0].components.head.blush[a].level+=0.5
+            }
+            char[0].components.head.mouth.anim.y*=0.9
+            char[0].components.head.mouth.anim.wide+=183
+            char[0].components.head.mouth.level+=2.9
+            
+            char[0].components.arms[0].anim.top.theta=-75
+            char[0].components.arms[0].anim.top.phi=30
+            char[0].components.arms[0].anim.middle.theta=72
+            char[0].components.arms[0].anim.middle.phi=69
 
             char[0].components.arms[1].anim.top.theta=90
             char[0].components.arms[1].anim.top.phi=48
@@ -596,6 +614,10 @@ function displayScene(type){
             char.push(new character(layer,manager,0,225,`Sagume`,30))
             char[0].size=5
             char[0].display()
+            return layer
+        case 9:
+            layer=formImage(600,600)
+
             return layer
     }
 }
