@@ -92,16 +92,18 @@ function keyPressed(){
 }
 function setup(){
     date=new Date()
-    tabName=['Programming','Random','School']
+    tabName=['Programming','Random','School','Materials']
     tabList=[
         ['p5.js Reference','GitHub','OpenProcessing','Khan Academy'],
         ['Gmail','Wikipedia','Random Page'],
         ['Classlink','Infinite Campus','AP Classroom','Canvas'],
+        ['Physics C'],
     ]
     tabURL=[
         ['https://p5js.org/reference/','https://github.com/DuckyProgramming','https://openprocessing.org/user/136141/?o=6&view=sketches','https://www.khanacademy.org/profile/kaid_253672516860707312241676/projects'],
         ['https://mail.google.com/mail/u/1/#inbox','https://en.wikipedia.org/wiki/Main_Page','https://en.wikipedia.org/wiki/Special:Random'],
         ['https://launchpad.classlink.com/fcs','https://campus.fultonschools.org/campus/fulton.jsp?status=login','https://prod.idp.collegeboard.org/','https://login.microsoftonline.com/0cdcb198-8169-4b70-ba9f-da7e3ba700c2/saml2?SAMLRequest=fZJPj9MwEMXvfIrIdyduEprGaiuVrRCVFqi2ZQ9ckDOZbC05dvHYwH573JQ%2Fi9Dudew3v%2FeeZklqNGe5ieFk7%2FBrRArZj9FYktPDikVvpVOkSVo1IskA8rB5fyvLXMizd8GBM%2ByJ5GWFIkIftLMs221X7EtVdwD9vOTVfN7yuq4Fb%2BtO8aqqsRUVDDhHlt2jp6RZsbQiCYki7iwFZUMaibLmYsHL9iiErBr5uvnMsm3Koa0Kk%2BoUwplkURj3oG0%2BavCO3BCcNdpiDm4sBPTQzdoFX8wuNrpG8E61A%2B9Vg1WnGiGgLC7pSpZtfke4cZbiiP6A%2FpsG%2FHR3%2Bxc1RJP2E5ycM5TrZNZHCNFfcZORaR%2FL9r86fKNtr%2B3Dy%2FV1108k3x2Pe77%2FeDiy9fKyR06l%2BPWF%2FwcPLtrwqOE%2F%2FpRkWTwVLq938CEhd9u9Mxoes7fOjyo872iWz6aJ7vkwfZXR0hlBDxr7VJQx7vuNRxVwxRIfWbG%2BQv%2B9t%2FWrnw%3D%3D&SigAlg=http%3A%2F%2Fwww.w3.org%2F2001%2F04%2Fxmldsig-more%23rsa-sha256&Signature=K2HEMhgnT%2Fp2kPSU7HsnUGOF7jF1OpuOJUf1AeWDSBjiBCmNZluXEwT359VkD7hFUW%2BoWVox%2FS9ZuPKKXW2T%2FXm%2BEx5T1WHBv1wrijbMLF4sK71Y%2B5Dt8stlrCsb%2F7y7gmuSPSAVJSleuypooNym2yl%2BlhoK1vslAWxH5ierSwbHJIJIuGiQUfaFILyx6LuVOvQxPgUN88WTwd%2BEW3cW0mb2nKz5W%2BSBMP0EirOuqIEZSYLYskNDrlmw6zrWFiqVm%2BjtafxJ%2BJmrtxdJDQZwyxbxSXpj8VcP0%2F18a3ZhvQvabELm2kKzuZ8m792fmt89uhZEc4H%2BHXnCSHze5tXfcg%3D%3D'],
+        ['https://fultonk12-my.sharepoint.com/personal/tateleslier_fultonschools_org/_layouts/15/Doc.aspx?sourcedoc={5122a5b4-e33b-4d7e-be6c-7230df9ef724}&action=edit&wd=target%28General.one%7C0d12b7ee-3420-44d3-91eb-53100d04a8aa%2FAP%20Physics%20CEM%20syllabus%7Cd289dcaf-a94f-4cb5-a905-722ab26be2e7%2F%29&wdorigin=NavigationUrl',],
     ]
     tabTrigger=[]
     tabFade=[]
@@ -124,16 +126,34 @@ function setup(){
     }
     createCanvas(windowWidth-20,windowHeight-25)
     graphics={main:createGraphics(width<1000?1478:3016,1426)}
-    graphics.main.rectMode(CENTER)
-    graphics.main.colorMode(RGB,255,255,255,1)
-    graphics.main.textAlign(CENTER,CENTER)
+    setupLayer(graphics.main)
+    current=new operation(graphics.main)
 }
 function windowResized(){
     resizeCanvas(windowWidth-20,windowHeight-25)
     graphics.main=createGraphics(width<1000?1478:3016,1426)
-    graphics.main.rectMode(CENTER)
-    graphics.main.colorMode(RGB,255,255,255,1)
-    graphics.main.textAlign(CENTER,CENTER)
+    setupLayer(graphics.main)
+    current=new operation(graphics.main)
+}
+function setupBase(){
+    noStroke()
+    angleMode(DEGREES)
+	textAlign(CENTER,CENTER)
+	rectMode(CENTER)
+	imageMode(CENTER)
+    strokeJoin(ROUND)
+    colorMode(RGB,255,255,255,1)
+	noStroke()
+}
+function setupLayer(layer){
+    layer.noStroke()
+    layer.angleMode(DEGREES)
+	layer.textAlign(CENTER,CENTER)
+	layer.rectMode(CENTER)
+	layer.imageMode(CENTER)
+    layer.strokeJoin(ROUND)
+    layer.colorMode(RGB,255,255,255,1)
+	layer.noStroke()
 }
 function draw(){
     date=new Date()
@@ -241,6 +261,8 @@ function draw(){
             }
         }
     }
+    current.display()
+    current.update()
     clear()
     image(graphics.main,0,0,height*graphics.main.width/graphics.main.height,height)
 }
