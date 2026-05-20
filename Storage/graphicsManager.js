@@ -418,6 +418,343 @@ class graphicsManager{
         }
         layer.strokeJoin(MITER)
     }
+    displayTrianglesBackMerge3D(layer,parts,direction,base,width,weight,slant,color1,color2,fade,plane,advance){
+        layer.strokeWeight(weight)
+        layer.strokeJoin(ROUND)
+        let pool=[]
+        for(let a=0,la=parts.length;a<la;a++){
+            let part=parts[a]
+            if(color1==-1){
+                layer.fill(0,fade)
+                layer.stroke(0,fade)
+                layer.erase(fade,fade)
+            }else{
+                layer.fill(...mergeColor(color1,color2,a/la))
+                layer.stroke(...mergeColor(color1,color2,a/la))
+            }
+            let reality=[
+                (part.spin[0]<part.spin[2]-180?part.spin[0]+360:part.spin[0]>part.spin[2]+180?part.spin[0]-360:part.spin[0])+direction,
+                (part.spin[1]<part.spin[2]-180?part.spin[1]+360:part.spin[1]>part.spin[2]+180?part.spin[1]-360:part.spin[1])+direction,
+                part.spin[2]+direction
+            ]
+            if(reality[0]>=360&&reality[1]>=360&&reality[2]>=360){
+                reality[0]-=360
+                reality[1]-=360
+                reality[2]-=360
+            }
+            let c=[lcos(reality[0]),lcos(reality[1]),lcos(reality[2])]
+            let s=[lsin(reality[0]),lsin(reality[1]),lsin(reality[2])]
+            if(c[0]<0){
+                if(c[1]<0){
+                    if(c[2]<0){
+                        if(part.set==undefined){
+                            layer.triangle(
+                                s[0]*(width/2+part.y[0]*slant),base+part.y[0]+c[0]*plane*(part.y[0]+advance)*slant,
+                                s[1]*(width/2+part.y[1]*slant),base+part.y[1]+c[1]*plane*(part.y[1]+advance)*slant,
+                                s[2]*(width/2+part.y[2]*slant),base+part.y[2]+c[2]*plane*(part.y[2]+advance)*slant,
+                            )
+                        }else{
+                            pool.push(
+                                [s[0]*(width/2+part.y[0]*slant),base+part.y[0]+c[0]*plane*(part.y[0]+advance)*slant],
+                                [s[1]*(width/2+part.y[1]*slant),base+part.y[1]+c[1]*plane*(part.y[1]+advance)*slant],
+                                [s[2]*(width/2+part.y[2]*slant),base+part.y[2]+c[2]*plane*(part.y[2]+advance)*slant],
+                            )
+                            let done=false
+                            while(!done&&a<la-1){
+                                a++
+                                let part=parts[a]
+                                let reality=[
+                                    (part.spin[0]<part.spin[2]-180?part.spin[0]+360:part.spin[0]>part.spin[2]+180?part.spin[0]-360:part.spin[0])+direction,
+                                    (part.spin[1]<part.spin[2]-180?part.spin[1]+360:part.spin[1]>part.spin[2]+180?part.spin[1]-360:part.spin[1])+direction,
+                                    part.spin[2]+direction
+                                ]
+                                if(reality[0]>=360&&reality[1]>=360&&reality[2]>=360){
+                                    reality[0]-=360
+                                    reality[1]-=360
+                                    reality[2]-=360
+                                }
+                                let c=[lcos(reality[0]),lcos(reality[1]),lcos(reality[2])]
+                                let s=[lsin(reality[0]),lsin(reality[1]),lsin(reality[2])]
+                                if(c[0]<0&&c[1]<0&&c[2]<0){
+                                    switch(part.set){
+                                        case 0:
+                                            pool.push([s[1]*(width/2+part.y[1]*slant),base+part.y[1]+c[1]*plane*(part.y[1]+advance)*slant])
+                                        break
+                                        case 1:
+                                            pool.splice(0,0,[s[1]*(width/2+part.y[1]*slant),base+part.y[1]+c[1]*plane*(part.y[1]+advance)*slant])
+                                        break
+                                    }
+                                }else{
+                                    a--
+                                    done=true
+                                }
+                            }
+                            if(pool.length==3){
+                                layer.triangle(...pool.flat())
+                            }else{
+                                layer.beginShape()
+                                pool.forEach(set=>layer.vertex(...set))
+                                layer.endShape()
+                                pool=[]
+                            }
+                        }
+                    }
+                }else{
+                    if(c[2]<0){
+                        let inter=[
+                            reality[1]<90?
+                            abs(-90-reality[1])/abs(reality[0]-reality[1]):
+                            abs(270-reality[1])/abs(reality[0]-reality[1]),
+                            reality[1]<90?
+                            abs(-90-reality[1])/abs(reality[1]-reality[2]):
+                            abs(270-reality[1])/abs(reality[1]-reality[2])
+                        ]
+                        let cut=[
+                            part.y[1]*(1-inter[0])+part.y[0]*inter[0],
+                            part.y[1]*(1-inter[1])+part.y[2]*inter[1]
+                        ]
+                        layer.quad(
+                            s[0]*(width/2+part.y[0]*slant),base+part.y[0]+c[0]*plane*(part.y[0]+advance)*slant,
+                            -width/2-cut[0]*slant,base+cut[0],
+                            -width/2-cut[1]*slant,base+cut[1],
+                            s[2]*(width/2+part.y[2]*slant),base+part.y[2]+c[2]*plane*(part.y[2]+advance)*slant,
+                        )
+                    }else{
+                        let inter=[
+                            reality[0]<90?
+                            abs(-90-reality[0])/abs(reality[0]-reality[1]):
+                            abs(270-reality[0])/abs(reality[0]-reality[1]),
+                            reality[0]<90?
+                            abs(-90-reality[0])/abs(reality[0]-reality[2]):
+                            abs(270-reality[0])/abs(reality[0]-reality[2])
+                        ]
+                        let cut=[
+                            part.y[0]*(1-inter[0])+part.y[1]*inter[0],
+                            part.y[0]*(1-inter[1])+part.y[2]*inter[1]
+                        ]
+                        layer.triangle(
+                            s[0]*(width/2+part.y[0]*slant),base+part.y[0]+c[0]*plane*(part.y[0]+advance)*slant,
+                            -width/2-cut[0]*slant,base+cut[0],
+                            -width/2-cut[1]*slant,base+cut[1]
+                        )
+                    }
+                }
+            }else{
+                if(c[1]<0){
+                    if(c[2]<0){
+                        let inter=[
+                            reality[0]<-90?
+                            abs(-270-reality[0])/abs(reality[0]-reality[1]):
+                            abs(90-reality[0])/abs(reality[0]-reality[1]),
+                            reality[0]<-90?
+                            abs(-270-reality[0])/abs(reality[0]-reality[2]):
+                            abs(90-reality[0])/abs(reality[0]-reality[2])
+                        ]
+                        let cut=[
+                            part.y[0]*(1-inter[0])+part.y[1]*inter[0],
+                            part.y[0]*(1-inter[1])+part.y[2]*inter[1]
+                        ]
+                        layer.quad(
+                            s[1]*(width/2+part.y[1]*slant),base+part.y[1]+c[1]*plane*(part.y[1]+advance)*slant,
+                            width/2+cut[0]*slant,base+cut[0],
+                            width/2+cut[1]*slant,base+cut[1],
+                            s[2]*(width/2+part.y[2]*slant),base+part.y[2]+c[2]*plane*(part.y[2]+advance)*slant,
+                        )
+                    }else{
+                        let inter=[
+                            reality[1]<-90?
+                            abs(-270-reality[1])/abs(reality[0]-reality[1]):
+                            abs(90-reality[1])/abs(reality[0]-reality[1]),
+                            reality[1]<-90?
+                            abs(-270-reality[1])/abs(reality[1]-reality[2]):
+                            abs(90-reality[1])/abs(reality[1]-reality[2])
+                        ]
+                        let cut=[
+                            part.y[1]*(1-inter[0])+part.y[0]*inter[0],
+                            part.y[1]*(1-inter[1])+part.y[2]*inter[1]
+                        ]
+                        layer.triangle(
+                            s[1]*(width/2+part.y[1]*slant),base+part.y[1]+c[1]*plane*(part.y[1]+advance)*slant,
+                            width/2+cut[0]*slant,base+cut[0],
+                            width/2+cut[1]*slant,base+cut[1]
+                        )
+                    }
+                }
+            }
+        }
+        layer.strokeJoin(MITER)
+    }
+    displayTrianglesFrontMerge3D(layer,parts,direction,base,width,weight,slant,color1,color2,fade,plane,advance){
+        layer.strokeWeight(weight)
+        layer.strokeJoin(ROUND)
+        let pool=[]
+        for(let a=0,la=parts.length;a<la;a++){
+            let part=parts[a]
+            if(color1==-1){
+                layer.fill(0,fade)
+                layer.stroke(0,fade)
+                layer.erase(fade,fade)
+            }else{
+                layer.fill(...mergeColor(color1,color2,a/la))
+                layer.stroke(...mergeColor(color1,color2,a/la))
+            }
+            /*layer.stroke(g%2*255)
+            layer.fill(g%2*255)*/
+            let reality=[
+                (part.spin[0]<part.spin[2]-180?part.spin[0]+360:part.spin[0]>part.spin[2]+180?part.spin[0]-360:part.spin[0])+direction,
+                (part.spin[1]<part.spin[2]-180?part.spin[1]+360:part.spin[1]>part.spin[2]+180?part.spin[1]-360:part.spin[1])+direction,
+                part.spin[2]+direction
+            ]
+            if(reality[0]>=360&&reality[1]>=360&&reality[2]>=360){
+                reality[0]-=360
+                reality[1]-=360
+                reality[2]-=360
+            }
+            let c=[lcos(reality[0]),lcos(reality[1]),lcos(reality[2])]
+            let s=[lsin(reality[0]),lsin(reality[1]),lsin(reality[2])]
+            if(c[0]>=0){
+                if(c[1]>=0){
+                    if(c[2]>=0){
+                        if(part.set==undefined){
+                            layer.triangle(
+                                s[0]*(width/2+part.y[0]*slant),base+part.y[0]+c[0]*plane*(part.y[0]+advance)*slant,
+                                s[1]*(width/2+part.y[1]*slant),base+part.y[1]+c[1]*plane*(part.y[1]+advance)*slant,
+                                s[2]*(width/2+part.y[2]*slant),base+part.y[2]+c[2]*plane*(part.y[2]+advance)*slant,
+                            )
+                        }else{
+                            pool.push(
+                                [s[0]*(width/2+part.y[0]*slant),base+part.y[0]+c[0]*plane*(part.y[0]+advance)*slant],
+                                [s[1]*(width/2+part.y[1]*slant),base+part.y[1]+c[1]*plane*(part.y[1]+advance)*slant],
+                                [s[2]*(width/2+part.y[2]*slant),base+part.y[2]+c[2]*plane*(part.y[2]+advance)*slant],
+                            )
+                            let done=false
+                            while(!done&&a<la-1){
+                                a++
+                                let part=parts[a]
+                                let reality=[
+                                    (part.spin[0]<part.spin[2]-180?part.spin[0]+360:part.spin[0]>part.spin[2]+180?part.spin[0]-360:part.spin[0])+direction,
+                                    (part.spin[1]<part.spin[2]-180?part.spin[1]+360:part.spin[1]>part.spin[2]+180?part.spin[1]-360:part.spin[1])+direction,
+                                    part.spin[2]+direction
+                                ]
+                                if(reality[0]>=360&&reality[1]>=360&&reality[2]>=360){
+                                    reality[0]-=360
+                                    reality[1]-=360
+                                    reality[2]-=360
+                                }
+                                let c=[lcos(reality[0]),lcos(reality[1]),lcos(reality[2])]
+                                let s=[lsin(reality[0]),lsin(reality[1]),lsin(reality[2])]
+                                if(c[0]>0&&c[1]>0&&c[2]>0){
+                                    switch(part.set){
+                                        case 0:
+                                            pool.push([s[1]*(width/2+part.y[1]*slant),base+part.y[1]+c[1]*plane*(part.y[1]+advance)*slant])
+                                        break
+                                        case 1:
+                                            pool.splice(0,0,[s[1]*(width/2+part.y[1]*slant),base+part.y[1]+c[1]*plane*(part.y[1]+advance)*slant])
+                                        break
+                                    }
+                                }else{
+                                    a--
+                                    done=true
+                                }
+                            }
+                            if(pool.length==3){
+                                layer.triangle(...pool.flat())
+                            }else{
+                                layer.beginShape()
+                                pool.forEach(set=>layer.vertex(...set))
+                                layer.endShape()
+                                pool=[]
+                            }
+                        }
+                    }
+                }else{
+                    if(c[2]>=0){
+                        let inter=[
+                            reality[1]<-90?
+                            abs(-270-reality[1])/abs(reality[0]-reality[1]):
+                            abs(90-reality[1])/abs(reality[0]-reality[1]),
+                            reality[1]<-90?
+                            abs(-270-reality[1])/abs(reality[1]-reality[2]):
+                            abs(90-reality[1])/abs(reality[1]-reality[2])
+                        ]
+                        let cut=[
+                            part.y[1]*(1-inter[0])+part.y[0]*inter[0],
+                            part.y[1]*(1-inter[1])+part.y[2]*inter[1]
+                        ]
+                        layer.quad(
+                            s[0]*(width/2+part.y[0]*slant),base+part.y[0]+c[0]*plane*(part.y[0]+advance)*slant,
+                            width/2+cut[0]*slant,base+cut[0],
+                            width/2+cut[1]*slant,base+cut[1],
+                            s[2]*(width/2+part.y[2]*slant),base+part.y[2]+c[2]*plane*(part.y[2]+advance)*slant,
+                        )
+                    }else{
+                        let inter=[
+                            reality[0]<-90?
+                            abs(-270-reality[0])/abs(reality[0]-reality[1]):
+                            abs(90-reality[0])/abs(reality[0]-reality[1]),
+                            reality[0]<-90?
+                            abs(-270-reality[0])/abs(reality[0]-reality[2]):
+                            abs(90-reality[0])/abs(reality[0]-reality[2])
+                        ]
+                        let cut=[
+                            part.y[0]*(1-inter[0])+part.y[1]*inter[0],
+                            part.y[0]*(1-inter[1])+part.y[2]*inter[1]
+                        ]
+                        layer.triangle(
+                            s[0]*(width/2+part.y[0]*slant),base+part.y[0]+c[0]*plane*(part.y[0]+advance)*slant,
+                            width/2+cut[0]*slant,base+cut[0],
+                            width/2+cut[1]*slant,base+cut[1]
+                        )
+                    }
+                }
+            }else{
+                if(c[1]>=0){
+                    if(c[2]>=0){
+                        let inter=[
+                            reality[0]<90?
+                            abs(-90-reality[0])/abs(reality[0]-reality[1]):
+                            abs(270-reality[0])/abs(reality[0]-reality[1]),
+                            reality[0]<90?
+                            abs(-90-reality[0])/abs(reality[0]-reality[2]):
+                            abs(270-reality[0])/abs(reality[0]-reality[2])
+                        ]
+                        let cut=[
+                            part.y[0]*(1-inter[0])+part.y[1]*inter[0],
+                            part.y[0]*(1-inter[1])+part.y[2]*inter[1]
+                        ]
+                        layer.quad(
+                            s[1]*(width/2+part.y[1]*slant),base+part.y[1]+c[1]*plane*(part.y[1]+advance)*slant,
+                            -width/2-cut[0]*slant,base+cut[0],
+                            -width/2-cut[1]*slant,base+cut[1],
+                            s[2]*(width/2+part.y[2]*slant),base+part.y[2]+c[2]*plane*(part.y[2]+advance)*slant,
+                        )
+                        if(cut[0]>=50||cut[1]>=50){
+                            print(part,cut,inter,reality)
+                        }
+                    }else{
+                        let inter=[
+                            reality[1]<90?
+                            abs(-90-reality[1])/abs(reality[0]-reality[1]):
+                            abs(270-reality[1])/abs(reality[0]-reality[1]),
+                            reality[1]<90?
+                            abs(-90-reality[1])/abs(reality[1]-reality[2]):
+                            abs(270-reality[1])/abs(reality[1]-reality[2])
+                        ]
+                        let cut=[
+                            part.y[1]*(1-inter[0])+part.y[0]*inter[0],
+                            part.y[1]*(1-inter[1])+part.y[2]*inter[1]
+                        ]
+                        layer.triangle(
+                            s[1]*(width/2+part.y[1]*slant),base+part.y[1]+c[1]*plane*(part.y[1]+advance)*slant,
+                            -width/2-cut[0]*slant,base+cut[0],
+                            -width/2-cut[1]*slant,base+cut[1]
+                        )
+                    }
+                }
+            }
+        }
+        layer.strokeJoin(MITER)
+    }
     subSprite(width,height,jumpX,jumpY){
         let layer=createGraphics(width,height)
         setupLayer(layer)
