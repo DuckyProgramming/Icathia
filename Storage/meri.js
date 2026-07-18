@@ -269,35 +269,65 @@ this.packages.push(new graphicsPackage(
                 this.layer.push()
                 this.layer.translate(part.appear.bottom.x,part.appear.bottom.y+0.625)
                 this.layer.rotate(-this.direction.main)
-                this.layer.arc(0,0.2,4.8,5,-180,0)
-                this.layer.ellipse(0,0.2,4.8,1)
+                let pos=[
+                    [-2.4,0.2],
+                    [-2.4,4],
+                    [-1.5,6.6],
+                    [0,6.6],
+                ]
+                for(let a=0,la=pos.length-1;a<la;a++){
+                    pos.splice(la+1,0,[-pos[a][0],pos[a][1]])
+                }
+                this.layer.arc(0,pos[0][1],pos[0][0]*2,5,-180,0)
+                this.layer.ellipse(0,pos[0][1],pos[0][0]*2,2)
                 this.layer.beginShape()
-                this.layer.vertex(-2.4,0.2)
-                this.layer.bezierVertex(-2.4,2.25,-1.65,6,0,6)
-                this.layer.bezierVertex(1.65,6,2.4,2.25,2.4,0.2)
+                this.layer.vertex(pos[0][0],pos[0][1])
+                for(let a=0,la=floor(pos.length/3);a<la;a++){
+                    this.layer.bezierVertex(
+                        pos[a*3+1][0],pos[a*3+1][1],
+                        pos[a*3+2][0],pos[a*3+2][1],
+                        pos[a*3+3][0],pos[a*3+3][1],
+                    )
+                }
                 this.layer.endShape()
                 this.layer.pop()
-                let expand=lcos(this.direction.main)*0.25
                 this.layer.fill(...this.flashColor(part.color),this.fade.main*this.components.shoe[key].fade)
                 this.layer.noStroke()
                 this.layer.push()
                 this.layer.translate(part.appear.bottom.x,part.appear.bottom.y)
                 this.layer.rotate(-this.direction.main)
-                this.layer.arc(0,0.2,4,3.6,-180,0)
-                this.layer.ellipse(0,0.2,4,1)
+                let expand=lcos(this.direction.main)*0.5
+                pos=[
+                    [-2,0.2],
+                    [-2,2],
+                    [-1.75,3.2+expand*0.25],
+                    [-1.4,4+expand*0.5],
+                    [-1.2,4.6+expand*0.75],
+                    [-0.8,5+expand],
+                    [0,5+expand],
+                ]
+                for(let a=0,la=pos.length-1;a<la;a++){
+                    pos.splice(la+1,0,[-pos[a][0],pos[a][1]])
+                }
+                this.layer.arc(0,pos[0][1],pos[0][0]*2,3.6,-180,0)
+                this.layer.ellipse(0,pos[0][1],pos[0][0]*2,2)
                 this.layer.beginShape()
-                this.layer.vertex(-2,0.2)
-                this.layer.vertex(2,0.2)
-                this.layer.bezierVertex(2,1.5,1.375,5+expand,0,5+expand)
-                this.layer.bezierVertex(-1.375,5+expand,-2,1.5,-2,0.2)
+                this.layer.vertex(pos[0][0],pos[0][1])
+                for(let a=0,la=floor(pos.length/3);a<la;a++){
+                    this.layer.bezierVertex(
+                        pos[a*3+1][0],pos[a*3+1][1],
+                        pos[a*3+2][0],pos[a*3+2][1],
+                        pos[a*3+3][0],pos[a*3+3][1],
+                    )
+                }
                 this.layer.endShape()
                 color=this.flashColor(upColor(this.components.shoe[key].color,lcos(this.direction.main+part.appear.middle.z)*10,[1,1,1]))
                 this.layer.fill(...color,this.fade.main*this.components.shoe[key].fade)
                 this.layer.beginShape()
-                this.layer.vertex(-1.875,2+expand)
-                this.layer.bezierVertex(-0.625,2.3+expand,0.625,2.3+expand,1.875,2+expand)
-                this.layer.vertex(1.725,2.7+expand)
-                this.layer.bezierVertex(0.575,3+expand,-0.575,3+expand,-1.725,2.7+expand)
+                this.layer.vertex(-1.95,2.3+expand*0.5)
+                this.layer.bezierVertex(-0.65,2.6+expand*0.5,0.65,2.6+expand*0.5,1.95,2.3+expand*0.5)
+                this.layer.vertex(1.8,3+expand*0.5)
+                this.layer.bezierVertex(0.6,3.3+expand*0.5,-0.6,3.3+expand*0.5,-1.8,3+expand*0.5)
                 this.layer.endShape()
                 this.layer.pop()
             }

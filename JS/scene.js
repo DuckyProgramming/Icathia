@@ -616,6 +616,24 @@ function displayScene(type){
             char[0].display()
             return layer
         case 9:
+            layer=formImage(840,840)
+            manager.generateGraphics(`Menessa`)
+            char.push(new character(layer,manager,0,360,`Menessa`,-30))
+            char[0].size=7.5
+
+            char[0].components.arms[0].anim.top.theta=-45
+            char[0].components.arms[0].anim.top.phi=30
+            char[0].components.arms[0].anim.middle.theta=75
+            char[0].components.arms[0].anim.middle.phi=69
+
+            char[0].components.head.eye[0].style=[2,1]
+            char[0].components.head.eye[0].anim=1
+            char[0].components.head.eye[1].style=[2,1]
+            char[0].components.head.eye[1].anim=1
+            
+            char[0].display([manager])
+            return layer
+        case 10:
             layer=formImage(600,600)
 
             return layer

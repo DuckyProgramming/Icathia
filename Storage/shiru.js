@@ -102,6 +102,7 @@ this.packages.push(new graphicsPackage(
                 mouth:{in:[254,194,166],out:[0,0,0]},
                 blush:[255,214,231],
                 dress:{main:[254,253,255],shawl:[239,237,238],inside:[88,91,129],highlight:[84,147,210],border:[49,100,192],tie:[89,95,97],bow:[[48,125,242],[216,242,255]],sleeve:[233,232,237]},
+                shoe:{main:[174,181,242],under:[137,138,214]},
             },
             spin:{tail:[-114,114]}
         }
@@ -139,6 +140,11 @@ this.packages.push(new graphicsPackage(
             color:colorBase.dress,
             bow:{display:true,fade:1,color:colorBase.dress.bow,spin:0},
         }
+        this.components.shoe={
+            display:true,
+            fade:1,
+            color:colorBase.shoe,
+        }
         this.routines.calculatePart=[0,1,2,3]
     },function(){
         for(let a=0,la=2;a<la;a++){
@@ -152,6 +158,14 @@ this.packages.push(new graphicsPackage(
                     this.layer.ellipse(0,0,2)
                     this.layer.quad(0.5,-0.5,-5,2.75,-3.75,3.75,-2.75,5)
                     this.layer.quad(-0.5,-0.5,5,2.75,3.75,3.75,2.75,5)
+                    this.layer.fill(...this.flashColor(this.components.hair.color.bow),this.fade.main*this.components.hair.bow[a].fade)
+                    this.layer.quad(0.5,-0.5,-5,2.75,-3.5,3.5,-2.75,5)
+                    this.layer.quad(-0.5,-0.5,5,2.75,3.5,3.5,2.75,5)
+                    this.layer.fill(...this.flashColor(mergeColor(this.components.hair.color.bow,[0,0,0],0.2)),this.fade.main*this.components.hair.bow[a].fade)
+                    this.layer.quad(0.5,-0.5,-4.1,3.05,-3.5,3.5,-3.05,4.1)
+                    this.layer.quad(-0.5,-0.5,4.1,3.05,3.5,3.5,3.05,4.1)
+                    this.layer.fill(...this.flashColor(this.components.hair.color.bow),this.fade.main*this.components.hair.bow[a].fade)
+                    this.layer.ellipse(0,0,2)
                     this.layer.scale(1/(lcos(dir)*0.6+0.4),1)
                     this.layer.translate(lsin(dir)*-16,80)
                 }
@@ -202,6 +216,75 @@ this.packages.push(new graphicsPackage(
         }
         for(let a=0,la=2;a<la;a++){
             let part=this.components.legs[this.components.legs[0].appear.bottom.z<=this.components.legs[1].appear.bottom.z?a:1-a]
+            let part2=this.components.shoe
+            if(part2.display){
+                this.layer.fill(...this.flashColor(upColor(part2.color.under,lcos(this.direction.main+part.anim.top.theta)*5,[1,1,1])),this.fade.main*part2.fade)
+                this.layer.noStroke()
+                this.layer.push()
+                this.layer.translate(part.appear.bottom.x,part.appear.bottom.y+0.5)
+                this.layer.rect(lsin(this.direction.main)*-0.75,1.8,1,3.6)
+                this.layer.ellipse(lsin(this.direction.main)*-0.75,3.6,1,0.6)
+                this.layer.fill(...this.flashColor(upColor(part2.color.main,lcos(this.direction.main+part.anim.top.theta)*5,[1,1,1])),this.fade.main*part2.fade)
+                this.layer.rotate(-this.direction.main)
+                this.layer.arc(0,0.2,4.8,5,-180,0)
+                this.layer.ellipse(0,0.2,4.8,1)
+                let pos=[
+                    [-2.4,0.2],
+                    [-2.4,2.5],
+                    [-1.8,4.5],
+                    [-1,6],
+                    [-0.7,6.4],
+                    [-0.4,6.8],
+                    [0,6.8],
+                ]
+                for(let a=0,la=pos.length-1;a<la;a++){
+                    pos.splice(la+1,0,[-pos[a][0],pos[a][1]])
+                }
+                this.layer.arc(0,pos[0][1],pos[0][0]*2,5,-180,0)
+                this.layer.ellipse(0,pos[0][1],pos[0][0]*2,2)
+                this.layer.beginShape()
+                this.layer.vertex(pos[0][0],pos[0][1])
+                for(let a=0,la=floor(pos.length/3);a<la;a++){
+                    this.layer.bezierVertex(
+                        pos[a*3+1][0],pos[a*3+1][1],
+                        pos[a*3+2][0],pos[a*3+2][1],
+                        pos[a*3+3][0],pos[a*3+3][1],
+                    )
+                }
+                this.layer.endShape()
+                this.layer.pop()
+                this.layer.fill(...this.flashColor(upColor(part.color,lcos(this.direction.main+part.anim.top.theta)*5,[1,1,1])),this.fade.main*part2.fade)
+                this.layer.noStroke()
+                this.layer.push()
+                this.layer.translate(part.appear.bottom.x,part.appear.bottom.y)
+                this.layer.rotate(-this.direction.main)
+                let expand=lcos(this.direction.main)*0.25
+                pos=[
+                    [-2,0.2],
+                    [-2,2],
+                    [-1.7,3.2+expand*0.25],
+                    [-1.3,4.15+expand*0.5],
+                    [-1.1,4.45+expand*0.75],
+                    [-0.7,4.7+expand],
+                    [0,4.78+expand],
+                ]
+                for(let a=0,la=pos.length-1;a<la;a++){
+                    pos.splice(la+1,0,[-pos[a][0],pos[a][1]])
+                }
+                this.layer.arc(0,pos[0][1],pos[0][0]*2,3.6,-180,0)
+                this.layer.ellipse(0,pos[0][1],pos[0][0]*2,2)
+                this.layer.beginShape()
+                this.layer.vertex(pos[0][0],pos[0][1])
+                for(let a=0,la=floor(pos.length/3);a<la;a++){
+                    this.layer.bezierVertex(
+                        pos[a*3+1][0],pos[a*3+1][1],
+                        pos[a*3+2][0],pos[a*3+2][1],
+                        pos[a*3+3][0],pos[a*3+3][1],
+                    )
+                }
+                this.layer.endShape()
+                this.layer.pop()
+            }
             if(part.display){
                 this.layer.stroke(...this.flashColor(part.color),this.fade.main*part.fade)
                 this.layer.strokeWeight(4)
@@ -511,6 +594,14 @@ this.packages.push(new graphicsPackage(
                     this.layer.ellipse(0,0,2)
                     this.layer.quad(0.5,-0.5,-5,2.75,-3.75,3.75,-2.75,5)
                     this.layer.quad(-0.5,-0.5,5,2.75,3.75,3.75,2.75,5)
+                    this.layer.fill(...this.flashColor(this.components.hair.color.bow),this.fade.main*this.components.hair.bow[a].fade)
+                    this.layer.quad(0.5,-0.5,-5,2.75,-3.5,3.5,-2.75,5)
+                    this.layer.quad(-0.5,-0.5,5,2.75,3.5,3.5,2.75,5)
+                    this.layer.fill(...this.flashColor(mergeColor(this.components.hair.color.bow,[0,0,0],0.2)),this.fade.main*this.components.hair.bow[a].fade)
+                    this.layer.quad(0.5,-0.5,-4.1,3.05,-3.5,3.5,-3.05,4.1)
+                    this.layer.quad(-0.5,-0.5,4.1,3.05,3.5,3.5,3.05,4.1)
+                    this.layer.fill(...this.flashColor(this.components.hair.color.bow),this.fade.main*this.components.hair.bow[a].fade)
+                    this.layer.ellipse(0,0,2)
                     this.layer.scale(1/(lcos(dir)*0.6+0.4),1)
                     this.layer.translate(lsin(dir)*-16,80)
                 }

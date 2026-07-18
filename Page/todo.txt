@@ -1,24 +1,5 @@
 MODELS
 
-improve hair graphics to end potential clipping issues
-
-create means to create a gradient on hair
-
-shiru
-
-i don't like her hair anymore
-
-sakura
-
-pain...
-
-shinmy
-
-add her kimono's collar
-add more texture to the underlayer
-gradient hair system
-underlayer to sash
-
 daiyousei
 
 tie - flattened and widened
@@ -32,7 +13,8 @@ curl wing costa and make them golden
 what if daiyousei summoned the particle life?
 drag on screen to move it around
 
+menessa
+
+it's not going well
 
 
-
-hydrangea duck
