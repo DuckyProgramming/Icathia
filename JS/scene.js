@@ -634,6 +634,19 @@ function displayScene(type){
             char[0].display([manager])
             return layer
         case 10:
+            layer=formImage(840,840)
+            manager.generateGraphics(`Sakura`)
+            char.push(new character(layer,manager,0,360,`Sakura`,30))
+            char[0].size=7.5
+
+            char[0].components.arms[0].anim.top.theta-=45
+            char[0].components.arms[0].anim.top.phi-=6
+            char[0].components.arms[0].anim.middle.phi+=24
+            char[0].components.arms[1].anim.middle.phi+=30
+
+            char[0].display([manager])
+            return layer
+        case 11:
             layer=formImage(600,600)
 
             return layer

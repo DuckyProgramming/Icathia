@@ -598,8 +598,6 @@ class graphicsManager{
                 layer.fill(...mergeColor(color1,color2,a/la))
                 layer.stroke(...mergeColor(color1,color2,a/la))
             }
-            /*layer.stroke(g%2*255)
-            layer.fill(g%2*255)*/
             let reality=[
                 (part.spin[0]<part.spin[2]-180?part.spin[0]+360:part.spin[0]>part.spin[2]+180?part.spin[0]-360:part.spin[0])+direction,
                 (part.spin[1]<part.spin[2]-180?part.spin[1]+360:part.spin[1]>part.spin[2]+180?part.spin[1]-360:part.spin[1])+direction,
