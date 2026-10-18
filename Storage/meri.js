@@ -104,7 +104,7 @@ this.packages.push(new graphicsPackage(
             anim:{reverse:false,wide:1,lift:2},
             bow:{
                 display:true,fade:1,color:colorBase.dress.bow,spin:180,
-                anim:{size:1,length:1,fall:1,swivel:1}
+                anim:{size:1,length:1,fall:1,swivel:[1,1]}
             },
             tie:{display:true,fade:1,color:colorBase.dress.tie,spin:0},
         }
