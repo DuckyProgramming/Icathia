@@ -3528,7 +3528,8 @@ class graphicsManager{
                 this.components.hair.braid={display:true,fade:1,color:colorBase.hair.braid,parts:[],level:[-80.5,-78]}
                 for(let a=0,la=13;a<la;a++){
                     this.components.dress.parts.push({spin:[-180+a/la*360,-120+a/la*360,-150+a/la*360],y:[0,0,20]})
-                    this.components.dress.parts.push({spin:[-153+a/la*360,-138+a/la*360,-150+a/la*360],y:[16,16,20]})
+                    //this.components.dress.parts.push({spin:[-153+a/la*360,-138+a/la*360,-150+a/la*360],y:[16,16,20]})
+                    this.components.dress.parts.push({spin:[-150+a/la*360,-141+a/la*360,-150+a/la*360],y:[16,16,20]})
                 }
                 for(let a=0,la=26;a<la;a++){
                     let spin=180+a*10-la*5+5+(a<la/2?-1:1)
@@ -3595,7 +3596,8 @@ class graphicsManager{
                     let part=this.components.dress
                     this.graphicManager.controlSpin(part.parts,this.direction.main,0)
                     this.layer.fill(...this.flashColor(part.color.back),this.fade.main*part.fade.main)
-                    this.graphicManager.displayTrianglesBackMerge3D(this.layer,part.parts,this.direction.main,-41,12,1,0.2,part.color.back,part.color.back,this.fade.main*part.fade.main,0.2,0)
+                    //this.graphicManager.displayTrianglesBackMerge3D(this.layer,part.parts,this.direction.main,-41,12,1,0.2,part.color.back,part.color.back,this.fade.main*part.fade.main,0.2,0)
+                    this.graphicManager.displayTrianglesBackMerge3D(this.layer,part.parts,this.direction.main,-41,12.5,0.5,0.2,part.color.back,part.color.back,this.fade.main*part.fade.main,0.2,0)
                 }
                 if(this.components.jacket.display.main){
                     this.layer.noStroke()
@@ -3648,7 +3650,8 @@ class graphicsManager{
                     this.layer.noStroke()
                     this.layer.fill(...this.flashColor(part.color.main),this.fade.main*part.fade.main)
                     this.layer.arc(0,-41,13,52,-180,0)
-                    this.graphicManager.displayTrianglesFrontMerge3D(this.layer,part.parts,this.direction.main,-41,12,1,0.2,part.color.main,part.color.main,this.fade.main*part.fade.main,0.2,0)
+                    //this.graphicManager.displayTrianglesFrontMerge3D(this.layer,part.parts,this.direction.main,-41,12,1,0.2,part.color.main,part.color.main,this.fade.main*part.fade.main,0.2,0)
+                    this.graphicManager.displayTrianglesFrontMerge3D(this.layer,part.parts,this.direction.main,-41,12.5,0.5,0.2,part.color.main,part.color.main,this.fade.main*part.fade.main,0.2,0)
                     this.layer.noFill()
                     this.layer.stroke(...this.flashColor(part.color.highlight),this.fade.main*part.fade.main)
                     for(let a=0,la=4;a<la;a++){
@@ -4774,6 +4777,153 @@ class graphicsManager{
                     case 2:
                         layer=parent.subSprite(300,300,150,0)
                         layer.scale(2)
+                        layer.fill(data.color.dress.main)
+                        let flow83=1
+                        for(let a=0.5,la=30;a<la;a++){
+                            let mdir=a/la*360+direction
+                            let ldir=(a-0.5)/la*360+direction
+                            let rdir=(a+0.5)/la*360+direction
+                            if(lcos(mdir)>0){
+                                let lpiv=1+flow83*lcos((ldir-direction)*5)
+                                let rpiv=1+flow83*lcos((rdir-direction)*5)
+                                let lloc={
+                                    x:lsin(constrain((ldir+900)%360-180,-90,90))*(12.3+lpiv/3),
+                                    y:18+lpiv+3.6*lcos(constrain((ldir+900)%360-180,-90,90))
+                                }
+                                let rloc={
+                                    x:lsin(constrain((rdir+900)%360-180,-90,90))*(12.3+rpiv/3),
+                                    y:18+rpiv+3.6*lcos(constrain((rdir+900)%360-180,-90,90))
+                                }
+                                layer.push()
+                                layer.translate(lloc.x/2+rloc.x/2,lloc.y/2+rloc.y/2)
+                                let mpiv=constrain(lcos(mdir)*1.2-0.1,0,1)
+                                layer.rotate(map(
+                                    mpiv,
+                                    0,1,
+                                    -18.4*lsin(mdir),
+                                    (90-atan2(rloc.x-lloc.x,rloc.y-lloc.y)))
+                                )
+                                layer.ellipse(0,0,sqrt((lloc.x-rloc.x)**2+sqrt(lcos(mdir))*((lloc.y-rloc.y)**2)),3)
+                                layer.pop()
+                            }
+                        }
+                        parent.controlSpin(data.parts.dress,direction,1)
+                        layer.erase(0.5)
+                        layer.rect(0,15,30,30)
+                        layer.noErase()
+                        parent.displayTrianglesFrontMerge3D(layer,data.parts.dress.main,direction,18,24.6,0.2,1/3,data.color.dress.main,data.color.dress.main,1,0.4,18)
+                        layer.quad(-6.3,0,6.3,0,12.3,18,-12.3,18)
+                        layer.arc(0,18,24.6,7.2,0,180)
+                        for(let a=0,la=30;a<la;a++){
+                            let mdir=a/la*360+direction
+                            let ldir=(a-0.5)/la*360+direction
+                            let rdir=(a+0.5)/la*360+direction
+                            if(lcos(mdir)>0){
+                                let lpiv=1+flow83*lcos((ldir-direction)*5)
+                                let rpiv=1+flow83*lcos((rdir-direction)*5)
+                                let lloc={
+                                    x:lsin(constrain((ldir+900)%360-180,-90,90))*(12.3+lpiv/3),
+                                    y:18+lpiv+3.6*lcos(constrain((ldir+900)%360-180,-90,90))
+                                }
+                                let rloc={
+                                    x:lsin(constrain((rdir+900)%360-180,-90,90))*(12.3+rpiv/3),
+                                    y:18+rpiv+3.6*lcos(constrain((rdir+900)%360-180,-90,90))
+                                }
+                                layer.push()
+                                layer.translate(lloc.x/2+rloc.x/2,lloc.y/2+rloc.y/2)
+                                let mpiv=constrain(lcos(mdir)*1.2-0.1,0,1)
+                                layer.rotate(map(
+                                    mpiv,
+                                    0,1,
+                                    -18.4*lsin(mdir),
+                                    (90-atan2(rloc.x-lloc.x,rloc.y-lloc.y)))
+                                )
+                                layer.ellipse(0,0,sqrt((lloc.x-rloc.x)**2+sqrt(lcos(mdir))*((lloc.y-rloc.y)**2)),3)
+                                layer.pop()
+                            }
+                        }
+                        layer.erase(1)
+                        layer.stroke(0)
+                        layer.strokeWeight(1)
+                        layer.line(-6.9,0,-13.9,21)
+                        layer.line(6.9,0,13.9,21)
+                        return layer
+                    case 3:
+                        layer=parent.subSprite(300,300,150,0)
+                        layer.scale(2)
+                        layer.fill(data.color.dress.back)
+                        let flow84=1
+                        for(let a=0.5,la=20;a<la;a++){
+                            let mdir=a/la*360+direction
+                            let ldir=(a-0.5)/la*360+direction
+                            let rdir=(a+0.5)/la*360+direction
+                            if(lcos(mdir)<0){
+                                let lpiv=1+flow84*lcos((ldir-direction)*5)
+                                let rpiv=1+flow84*lcos((rdir-direction)*5)
+                                let lloc={
+                                    x:lsin(constrain((ldir+720)%360,90,270))*(12.3+lpiv/3),
+                                    y:18+lpiv-3.6*lcos(constrain((ldir+720)%360,90,270))
+                                }
+                                let rloc={
+                                    x:lsin(constrain((rdir+720)%360,90,270))*(12.3+rpiv/3),
+                                    y:18+rpiv-3.6*lcos(constrain((rdir+720)%360,90,270))
+                                }
+                                layer.push()
+                                layer.translate(lloc.x/2+rloc.x/2,lloc.y/2+rloc.y/2)
+                                let mpiv=constrain(-lcos(mdir)*1.2-0.1,0,1)
+                                layer.rotate(map(
+                                    mpiv,
+                                    0,1,
+                                    -18.4*lsin(mdir),
+                                    (90+atan2(rloc.x-lloc.x,rloc.y-lloc.y)))
+                                )
+                                layer.ellipse(0,0,sqrt((lloc.x-rloc.x)**2+sqrt(-lcos(mdir))*((lloc.y-rloc.y)**2)),3)
+                                layer.pop()
+                            }
+                        }
+                        layer.erase(0.5)
+                        layer.rect(0,15,30,30)
+                        layer.noErase()
+                        parent.displayTrianglesBackMerge3D(layer,data.parts.dress.main,direction,18,24.6,0.2,1/3,data.color.dress.back,data.color.dress.back,1,-0.4,18)
+                        layer.quad(-6.3,0,6.3,0,12.3,18,-12.3,18)
+                        layer.arc(0,18,24.6,7.2,0,180)
+                        for(let a=0,la=20;a<la;a++){
+                            let mdir=a/la*360+direction
+                            let ldir=(a-0.5)/la*360+direction
+                            let rdir=(a+0.5)/la*360+direction
+                            if(lcos(mdir)<0){
+                                let lpiv=1+flow84*lcos((ldir-direction)*5)
+                                let rpiv=1+flow84*lcos((rdir-direction)*5)
+                                let lloc={
+                                    x:lsin(constrain((ldir+720)%360,90,270))*(12.3+lpiv/3),
+                                    y:18+lpiv-3.6*lcos(constrain((ldir+720)%360,90,270))
+                                }
+                                let rloc={
+                                    x:lsin(constrain((rdir+720)%360,90,270))*(12.3+rpiv/3),
+                                    y:18+rpiv-3.6*lcos(constrain((rdir+720)%360,90,270))
+                                }
+                                layer.push()
+                                layer.translate(lloc.x/2+rloc.x/2,lloc.y/2+rloc.y/2)
+                                let mpiv=constrain(-lcos(mdir)*1.2-0.1,0,1)
+                                layer.rotate(map(
+                                    mpiv,
+                                    0,1,
+                                    -18.4*lsin(mdir),
+                                    (90+atan2(rloc.x-lloc.x,rloc.y-lloc.y)))
+                                )
+                                layer.ellipse(0,0,sqrt((lloc.x-rloc.x)**2+sqrt(-lcos(mdir))*((lloc.y-rloc.y)**2)),3)
+                                layer.pop()
+                            }
+                        }
+                        layer.erase(1)
+                        layer.stroke(0)
+                        layer.strokeWeight(1)
+                        layer.line(-6.9,0,-13.9,21)
+                        layer.line(6.9,0,13.9,21)
+                        return layer
+                    case 4:
+                        layer=parent.subSprite(300,300,150,0)
+                        layer.scale(2)
                         parent.controlSpin(data.parts.dress,direction,1)
                         parent.displayTrianglesFrontMerge3D(layer,data.parts.dress.inside,direction,18,24.6,0.1,1/3,data.color.dress.main,data.color.dress.main,1,0.4,18)
                         layer.erase(0.5)
@@ -4783,7 +4933,7 @@ class graphicsManager{
                         layer.quad(-6.3,0,6.3,0,12.3,18,-12.3,18)
                         layer.arc(0,18,24.6,7.2,0,180)
                         return layer
-                    case 3:
+                    case 6:
                         layer=parent.subSprite(300,300,150,0)
                         layer.scale(2)
                         parent.displayTrianglesBackMerge3D(layer,data.parts.dress.inside,direction,18,24.6,0.1,1/3,data.color.dress.back,data.color.dress.back,1,-0.4,18)
@@ -4882,11 +5032,11 @@ class graphicsManager{
                 let flow=1
                 for(let a=0,la=720;a<la;a++){
                     let dir=[a/la*360,(a+1)/la*360,(a-0.5)/la*360,(a+0.5)/la*360]
-                    let q=10
-                    data.parts.dress.inside.push(
+                    //let q=10
+                    /*data.parts.dress.inside.push(
                         {spin:[dir[2],dir[3],dir[0]],y:[0,0,2+flow*lcos(dir[0]*5)+sqrt(1-abs(q-a%(2*q))**2/q/q)],set:0},
                         {spin:[dir[0],dir[1],dir[2]],y:[2+flow*lcos(dir[0]*5)+sqrt(1-abs(q-a%(2*q))**2/q/q),2+flow*lcos(dir[1]*5)+sqrt(1-abs(q-(a+1)%(2*q))**2/q/q),0],set:1},
-                    )
+                    )*/
                     data.parts.dress.main.push(
                         {spin:[dir[2],dir[3],dir[0]],y:[0,0,2+flow*lcos(dir[0]*5)],set:0},
                         {spin:[dir[0],dir[1],dir[2]],y:[2+flow*lcos(dir[0]*5),2+flow*lcos(dir[1]*5),0],set:1},
@@ -5192,11 +5342,22 @@ class graphicsManager{
                             this.layer.translate(0,-3.5)
                         }
                         let pos=[
-                            [-2.5,0.25],
+                            /*[-2.5,0.25],
                             [-2.5,0.75],
                             [-2.4,1.5],
                             [-2.35,2.25],
                             [-2.3,4],
+                            [-1.6,5.5],
+                            [-1.1,6.25],
+                            [-0.8,6.75],
+                            [-0.4,7],
+                            [0,7],*/
+                            
+                            [-2.4,0.25],
+                            [-2.4,0.75],
+                            [-2.35,1.5],
+                            [-2.3,2.25],
+                            [-2.15,4],
                             [-1.6,5.5],
                             [-1.1,6.25],
                             [-0.8,6.75],
@@ -5277,11 +5438,19 @@ class graphicsManager{
                             this.layer.translate(0,-3.5)
                         }
                         pos=[
-                            [-2.1,0],
+                            /*[-2.1,0],
                             [-2.15,0.75],
                             [-2.15,1.5],
                             [-2.15,2.25],
                             [-2.15,3],
+                            [-1.75,3.55+expand],
+                            [-1.25,4.15+expand],
+                            [-0.8,4.6+expand],
+                            [-0.3,4.65+expand],
+                            [0,4.65+expand],*/
+
+                            [-2.1,0],
+                            [-2.1,2.75],
                             [-1.75,3.55+expand],
                             [-1.25,4.15+expand],
                             [-0.8,4.6+expand],
@@ -5307,11 +5476,22 @@ class graphicsManager{
                         if(part2.anim>0){
                             this.layer.fill(...this.flashColor(upColor(part2.color.inside,lcos(this.direction.main+part.anim.top.theta)*10-25,[1,1,1])),this.fade.main*part2.fade)
                             pos=[
-                                [-1.8,0],
+                                /*[-1.8,0],
                                 [-1.85,0.75],
                                 [-1.85,1.5],
                                 [-1.85,2.25],
                                 [-1.85,3],
+                                [-1.45,3.45+expand],
+                                [-1.05,3.9+expand],
+                                [-0.7,4.3+expand],
+                                [-0.25,4.35+expand],
+                                [0,4.35+expand],*/
+
+                                [-1.8,0],
+                                [-1.825,0.75],
+                                [-1.825,1.375],
+                                [-1.825,2],
+                                [-1.825,2.75],
                                 [-1.45,3.45+expand],
                                 [-1.05,3.9+expand],
                                 [-0.7,4.3+expand],
@@ -5353,11 +5533,19 @@ class graphicsManager{
                         this.layer.rotate(-this.direction.main)
 
                         let pos=[
-                            [-2,0],
+                            /*[-2,0],
                             [-2.05,0.75],
                             [-2.05,1.5],
                             [-2.05,2.25],
                             [-2.05,3],
+                            [-1.65,3.5+expand],
+                            [-1.2,4+expand],
+                            [-0.8,4.45+expand],
+                            [-0.3,4.5+expand],
+                            [0,4.5+expand],*/
+
+                            [-2,0],
+                            [-2,2.5],
                             [-1.65,3.5+expand],
                             [-1.2,4+expand],
                             [-0.8,4.45+expand],
@@ -5415,11 +5603,17 @@ class graphicsManager{
                     for(let a=0,la=25;a<la;a++){
                         if(lcos(a/la*360+this.direction.main)>0){
                             let dist=19+lcos(a/la*360*5)
-                            this.layer.quad(
+                            /*this.layer.quad(
                                 6.5*lsin(a/la*360+this.direction.main),-48+2*lcos(a/la*360+this.direction.main),
                                 (6.5+dist*0.3)*lsin((a-0.15)/la*360+this.direction.main),-48+dist*10/11+4*lcos((a-0.15)/la*360+this.direction.main),
                                 (6.5+dist/3)*lsin(a/la*360+this.direction.main),-48+dist+4*lcos(a/la*360+this.direction.main),
                                 (6.5+dist*0.3)*lsin((a+0.15)/la*360+this.direction.main),-48+dist*10/11+4*lcos((a+0.15)/la*360+this.direction.main)
+                            )*/
+                            this.layer.quad(
+                                6.5*lsin(a/la*360+this.direction.main),-48+1.8*lcos(a/la*360+this.direction.main),
+                                (6.5+dist*0.3)*lsin((a-0.15)/la*360+this.direction.main),-48+dist*0.9+3.6*lcos((a-0.15)/la*360+this.direction.main),
+                                (6.5+dist/3)*lsin(a/la*360+this.direction.main),-48+dist+3.6*lcos(a/la*360+this.direction.main),
+                                (6.5+dist*0.3)*lsin((a+0.15)/la*360+this.direction.main),-48+dist*0.9+3.6*lcos((a+0.15)/la*360+this.direction.main)
                             )
                         }
                     }
@@ -5583,7 +5777,8 @@ class graphicsManager{
                             loc[0].x-2.2*sc[1][0],
                             loc[0].y-2.2*sc[1][1]
                         )
-                        this.layer.fill(...this.flashColor(this.components.dress.color.sleeve),this.fade.main*this.components.dress.fade.sleeve[args[0]])
+                        //this.layer.fill(...this.flashColor(this.components.dress.color.sleeve),this.fade.main*this.components.dress.fade.sleeve[args[0]])
+                        this.layer.fill(...this.flashColor(this.components.dress.color.sleeve),this.fade.main*this.components.dress.fade.sleeve[args[0]]*0.8)
                         for(let a=0,la=11;a<la;a++){
                             let sc2=[lsin(a/la*360+this.direction.main),lcos(a/la*360+this.direction.main)]
                             if(sc2[1]>0){
@@ -5622,7 +5817,7 @@ class graphicsManager{
                         this.layer.rotate(-dir[1])
                         ang=atan2(4,dist(loc[1].x,loc[1].y,loc[0].x,loc[0].y)*0.6)
                         this.layer.fill(...this.flashColor(mergeColor(this.components.dress.color.back,this.components.dress.color.main,0.25)),this.fade.main*this.components.dress.fade.sleeve[args[0]]*0.8)
-                        for(let a=0,la=11;a<la;a++){
+                        /*for(let a=0,la=11;a<la;a++){
                             let turn=[(a-0.5)/la*360+this.direction.main,(a+0.5)/la*360+this.direction.main]
                             if(lcos(turn[0])<=0&&lcos(turn[1])<=0){
                                 this.layer.push()
@@ -5635,6 +5830,25 @@ class graphicsManager{
                                     (3*abs(lsin(turn[1])-lsin(turn[0])))**2+
                                     (abs(abs(lcos(turn[1]))-abs(lcos(turn[0]))))**2
                                 ),1)
+                                this.layer.pop()
+                            }
+                        }*/
+                        for(let a=0,la=9;a<la;a++){
+                            if(lcos((a-0.5)/la*360+this.direction.main)<0||lcos((a+0.5)/la*360+this.direction.main)<0){
+                                let ldir=constrain(((a-0.5)/la*360+this.direction.main+720)%360,90,270)
+                                let rdir=constrain(((a+0.5)/la*360+this.direction.main+720)%360,90,270)
+                                let lloc={
+                                    x:lsin(ldir)*3,
+                                    y:2/3*lcos(ldir)
+                                }
+                                let rloc={
+                                    x:lsin(rdir)*3,
+                                    y:2/3*lcos(rdir)
+                                }
+                                this.layer.push()
+                                this.layer.translate(lloc.x/2+rloc.x/2,lloc.y/2+rloc.y/2)
+                                this.layer.rotate(6*lsin(a/la*360+this.direction.main))
+                                this.layer.ellipse(0,0,dist(lloc.x,lloc.y,rloc.x,rloc.y),2)
                                 this.layer.pop()
                             }
                         }
@@ -5672,7 +5886,7 @@ class graphicsManager{
                         this.layer.noStroke()
                         this.layer.fill(...this.flashColor(this.components.dress.color.sleeve),this.fade.main*this.components.dress.fade.sleeve[args[0]])
                         this.layer.beginShape()
-                        hexagon(
+                        /*hexagon(
                             this.layer,
                             loc[1].x+2.1*sc[0][0],
                             loc[1].y+2.1*sc[0][1],
@@ -5686,6 +5900,21 @@ class graphicsManager{
                             loc[1].y*0.9+loc[2].y*0.1-2.1*sc[0][1],
                             loc[1].x-2.1*sc[0][0],
                             loc[1].y-2.1*sc[0][1]
+                        )*/
+                        hexagon(
+                            this.layer,
+                            loc[1].x+2.1*sc[0][0],
+                            loc[1].y+2.1*sc[0][1],
+                            loc[1].x*0.9+loc[2].x*0.1+2.4*sc[0][0],
+                            loc[1].y*0.9+loc[2].y*0.1+2.4*sc[0][1],
+                            loc[1].x*0.25+loc[2].x*0.75+6*sc[0][0],
+                            loc[1].y*0.25+loc[2].y*0.75+6*sc[0][1],
+                            loc[1].x*0.25+loc[2].x*0.75-6*sc[0][0],
+                            loc[1].y*0.25+loc[2].y*0.75-6*sc[0][1],
+                            loc[1].x*0.9+loc[2].x*0.1-2.4*sc[0][0],
+                            loc[1].y*0.9+loc[2].y*0.1-2.4*sc[0][1],
+                            loc[1].x-2.1*sc[0][0],
+                            loc[1].y-2.1*sc[0][1]
                         )
                         this.layer.endShape()
                         this.layer.push()
@@ -5695,7 +5924,7 @@ class graphicsManager{
                         this.layer.ellipse(0,0,12,1)
                         this.layer.fill(...this.flashColor(this.components.dress.color.sleeve),this.fade.main*this.components.dress.fade.sleeve[args[0]]*0.8)
                         ang=atan2(6,dist(loc[1].x,loc[1].y,loc[2].x,loc[2].y)*0.75)
-                        for(let a=0,la=17;a<la;a++){
+                        /*for(let a=0,la=17;a<la;a++){
                             if(lcos(a/la*360+this.direction.main)>0){
                                 let turn=[(a-0.5)/la*360+this.direction.main,(a+0.5)/la*360+this.direction.main]
                                 this.layer.push()
@@ -5708,6 +5937,25 @@ class graphicsManager{
                                     (6*abs(lsin(turn[1])-lsin(turn[0])))**2+
                                     (abs(abs(lcos(turn[1]))-abs(lcos(turn[0]))))**2
                                 ),2.4)
+                                this.layer.pop()
+                            }
+                        }*/
+                        for(let a=0,la=13;a<la;a++){
+                            if(lcos((a-0.5)/la*360+this.direction.main)>0||lcos((a+0.5)/la*360+this.direction.main)>0){
+                                let ldir=constrain(((a-0.5)/la*360+this.direction.main+900)%360-180,-90,90)
+                                let rdir=constrain(((a+0.5)/la*360+this.direction.main+900)%360-180,-90,90)
+                                let lloc={
+                                    x:lsin(ldir)*-6,
+                                    y:-lcos(ldir)
+                                }
+                                let rloc={
+                                    x:lsin(rdir)*-6,
+                                    y:-lcos(rdir)
+                                }
+                                this.layer.push()
+                                this.layer.translate(lloc.x/2+rloc.x/2,lloc.y/2+rloc.y/2)
+                                this.layer.rotate(-18*lsin(a/la*360+this.direction.main))
+                                this.layer.ellipse(0,0,dist(lloc.x,lloc.y,rloc.x,rloc.y),2)
                                 this.layer.pop()
                             }
                         }
@@ -5727,8 +5975,14 @@ class graphicsManager{
                         this.layer.fill(...this.flashColor(this.components.dress.color.sleeveOver),this.fade.main*this.components.dress.fade.main*0.8)
                         for(let a=0,la=17;a<la;a++){
                             if(lcos((a+0.5)/la*360+this.direction.main)>0){
-                                this.layer.quad(
+                                /*this.layer.quad(
                                     2*lsin((a+0.5)/la*360+this.direction.main),-lcos((a+0.5)/la*360+this.direction.main)*0.5,
+                                    5.6*lsin((a+0.35)/la*360+this.direction.main),-len*0.9-abs(lcos((a+0.35)/la*360+this.direction.main)),
+                                    6*lsin((a+0.5)/la*360+this.direction.main),-len-abs(lcos((a+0.5)/la*360+this.direction.main)),
+                                    5.6*lsin((a+0.65)/la*360+this.direction.main),-len*0.9-abs(lcos((a+0.65)/la*360+this.direction.main))
+                                )*/
+                                this.layer.quad(
+                                    2.4*lsin((a+0.5)/la*360+this.direction.main),-lcos((a+0.5)/la*360+this.direction.main)*0.5,
                                     5.6*lsin((a+0.35)/la*360+this.direction.main),-len*0.9-abs(lcos((a+0.35)/la*360+this.direction.main)),
                                     6*lsin((a+0.5)/la*360+this.direction.main),-len-abs(lcos((a+0.5)/la*360+this.direction.main)),
                                     5.6*lsin((a+0.65)/la*360+this.direction.main),-len*0.9-abs(lcos((a+0.65)/la*360+this.direction.main))
@@ -5748,12 +6002,13 @@ class graphicsManager{
                             atan2(loc[0].x-loc[1].x,loc[0].y-loc[1].y)
                         ]
                         this.layer.noStroke()
-                        this.layer.fill(...this.flashColor(this.components.dress.color.sleeveBack),this.fade.main*this.components.dress.fade.sleeve[args[0]])
+                        //this.layer.fill(...this.flashColor(this.components.dress.color.sleeveBack),this.fade.main*this.components.dress.fade.sleeve[args[0]])
+                        this.layer.fill(...this.flashColor(mergeColor(this.components.dress.color.sleeve,this.components.dress.color.sleeveBack,0.5)),this.fade.main*this.components.dress.fade.sleeve[args[0]])
                         this.layer.push()
                         this.layer.translate(loc[1].x*0.25+loc[2].x*0.75,loc[1].y*0.25+loc[2].y*0.75)
                         this.layer.rotate(-dir[0])
-                        ang=atan2(6,dist(loc[1].x,loc[1].y,loc[2].x,loc[2].y)*0.75)
-                        for(let a=0,la=17;a<la;a++){
+                        //ang=atan2(6,dist(loc[1].x,loc[1].y,loc[2].x,loc[2].y)*0.75)
+                        /*for(let a=0,la=17;a<la;a++){
                             let turn=[(a-0.5)/la*360+this.direction.main,(a+0.5)/la*360+this.direction.main]
                             if(lcos(turn[0])<=0&&lcos(turn[1])<=0){
                                 this.layer.push()
@@ -5766,6 +6021,25 @@ class graphicsManager{
                                     (6*abs(lsin(turn[1])-lsin(turn[0])))**2+
                                     (abs(abs(lcos(turn[1]))-abs(lcos(turn[0]))))**2
                                 ),2.4)
+                                this.layer.pop()
+                            }
+                        }*/
+                        for(let a=0,la=13;a<la;a++){
+                            if(lcos((a-0.5)/la*360+this.direction.main)<0||lcos((a+0.5)/la*360+this.direction.main)<0){
+                                let ldir=constrain(((a-0.5)/la*360+this.direction.main+720)%360,90,270)
+                                let rdir=constrain(((a+0.5)/la*360+this.direction.main+720)%360,90,270)
+                                let lloc={
+                                    x:lsin(ldir)*6,
+                                    y:lcos(ldir)
+                                }
+                                let rloc={
+                                    x:lsin(rdir)*6,
+                                    y:lcos(rdir)
+                                }
+                                this.layer.push()
+                                this.layer.translate(lloc.x/2+rloc.x/2,lloc.y/2+rloc.y/2)
+                                this.layer.rotate(18*lsin(a/la*360+this.direction.main))
+                                this.layer.ellipse(0,0,dist(lloc.x,lloc.y,rloc.x,rloc.y),2)
                                 this.layer.pop()
                             }
                         }
@@ -5886,9 +6160,9 @@ class graphicsManager{
                         this.layer.rotate(-dir[1])
                         this.layer.arc(0,0,6,4/3,-180,0)
                         this.layer.ellipse(0,0,6,4/3)
-                        ang=atan2(0.6,dist(loc[1].x,loc[1].y,loc[0].x,loc[0].y)*0.6)
+                        //ang=atan2(0.6,dist(loc[1].x,loc[1].y,loc[0].x,loc[0].y)*0.6)
                         this.layer.fill(...this.flashColor(this.components.dress.color.main),this.fade.main*this.components.dress.fade.sleeve[args[0]]*0.8)
-                        for(let a=0,la=11;a<la;a++){
+                        /*for(let a=0,la=11;a<la;a++){
                             if(lcos(a/la*360+this.direction.main)>0){
                                 this.layer.push()
                                 this.layer.translate(
@@ -5900,6 +6174,25 @@ class graphicsManager{
                                     (3*abs(lsin((a+0.5)/la*360+this.direction.main)-lsin((a-0.5)/la*360+this.direction.main)))**2+
                                     (abs(abs(lcos((a+0.5)/la*360+this.direction.main))-abs(lcos((a-0.5)/la*360+this.direction.main))))**2
                                 ),1)
+                                this.layer.pop()
+                            }
+                        }*/
+                        for(let a=0,la=9;a<la;a++){
+                            if(lcos((a-0.5)/la*360+this.direction.main)>0||lcos((a+0.5)/la*360+this.direction.main)>0){
+                                let ldir=constrain(((a-0.5)/la*360+this.direction.main+900)%360-180,-90,90)
+                                let rdir=constrain(((a+0.5)/la*360+this.direction.main+900)%360-180,-90,90)
+                                let lloc={
+                                    x:lsin(ldir)*-3,
+                                    y:-2/3*lcos(ldir)
+                                }
+                                let rloc={
+                                    x:lsin(rdir)*-3,
+                                    y:-2/3*lcos(rdir)
+                                }
+                                this.layer.push()
+                                this.layer.translate(lloc.x/2+rloc.x/2,lloc.y/2+rloc.y/2)
+                                this.layer.rotate(-6*lsin(a/la*360+this.direction.main))
+                                this.layer.ellipse(0,0,dist(lloc.x,lloc.y,rloc.x,rloc.y),2)
                                 this.layer.pop()
                             }
                         }

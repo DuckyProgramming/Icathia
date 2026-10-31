@@ -616,10 +616,10 @@ function displayScene(type){
             char[0].display()
             return layer
         case 9:
-            layer=formImage(840,840)
+            layer=formImage(1000,1000)
             manager.generateGraphics(`Menessa`)
-            char.push(new character(layer,manager,0,360,`Menessa`,-30))
-            char[0].size=7.5
+            char.push(new character(layer,manager,0,450,`Menessa`,-30))
+            char[0].size=8
 
             char[0].components.arms[0].anim.top.theta=-45
             char[0].components.arms[0].anim.top.phi=30
